@@ -1,0 +1,120 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Alimento - Prato Justo</title>
+    <link rel="stylesheet" href="./cadastro_alimento.css">
+</head>
+
+<!-- Seção Cadastrar Alimentos -->
+<section class="food-registration" id="cadastrar-alimentos">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Cadastrar Alimentos</h2>
+            <p class="section-subtitle">Registre alimentos para doação e ajude a combater o desperdício</p>
+        </div>
+
+        <div class="registration-content">
+            <div class="registration-form-container" data-aos="fade-right">
+                <form class="food-registration-form" id="foodRegistrationForm">
+                    <div class="form-group">
+                        <label for="foodName">Nome do Alimento</label>
+                        <input type="text" id="foodName" name="foodName" placeholder="Ex: Arroz, Feijão, Pão..." required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="foodType">Tipo de Alimento</label>
+                        <select id="foodType" name="foodType" required>
+                            <option value="">Selecione o tipo</option>
+                            <option value="perecivel">Perecível (frutas, verduras, laticínios)</option>
+                            <option value="nao-perecivel">Não Perecível (arroz, feijão, enlatados)</option>
+                            <option value="preparado">Pronto para Consumo (refeições prontas)</option>
+                            <option value="bebidas">Bebidas</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="quantity">Quantidade</label>
+                        <input type="text" id="quantity" name="quantity" placeholder="Ex: 5kg, 10 unidades, 2 litros..." required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="expiryDate">Data de Validade</label>
+                        <input type="date" id="expiryDate" name="expiryDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Descrição</label>
+                        <textarea id="description" name="description" placeholder="Descreva o alimento, condições de armazenamento, etc." rows="3"></textarea>
+                    </div>
+
+                    <div class="location-section">
+                        <h4>Localização</h4>
+                        <div class="location-controls">
+                            <button type="button" id="getLocationBtn" class="btn-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Usar Minha Localização
+                            </button>
+                            <span class="location-status" id="locationStatus">Localização não detectada</span>
+                        </div>
+                        <div class="location-inputs">
+                            <div class="form-group">
+                                <label for="address">Endereço</label>
+                                <input type="text" id="address" name="address" placeholder="Rua, número, bairro..." required>
+                            </div>
+                            <div class="form-group">
+                                <label for="city">Cidade</label>
+                                <input type="text" id="city" name="city" placeholder="São Paulo" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary btn-submit">
+                        <i class="fas fa-plus"></i>
+                        Cadastrar Alimento
+                    </button>
+                </form>
+            </div>
+
+            <div class="registration-info" data-aos="fade-left">
+                <div class="info-card">
+                    <h3>Como Funciona o Cadastro</h3>
+                    <div class="info-steps">
+                        <div class="info-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Preencha os Dados</h4>
+                                <p>Informe o tipo, quantidade e validade do alimento</p>
+                            </div>
+                        </div>
+                        <div class="info-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Defina a Localização</h4>
+                                <p>Use a geolocalização ou informe o endereço</p>
+                            </div>
+                        </div>
+                        <div class="info-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Publique a Doação</h4>
+                                <p>Seu alimento aparecerá para pessoas próximas</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="map-preview">
+                    <div class="map-placeholder">
+                        <i class="fas fa-map"></i>
+                        <p>Visualização do Mapa</p>
+                        <small>Localização será exibida aqui</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./cadastro_alimento.js"></script>
+</section>

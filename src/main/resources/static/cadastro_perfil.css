@@ -1,0 +1,60 @@
+@import url('./cadastro.css');
+
+.intro {
+  margin: 6px 0 16px 0;
+  color: var(--texto-suave);
+}
+
+.options {
+  display: grid;
+  gap: 12px;
+}
+
+.option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--borda);
+  background: rgba(255,255,255,0.02);
+  color: var(--texto);
+  cursor: pointer;
+  transition: border-color 160ms ease, box-shadow 180ms ease, background 160ms ease, transform 120ms ease;
+}
+
+.option:hover {
+  background: rgba(255,255,255,0.04);
+  border-color: rgba(59,130,246,0.35);
+}
+
+.option:active { transform: translateY(1px); }
+
+.option__content { text-align: left; }
+
+.option__title {
+  font-weight: 800;
+  font-size: 18px;
+}
+
+.option__desc {
+  margin-top: 4px;
+  font-size: 14px;
+  color: var(--texto-suave);
+}
+
+.option__icon {
+  display: inline-flex;
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--azul-claro), var(--vermelho));
+  color: #fff;
+  font-weight: 900;
+  box-shadow: 0 8px 20px rgba(59,130,246,0.25), 0 8px 20px rgba(220,38,38,0.2);
+}
+

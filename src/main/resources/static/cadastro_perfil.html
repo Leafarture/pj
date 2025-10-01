@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Escolha de perfil - Prato Justo">
+    <title>Escolher perfil | Prato Justo</title>
+    <link rel="stylesheet" href="./cadastro_perfil.css">
+</head>
+<body>
+<main class="page">
+    <header class="brand">
+        <div class="brand__logo" aria-hidden="true">🍽️</div>
+        <h1 class="brand__title">Prato Justo</h1>
+    </header>
+
+    <section class="card" aria-labelledby="perfil-title">
+        <h2 id="perfil-title" class="card__title">Escolha seu perfil</h2>
+        <p class="intro">Selecione como deseja se cadastrar para continuarmos.</p>
+
+        <div class="options" role="list">
+            <button class="option" id="opt-pessoa" role="listitem">
+                <div class="option__content">
+                    <div class="option__title">Pessoa Física</div>
+                    <div class="option__desc">Cadastro individual para doadores e beneficiários.</div>
+                </div>
+                <span class="option__icon" aria-hidden="true">→</span>
+            </button>
+
+            <button class="option" id="opt-org" role="listitem">
+                <div class="option__content">
+                    <div class="option__title">Estabelecimento / ONG</div>
+                    <div class="option__desc">Para restaurantes, mercados, entidades e projetos sociais.</div>
+                </div>
+                <span class="option__icon" aria-hidden="true">→</span>
+            </button>
+        </div>
+
+        <p class="hint">Já possui conta? <a href="./login.html" class="link">Entrar</a></p>
+    </section>
+
+    <footer class="footer">
+        <small>© <span id="ano"></span> Prato Justo. Todos os direitos reservados.</small>
+    </footer>
+</main>
+
+<script src="./cadastro_perfil.js" defer></script>
+</body>
+</html>
+
