@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Página de cadastro de estabelecimento - Prato Justo">
+    <title>Cadastro de Estabelecimento | Prato Justo</title>
+    <link rel="stylesheet" href="Estabelecimento.css">
+</head>
+<body>
+<main class="page">
+    <header class="brand">
+        <div class="brand__logo" aria-hidden="true">🍽️</div>
+        <h1 class="brand__title">Prato Justo</h1>
+    </header>
+
+    <section class="card" aria-labelledby="cadastro-title">
+        <div class="card__header">
+            <button class="btn btn--back" onclick="goTo('./cadastro_perfil.html')" aria-label="Voltar">
+                ← Voltar
+            </button>
+            <h2 id="cadastro-title" class="card__title">Crie sua conta</h2>
+        </div>
+        <p id="cadastro-subtitle" class="hint" aria-live="polite">Perfil selecionado: Estabelecimento / ONG</p>
+
+        <form id="form-cadastro-estabelecimento" novalidate>
+            <div class="field">
+                <label for="nome-empresa">Nome da empresa</label>
+                <input id="nome-empresa" name="nomeEmpresa" type="text" autocomplete="organization" placeholder="Nome da sua empresa" required>
+                <p class="error" id="erro-nome-empresa" role="alert" aria-live="polite"></p>
+            </div>
+
+            <div class="field">
+                <label for="email">E-mail</label>
+                <input id="email" name="email" type="email" autocomplete="email" placeholder="voce@exemplo.com" required>
+                <p class="error" id="erro-email" role="alert" aria-live="polite"></p>
+            </div>
+
+            <div class="field">
+                <label for="cnpj">CNPJ</label>
+                <input id="cnpj" name="cnpj" type="text" placeholder="00.000.000/0000-00" required>
+                <p class="error" id="erro-cnpj" role="alert" aria-live="polite"></p>
+            </div>
+
+            <div class="field">
+                <label for="telefone">Telefone</label>
+                <input id="telefone" name="telefone" type="tel" autocomplete="tel" placeholder="(11) 99999-9999" required>
+                <p class="error" id="erro-telefone" role="alert" aria-live="polite"></p>
+            </div>
+
+            <div class="field">
+                <label for="rua">Rua</label>
+                <input id="rua" name="rua" type="text" placeholder="Nome da rua" required>
+                <p class="error" id="erro-rua" role="alert" aria-live="polite"></p>
+            </div>
+
+            <div class="field field--split">
+                <div class="field">
+                    <label for="numero">Número</label>
+                    <input id="numero" name="numero" type="text" placeholder="123" required>
+                    <p class="error" id="erro-numero" role="alert" aria-live="polite"></p>
+                </div>
+                <div class="field">
+                    <label for="complemento">Complemento</label>
+                    <input id="complemento" name="complemento" type="text" placeholder="Apto 45">
+                    <p class="error" id="erro-complemento" role="alert" aria-live="polite"></p>
+                </div>
+            </div>
+
+            <div class="field field--split">
+                <div class="field">
+                    <label for="cidade">Cidade</label>
+                    <input id="cidade" name="cidade" type="text" placeholder="São Paulo" required>
+                    <p class="error" id="erro-cidade" role="alert" aria-live="polite"></p>
+                </div>
+                <div class="field">
+                    <label for="estado">Estado</label>
+                    <select id="estado" name="estado" required>
+                        <option value="">Selecione</option>
+                        <option value="AC">Acre</option>
+                        <option value="AL">Alagoas</option>
+                        <option value="AP">Amapá</option>
+                        <option value="AM">Amazonas</option>
+                        <option value="BA">Bahia</option>
+                        <option value="CE">Ceará</option>
+                        <option value="DF">Distrito Federal</option>
+                        <option value="ES">Espírito Santo</option>
+                        <option value="GO">Goiás</option>
+                        <option value="MA">Maranhão</option>
+                        <option value="MT">Mato Grosso</option>
+                        <option value="MS">Mato Grosso do Sul</option>
+                        <option value="MG">Minas Gerais</option>
+                        <option value="PA">Pará</option>
+                        <option value="PB">Paraíba</option>
+                        <option value="PR">Paraná</option>
+                        <option value="PE">Pernambuco</option>
+                        <option value="PI">Piauí</option>
+                        <option value="RJ">Rio de Janeiro</option>
+                        <option value="RN">Rio Grande do Norte</option>
+                        <option value="RS">Rio Grande do Sul</option>
+                        <option value="RO">Rondônia</option>
+                        <option value="RR">Roraima</option>
+                        <option value="SC">Santa Catarina</option>
+                        <option value="SP">São Paulo</option>
+                        <option value="SE">Sergipe</option>
+                        <option value="TO">Tocantins</option>
+                    </select>
+                    <p class="error" id="erro-estado" role="alert" aria-live="polite"></p>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="cep">CEP</label>
+                <input id="cep" name="cep" type="text" placeholder="00000-000" required>
+                <p class="error" id="erro-cep" role="alert" aria-live="polite"></p>
+            </div>
+
+            <div class="field field--split">
+                <div class="field">
+                    <label for="senha">Senha</label>
+                    <input id="senha" name="senha" type="password" autocomplete="new-password" placeholder="Mínimo 8 caracteres" required>
+                    <p class="error" id="erro-senha" role="alert" aria-live="polite"></p>
+                </div>
+                <div class="field">
+                    <label for="confirmar">Confirmar senha</label>
+                    <input id="confirmar" name="confirmar" type="password" autocomplete="new-password" placeholder="Repita a senha" required>
+                    <p class="error" id="erro-confirmar" role="alert" aria-live="polite"></p>
+                </div>
+            </div>
+
+            <div class="field field--checkbox">
+                <input id="termos" name="termos" type="checkbox" required>
+                <label for="termos">Concordo com os termos de uso</label>
+            </div>
+            <p class="error" id="erro-termos" role="alert" aria-live="polite"></p>
+
+            <button type="submit" class="btn btn--primary">Cadastrar</button>
+
+            <p class="hint">Já tem conta? <a href="./login.html" class="link">Entrar</a></p>
+
+        </form>
+
+    </section>
+
+    <footer class="footer">
+        <small>© <span id="ano"></span> Prato Justo. Todos os direitos reservados.</small>
+    </footer>
+</main>
+
+<script src="./cadastro_estabelecimento.js" defer></script>
+</body>
+</html>

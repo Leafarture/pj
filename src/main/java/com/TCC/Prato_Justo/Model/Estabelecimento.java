@@ -19,6 +19,11 @@ public class Estabelecimento {
     @Column(name = "senha_estabelecimento", length = 255, nullable = false)
     private String senhaEstabelecimento;
 
+    @Column(name = "cnpj", length = 18, nullable = false, unique = true)
+    private String cnpj;
+
+    @Column(name = "telefone", length = 15, nullable = false)
+    private String telefone;
 
     @Column(name = "endereco_completo", columnDefinition = "TEXT", nullable = false)
     private String enderecoCompleto;
@@ -84,5 +89,37 @@ public class Estabelecimento {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getCnpj() {
+        return cnpj;
+    }
+
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public String getSenhaEstabelecimento() {
+        return senhaEstabelecimento;
+    }
+
+    public void setSenhaEstabelecimento(String senhaEstabelecimento) {
+        this.senhaEstabelecimento = senhaEstabelecimento;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 }

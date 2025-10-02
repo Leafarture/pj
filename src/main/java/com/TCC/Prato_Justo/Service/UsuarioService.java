@@ -8,6 +8,9 @@ import com.TCC.Prato_Justo.Model.TipoUsuario;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.List;
+import java.util.Optional;
+
 
 @Service
 public class UsuarioService {
@@ -64,5 +67,30 @@ public class UsuarioService {
         return autchCadastroRepository.findByEmail(email)
                 .map(cad -> passwordEncoder.matches(rawPassword, cad.getSenhaUsuario()))
                 .orElse(false);
+    }
+
+    // Métodos adicionais para gerenciar usuários
+    public Usuario salvar(Usuario usuario) {
+        // Criptografar senha antes de salvar
+        if (usuario.getSenhaUsuario() != null && !usuario.getSenhaUsuario().startsWith("$2a$")) {
+            usuario.setSenhaUsuario(passwordEncoder.encode(usuario.getSenhaUsuario()));
+        }
+        return autchCadastroRepository.save(usuario);
+    }
+
+    public Optional<Usuario> buscarPorId(Long id) {
+        return autchCadastroRepository.findById(id);
+    }
+
+    public Optional<Usuario> buscarPorEmail(String email) {
+        return autchCadastroRepository.findByEmail(email);
+    }
+
+    public List<Usuario> listarTodos() {
+        return autchCadastroRepository.findAll();
+    }
+
+    public void deletar(Long id) {
+        autchCadastroRepository.deleteById(id);
     }
 }

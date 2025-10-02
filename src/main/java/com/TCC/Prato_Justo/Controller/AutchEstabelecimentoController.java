@@ -1,7 +1,11 @@
 package com.TCC.Prato_Justo.Controller;
 
 import com.TCC.Prato_Justo.Model.Estabelecimento;
+import com.TCC.Prato_Justo.Model.Usuario;
 import com.TCC.Prato_Justo.Service.EstabelecimentoService;
+import com.TCC.Prato_Justo.Service.UsuarioService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,19 +17,58 @@ import java.util.List;
 public class AutchEstabelecimentoController {
 
 
-        private final EstabelecimentoService estabelecimentoService;
+    private final EstabelecimentoService estabelecimentoService;
+    private final UsuarioService usuarioService;
 
-    public AutchEstabelecimentoController(EstabelecimentoService estabelecimentoService) {
+    public AutchEstabelecimentoController(EstabelecimentoService estabelecimentoService, UsuarioService usuarioService) {
         this.estabelecimentoService = estabelecimentoService;
+        this.usuarioService = usuarioService;
     }
 
 
     // Criar novo estabelecimento
-        @PostMapping
-        public ResponseEntity<Estabelecimento> criar(@RequestBody Estabelecimento estabelecimento) {
-            Estabelecimento novo = estabelecimentoService.salvar(estabelecimento);
-            return ResponseEntity.ok(novo);
+    @PostMapping("/estabelecimento")
+    public ResponseEntity<?> criarEstabelecimento(@Valid @RequestBody CadastroEstabelecimentoRequest request) {
+        try {
+            // Validar se as senhas coincidem
+            if (!request.getSenha().equals(request.getConfirmarSenha())) {
+                return ResponseEntity.badRequest()
+                    .body("As senhas não coincidem");
+            }
+            
+            // Verificar se já existe usuário com este email
+            if (usuarioService.buscarPorEmail(request.getEmail()).isPresent()) {
+                return ResponseEntity.badRequest()
+                    .body("Já existe um usuário cadastrado com este e-mail");
+            }
+            
+            // Criar usuário primeiro
+            Usuario usuario = new Usuario();
+            usuario.setEmail(request.getEmail());
+            usuario.setSenhaUsuario(request.getSenha()); // Em produção, criptografar a senha
+            usuario.setTipoUsuario(com.TCC.Prato_Justo.Model.TipoUsuario.ESTABELECIMENTO);
+            
+            Usuario usuarioSalvo = usuarioService.salvar(usuario);
+            
+            // Criar estabelecimento
+            Estabelecimento estabelecimento = new Estabelecimento();
+            estabelecimento.setNomeEstabelecimento(request.getNomeEmpresa());
+            estabelecimento.setEmail(request.getEmail());
+            estabelecimento.setCnpj(request.getCnpj());
+            estabelecimento.setTelefone(request.getTelefone());
+            estabelecimento.setEnderecoCompleto(request.getEnderecoCompleto());
+            estabelecimento.setSenhaEstabelecimento(request.getSenha()); // Em produção, criptografar
+            estabelecimento.setUsuario(usuarioSalvo);
+            
+            Estabelecimento estabelecimentoSalvo = estabelecimentoService.salvar(estabelecimento);
+            
+            return ResponseEntity.status(HttpStatus.CREATED).body(estabelecimentoSalvo);
+            
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Erro ao criar estabelecimento: " + e.getMessage());
         }
+    }
 
         // Listar todos
         @GetMapping
