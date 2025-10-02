@@ -102,6 +102,7 @@ body {
 .field input[type="email"],
 .field input[type="password"],
 .field input[type="tel"],
+.field select,
 .field textarea {
   width: 100%;
   padding: 12px 14px;
@@ -119,12 +120,23 @@ body {
 .field textarea::placeholder { color: #9aa4b2; }
 
 .field input:hover,
+.field select:hover,
 .field textarea:hover { background: rgba(255,255,255,0.04); }
 
 .field input:focus,
+.field select:focus,
 .field textarea:focus {
   border-color: var(--azul-claro);
   box-shadow: var(--focus-ring);
+}
+
+.field select {
+  cursor: pointer;
+}
+
+.field select option {
+  background: var(--card-bg);
+  color: var(--texto);
 }
 
 .field--split {

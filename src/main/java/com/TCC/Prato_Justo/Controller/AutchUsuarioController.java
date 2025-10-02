@@ -74,6 +74,12 @@ public class AutchUsuarioController {
         private String perfil;
         private String telefone;
         private String enderecoCompleto;
+        private String rua;
+        private String numero;
+        private String complemento;
+        private String cidade;
+        private String estado;
+        private String cep;
         private Double latitude;
         private Double longitude;
 
@@ -124,6 +130,54 @@ public class AutchUsuarioController {
 
         public void setEnderecoCompleto(String enderecoCompleto) {
             this.enderecoCompleto = enderecoCompleto;
+        }
+
+        public String getRua() {
+            return rua;
+        }
+
+        public void setRua(String rua) {
+            this.rua = rua;
+        }
+
+        public String getNumero() {
+            return numero;
+        }
+
+        public void setNumero(String numero) {
+            this.numero = numero;
+        }
+
+        public String getComplemento() {
+            return complemento;
+        }
+
+        public void setComplemento(String complemento) {
+            this.complemento = complemento;
+        }
+
+        public String getCidade() {
+            return cidade;
+        }
+
+        public void setCidade(String cidade) {
+            this.cidade = cidade;
+        }
+
+        public String getEstado() {
+            return estado;
+        }
+
+        public void setEstado(String estado) {
+            this.estado = estado;
+        }
+
+        public String getCep() {
+            return cep;
+        }
+
+        public void setCep(String cep) {
+            this.cep = cep;
         }
 
         public Double getLatitude() {

@@ -40,7 +40,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const nome = document.getElementById("nome");
         const email = document.getElementById("email");
         const telefone = document.getElementById("telefone");
-        const endereco = document.getElementById("endereco");
+        const rua = document.getElementById("rua");
+        const numero = document.getElementById("numero");
+        const complemento = document.getElementById("complemento");
+        const cidade = document.getElementById("cidade");
+        const estado = document.getElementById("estado");
+        const cep = document.getElementById("cep");
         const senha = document.getElementById("senha");
         const confirmar = document.getElementById("confirmar");
         const termos = document.getElementById("termos");
@@ -52,7 +57,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const erroNome = document.getElementById("erro-nome");
         const erroEmail = document.getElementById("erro-email");
         const erroTelefone = document.getElementById("erro-telefone");
-        const erroEndereco = document.getElementById("erro-endereco");
+        const erroRua = document.getElementById("erro-rua");
+        const erroNumero = document.getElementById("erro-numero");
+        const erroComplemento = document.getElementById("erro-complemento");
+        const erroCidade = document.getElementById("erro-cidade");
+        const erroEstado = document.getElementById("erro-estado");
+        const erroCep = document.getElementById("erro-cep");
         const erroSenha = document.getElementById("erro-senha");
         const erroConfirmar = document.getElementById("erro-confirmar");
         const erroTermos = document.getElementById("erro-termos");
@@ -63,7 +73,12 @@ document.addEventListener("DOMContentLoaded", () => {
         erroNome.textContent = "";
         erroEmail.textContent = "";
         erroTelefone.textContent = "";
-        erroEndereco.textContent = "";
+        erroRua.textContent = "";
+        erroNumero.textContent = "";
+        erroComplemento.textContent = "";
+        erroCidade.textContent = "";
+        erroEstado.textContent = "";
+        erroCep.textContent = "";
         erroSenha.textContent = "";
         erroConfirmar.textContent = "";
         erroTermos.textContent = "";
@@ -83,9 +98,38 @@ document.addEventListener("DOMContentLoaded", () => {
             temErro = true;
         }
 
-        if (!endereco.value.trim()) {
-            erroEndereco.textContent = "Digite seu endereço completo.";
+        if (!rua.value.trim()) {
+            erroRua.textContent = "Digite o nome da rua.";
             temErro = true;
+        }
+
+        if (!numero.value.trim()) {
+            erroNumero.textContent = "Digite o número.";
+            temErro = true;
+        } else if (!/^\d+/.test(numero.value.trim())) {
+            erroNumero.textContent = "Número deve conter apenas dígitos.";
+            temErro = true;
+        }
+
+        if (!cidade.value.trim()) {
+            erroCidade.textContent = "Digite a cidade.";
+            temErro = true;
+        }
+
+        if (!estado.value) {
+            erroEstado.textContent = "Selecione o estado.";
+            temErro = true;
+        }
+
+        if (!cep.value.trim()) {
+            erroCep.textContent = "Digite o CEP.";
+            temErro = true;
+        } else {
+            const cepLimpo = cep.value.replace(/\D/g, '');
+            if (cepLimpo.length !== 8) {
+                erroCep.textContent = "CEP deve ter 8 dígitos.";
+                temErro = true;
+            }
         }
 
         if (!senha.value || senha.value.length < 8) {
@@ -109,13 +153,29 @@ document.addEventListener("DOMContentLoaded", () => {
         // --------------------------
         // Prepara os dados para enviar
         // --------------------------
+        // Monta o endereço completo
+        const enderecoCompleto = [
+            rua.value.trim(),
+            numero.value.trim(),
+            complemento.value.trim(),
+            cidade.value.trim(),
+            estado.value,
+            cep.value.trim()
+        ].filter(Boolean).join(', ');
+
         const cadastroData = {
             username: nome.value.trim(),
             email: email.value.trim(),
             password: senha.value,
             perfil: perfil?.value || null,
             telefone: telefone.value.trim() || null,
-            enderecoCompleto: endereco.value.trim(),
+            enderecoCompleto: enderecoCompleto,
+            rua: rua.value.trim(),
+            numero: numero.value.trim(),
+            complemento: complemento.value.trim() || null,
+            cidade: cidade.value.trim(),
+            estado: estado.value,
+            cep: cep.value.trim(),
             latitude: null, // Pode ser implementado com geolocalização
             longitude: null // Pode ser implementado com geolocalização
         };
@@ -158,4 +218,77 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Atualiza o ano no rodapé automaticamente
     document.getElementById("ano").textContent = new Date().getFullYear();
+
+    // --------------------------
+    // Funcionalidades adicionais
+    // --------------------------
+    
+    // Formatação de CEP
+    const cepInput = document.getElementById('cep');
+    if (cepInput) {
+        cepInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length <= 8) {
+                value = value.replace(/^(\d{5})(\d{3})$/, '$1-$2');
+                e.target.value = value;
+            }
+        });
+
+        // Busca CEP automaticamente
+        cepInput.addEventListener('blur', async function(e) {
+            const cepValue = e.target.value.replace(/\D/g, '');
+            if (cepValue.length === 8) {
+                try {
+                    console.log('Buscando CEP:', cepValue);
+                    const response = await fetch(`https://viacep.com.br/ws/${cepValue}/json/`);
+                    const data = await response.json();
+                    
+                    if (!data.erro) {
+                        console.log('CEP encontrado:', data);
+                        const ruaInput = document.getElementById('rua');
+                        const cidadeInput = document.getElementById('cidade');
+                        const estadoInput = document.getElementById('estado');
+                        
+                        if (ruaInput && data.logradouro) {
+                            ruaInput.value = data.logradouro;
+                        }
+                        if (cidadeInput && data.localidade) {
+                            cidadeInput.value = data.localidade;
+                        }
+                        if (estadoInput && data.uf) {
+                            estadoInput.value = data.uf;
+                        }
+                    } else {
+                        console.log('CEP não encontrado');
+                    }
+                } catch (error) {
+                    console.log('Erro ao buscar CEP:', error);
+                }
+            }
+        });
+    }
+
+    // Formatação de telefone
+    const telefoneInput = document.getElementById('telefone');
+    if (telefoneInput) {
+        telefoneInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length <= 11) {
+                if (value.length <= 10) {
+                    value = value.replace(/^(\d{2})(\d{4})(\d{4})$/, '($1) $2-$3');
+                } else {
+                    value = value.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
+                }
+                e.target.value = value;
+            }
+        });
+    }
+
+    // Validação do número (apenas dígitos)
+    const numeroInput = document.getElementById('numero');
+    if (numeroInput) {
+        numeroInput.addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/\D/g, '');
+        });
+    }
 });
