@@ -12,6 +12,7 @@ public class SecurityConfig {
             http
                     .csrf(csrf -> csrf.disable()) // desabilita CSRF para testes
                     .authorizeHttpRequests(requests -> requests
+                            .requestMatchers("/auth/**").permitAll() // Permite acesso aos endpoints de autenticação
                             .requestMatchers("/**").permitAll() // Permite acesso a todas as URLs
                             .anyRequest().authenticated()
                     )

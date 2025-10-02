@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 public class AutchUsuarioController {
 
    private final UsuarioService usuarioService;
@@ -17,9 +17,14 @@ public class AutchUsuarioController {
         this.usuarioService = usuarioService;
     }
 
-    @PostMapping("registro")
-    public Usuario registro(@RequestBody CadastroRequest request){
-        return usuarioService.cadastrarNovoUsuario(request);
+    @PostMapping("/registro")
+    public ResponseEntity<?> registro(@RequestBody CadastroRequest request){
+        try {
+            Usuario usuario = usuarioService.cadastrarNovoUsuario(request);
+            return ResponseEntity.ok(usuario);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Erro ao cadastrar usuário: " + e.getMessage());
+        }
     }
 
     @PostMapping("/cadastros")

@@ -20,10 +20,6 @@ public class AuthProdutoController {
     }
 
 
-    @PostMapping("/register")
-    public Produto register(@RequestBody Produto produto) {
-        return produtoService.salvarProdutos(produto);
-    }
     // Cadastrar um novo produto
     @PostMapping("/cadastrar")
     public ResponseEntity<Produto> cadastrarProduto(@RequestBody Produto produto) {

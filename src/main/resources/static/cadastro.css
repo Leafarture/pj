@@ -62,9 +62,8 @@ body {
 }
 
 .card {
-  
   width: 100%;
-  max-width: 520px;
+  max-width: 580px;
   background: linear-gradient(180deg, rgba(59, 130, 246, 0.08), rgba(220, 38, 38, 0.08)) padding-box,
               linear-gradient(180deg, rgba(59, 130, 246, 0.45), rgba(220, 38, 38, 0.45)) border-box,
               var(--card-bg);
@@ -102,6 +101,7 @@ body {
 .field input[type="email"],
 .field input[type="password"],
 .field input[type="tel"],
+.field select,
 .field textarea {
   width: 100%;
   padding: 12px 14px;
@@ -115,13 +115,24 @@ body {
   resize: vertical;
 }
 
+.field select {
+  cursor: pointer;
+}
+
+.field select option {
+  background: var(--card-bg);
+  color: var(--texto);
+}
+
 .field input::placeholder,
 .field textarea::placeholder { color: #9aa4b2; }
 
 .field input:hover,
+.field select:hover,
 .field textarea:hover { background: rgba(255,255,255,0.04); }
 
 .field input:focus,
+.field select:focus,
 .field textarea:focus {
   border-color: var(--azul-claro);
   box-shadow: var(--focus-ring);
@@ -219,4 +230,42 @@ body {
 .footer {
   opacity: 0.9;
   font-size: 12px;
+}
+
+/* Estilos específicos para validação */
+.field input:invalid:not(:focus):not(:placeholder-shown),
+.field select:invalid:not(:focus) {
+  border-color: var(--erro);
+}
+
+.field input:valid:not(:focus):not(:placeholder-shown),
+.field select:valid:not(:focus) {
+  border-color: var(--sucesso);
+}
+
+/* Animações */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.field--error input,
+.field--error select {
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Responsividade melhorada */
+@media (max-width: 480px) {
+  .page {
+    padding: 16px;
+  }
+  
+  .card {
+    padding: 20px;
+  }
+  
+  .field--split {
+    grid-template-columns: 1fr;
+  }
 }

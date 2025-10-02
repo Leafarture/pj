@@ -8,7 +8,7 @@ foodForm.addEventListener('submit', function(e) {
     const foodData = {
         nameProduto: document.getElementById('foodName').value,
         tipoAlimento: document.getElementById('foodType').value,
-        quantidade: parseFloat(document.getElementById('quantity').value),
+        quantidade: parseFloat(document.getElementById('quantity').value) || 0,
         validade: document.getElementById('expiryDate').value,
         descricao: document.getElementById('description').value,
         endereco: document.getElementById('address').value,

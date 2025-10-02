@@ -32,11 +32,16 @@ public class UsuarioService {
        return autchCadastroRepository.save(cadastro);
     }
 
-    public Usuario cadastrarNovoUsusario(Usuario cadastro){
+    public Usuario cadastrarNovoUsuario(Usuario cadastro){
         return autchCadastroRepository.save(cadastro);
     }
 
     public Usuario cadastrarNovoUsuario(CadastroRequest request){
+        // Verificar se já existe usuário com este email
+        if (autchCadastroRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new RuntimeException("Já existe um usuário cadastrado com este e-mail");
+        }
+        
         Usuario cadastro = new Usuario();
         cadastro.setNome(request.getUsername());
         cadastro.setEmail(request.getEmail());

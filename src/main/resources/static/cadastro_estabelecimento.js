@@ -163,7 +163,7 @@ function validarCampo(campo, formData = null) {
 }
 
 // Função para validar todo o formulário
-function validarFormulario(formData) {
+function validarFormulario(formData, form) {
     let valido = true;
     const campos = form.querySelectorAll('input, select');
     
@@ -345,7 +345,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const formData = obterDadosFormulario();
         
-        if (validarFormulario(formData)) {
+        if (validarFormulario(formData, form)) {
             // Enviar dados para o backend
             enviarDadosParaBackend(formData);
         } else {
