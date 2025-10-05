@@ -19,7 +19,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         });
 
         if (response.ok) {
-            window.location.href = "./index.html";
+            window.location.href = "./HomeUsuario.html";
         } else if (response.status === 401) {
             alert('Email ou senha inválidos.');
         } else {

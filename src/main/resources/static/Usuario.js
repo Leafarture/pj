@@ -202,8 +202,26 @@ document.addEventListener("DOMContentLoaded", () => {
             if (response.ok) {
                 const user = await response.json(); // Recebe os dados do usuário criado
                 console.log("Usuário criado:", user);
-                alert("Cadastro realizado com sucesso para " + user.nome + "!");
-                window.location.href = "./index.html"; // Redireciona para a página Home
+                const displayName = (user.nome || user.username || nome.value || '').trim();
+                alert("Cadastro realizado com sucesso para " + displayName + "!");
+                // Persistir informações básicas do usuário para uso na Home do Usuário
+                try {
+                    const storedUser = {
+                        name: displayName,
+                        email: user.email || email.value || null,
+                        profile: (perfil && perfil.value) || user.perfil || user.tipo || null,
+                        avatarDataUrl: null,
+                        donations: []
+                    };
+                    localStorage.setItem('pj_user', JSON.stringify(storedUser));
+                } catch (e) {
+                    console.warn('Não foi possível salvar dados no localStorage:', e);
+                }
+                // Redireciona conforme o perfil informado ou tipo retornado
+                const perfilValor = (perfil && perfil.value) ? perfil.value : null;
+                const tipoRetornado = (user && (user.tipo || user.tipoUsuario || user.perfil || user.role)) || null;
+                const ehPF = perfilValor === 'PESSOA_FISICA' || tipoRetornado === 'PESSOA_FISICA' || tipoRetornado === 'PF';
+                window.location.href = ehPF ? './homeUsuario.html' : './home.html';
             } else {
                 const msg = await response.text();
                 console.error("Erro do servidor:", msg);

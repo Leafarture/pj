@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil | Prato Justo</title>
+    <link rel="stylesheet" href="home.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .profile-container { max-width: 960px; margin: 0 auto; padding: var(--space-2xl) var(--space-lg); }
+        .profile-grid { display: grid; grid-template-columns: 320px 1fr; gap: var(--space-2xl); }
+        .profile-card { background: var(--white); border-radius: var(--radius-2xl); box-shadow: var(--shadow-xl); padding: var(--space-2xl); }
+        .profile-avatar { width: 160px; height: 160px; border-radius: 999px; background: var(--gray-100); display: flex; align-items: center; justify-content: center; font-size: 64px; overflow: hidden; margin: 0 auto; }
+        .profile-actions { display: flex; gap: var(--space-md); justify-content: center; margin-top: var(--space-md); flex-wrap: wrap; }
+        .section-title { margin-bottom: var(--space-lg); }
+        .field { margin-bottom: var(--space-lg); }
+        .field label { display: block; margin-bottom: var(--space-sm); color: var(--gray-600); }
+        .field input { width: 100%; padding: var(--space-md); border-radius: var(--radius-lg); border: 1px solid var(--gray-200); }
+        .status { display: none; color: var(--primary-blue); font-size: .9rem; margin-top: var(--space-sm); }
+        .password-card { background: var(--gray-50); border-radius: var(--radius-xl); padding: var(--space-xl); border: 1px solid var(--gray-100); }
+        .password-form { display: none; margin-top: var(--space-md); }
+        .password-form.active { display: block; }
+        @media (max-width: 900px) { .profile-grid { grid-template-columns: 1fr; } }
+    </style>
+    <script defer src="headerUser.js"></script>
+    <script defer src="perfilUsuario.js"></script>
+</head>
+<body>
+
+<header class="header">
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">🍽️</div>
+                <h1>Prato Justo</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#" class="nav-link" id="logoutLink">Sair</a></li>
+                <li><a href="homeUsuario.html#atalhos" class="nav-link">Atalhos</a></li>
+                <li><a href="homeUsuario.html#meu-perfil" class="nav-link">Meu Perfil</a></li>
+                <li><a href="#configuracoes" class="nav-link">Configurações</a></li>
+            </ul>
+            <div class="header-actions">
+                <a href="homeUsuario.html" class="btn btn-secondary">Voltar</a>
+                <a href="cadastro_alimento.html" class="btn btn-primary">Cadastrar Alimento</a>
+            </div>
+            <button class="mobile-menu-btn"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    </header>
+
+<main class="profile-container">
+    <div class="profile-card" style="margin-bottom: var(--space-2xl); display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg);">
+        <div style="background: var(--gray-50); border: 1px solid var(--gray-100); border-radius: var(--radius-xl); padding: var(--space-lg); text-align: center;">
+            <div style="font-weight: 800; font-size: 1.5rem;" id="statDonations">0</div>
+            <div style="color: var(--gray-600);">Minhas Doações</div>
+        </div>
+        <div style="background: var(--gray-50); border: 1px solid var(--gray-100); border-radius: var(--radius-xl); padding: var(--space-lg); text-align: center;">
+            <div style="font-weight: 800; font-size: 1.5rem;" id="statPending">0</div>
+            <div style="color: var(--gray-600);">Pendentes</div>
+        </div>
+        <div style="background: var(--gray-50); border: 1px solid var(--gray-100); border-radius: var(--radius-xl); padding: var(--space-lg); text-align: center;">
+            <div style="font-weight: 800; font-size: 1.5rem;" id="statDelivered">0</div>
+            <div style="color: var(--gray-600);">Entregues</div>
+        </div>
+    </div>
+    <div class="profile-grid">
+        <aside class="profile-card">
+            <div class="profile-avatar">
+                <img id="avatarImg" src="" alt="Foto do perfil" style="display:none;width:100%;height:100%;object-fit:cover;border-radius:999px;" />
+                <span id="avatarPlaceholder">👤</span>
+            </div>
+            <div class="profile-actions">
+                <label class="btn btn-outline" style="cursor:pointer;">
+                    <input type="file" accept="image/*" id="avatarInput" style="display:none" />
+                    Trocar Foto
+                </label>
+                <button id="savePhotoBtn" class="btn btn-primary" style="display:none">Salvar Foto</button>
+            </div>
+        </aside>
+
+        <section class="profile-card" id="configuracoes">
+            <h2 class="section-title">Configurações</h2>
+            <div class="field">
+                <label for="nome">Nome</label>
+                <input id="nome" type="text" placeholder="Seu nome" />
+                <div id="nameStatus" class="status">Nome atualizado!</div>
+            </div>
+            <div class="field">
+                <label for="emailPerfil">E-mail</label>
+                <input id="emailPerfil" type="email" placeholder="voce@exemplo.com" />
+            </div>
+            <div class="profile-actions">
+                <button class="btn btn-secondary" id="saveNameBtn" onclick="updateName()">Salvar Nome</button>
+            </div>
+
+            <hr style="border:none;border-top:1px solid var(--gray-200); margin: var(--space-2xl) 0;">
+
+            <h3 style="margin-bottom: var(--space-md)">Preferências</h3>
+            <div class="field" style="display:grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg)">
+                <label style="display:flex; align-items:center; gap:10px">
+                    <input id="notifEmail" type="checkbox">
+                    Receber e-mails sobre atualizações e doações
+                </label>
+                <label style="display:flex; align-items:center; gap:10px">
+                    <input id="notifPush" type="checkbox">
+                    Notificações no navegador
+                </label>
+                <div>
+                    <label for="lang">Idioma</label>
+                    <select id="lang" style="width:100%; padding: var(--space-md); border-radius: var(--radius-lg); border:1px solid var(--gray-200)">
+                        <option value="pt-BR">Português (Brasil)</option>
+                        <option value="en-US">English</option>
+                        <option value="es-ES">Español</option>
+                    </select>
+                </div>
+                <label style="display:flex; align-items:center; gap:10px">
+                    <input id="themeToggle" type="checkbox">
+                    Tema escuro
+                </label>
+            </div>
+            <div class="profile-actions">
+                <button class="btn btn-secondary" id="savePrefsBtn">Salvar Preferências</button>
+            </div>
+
+            <hr style="border:none;border-top:1px solid var(--gray-200); margin: var(--space-2xl) 0;">
+
+            <h3 style="margin-bottom: var(--space-md)">Endereço</h3>
+            <div class="field" style="display:grid; grid-template-columns: 2fr 1fr; gap: var(--space-md)">
+                <div>
+                    <label for="addrRua">Rua</label>
+                    <input id="addrRua" type="text" placeholder="Nome da rua">
+                </div>
+                <div>
+                    <label for="addrNumero">Número</label>
+                    <input id="addrNumero" type="text" placeholder="123">
+                </div>
+            </div>
+            <div class="field" style="display:grid; grid-template-columns: 2fr 1fr 1fr; gap: var(--space-md)">
+                <div>
+                    <label for="addrCidade">Cidade</label>
+                    <input id="addrCidade" type="text" placeholder="São Paulo">
+                </div>
+                <div>
+                    <label for="addrEstado">Estado</label>
+                    <input id="addrEstado" type="text" placeholder="SP">
+                </div>
+                <div>
+                    <label for="addrCep">CEP</label>
+                    <input id="addrCep" type="text" placeholder="00000-000">
+                </div>
+            </div>
+            <div class="profile-actions">
+                <button class="btn btn-secondary" id="saveAddressBtn">Salvar Endereço</button>
+            </div>
+
+            <div class="password-card">
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+                    <h3 style="margin:0">Segurança</h3>
+                    <button class="btn btn-outline" id="togglePasswordBtn" onclick="togglePasswordForm()">Trocar Senha</button>
+                </div>
+                <form id="passwordForm" class="password-form" onsubmit="changePassword(event)">
+                    <div class="field">
+                        <label for="senhaAtual">Senha atual</label>
+                        <input id="senhaAtual" type="password" placeholder="********" />
+                    </div>
+                    <div class="field">
+                        <label for="novaSenha">Nova senha</label>
+                        <input id="novaSenha" type="password" placeholder="Mínimo 8 caracteres" />
+                    </div>
+                    <div class="field">
+                        <label for="confirmNovaSenha">Confirmar nova senha</label>
+                        <input id="confirmNovaSenha" type="password" placeholder="Repita a nova senha" />
+                    </div>
+                    <button class="btn btn-primary" id="changePasswordBtn">Salvar nova senha</button>
+                </form>
+            </div>
+
+            <hr style="border:none;border-top:1px solid var(--gray-200); margin: var(--space-2xl) 0;">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+                <div>
+                    <h3 style="margin:0">Conta</h3>
+                    <p style="margin: 4px 0 0; color: var(--gray-600)">Você pode encerrar sua conta permanentemente.</p>
+                </div>
+                <button class="btn" id="deleteAccountBtn" style="background: var(--primary-red); color: var(--white);">Excluir Conta</button>
+            </div>
+        </section>
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-bottom">
+            <p>&copy; 2025 Prato Justo. Todos os direitos reservados.</p>
+            <div class="footer-links">
+                <a href="home.html#sobre">Sobre</a>
+                <a href="home.html#impacto">Impacto</a>
+                <a href="home.html#contato">Contato</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
+

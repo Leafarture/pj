@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard - Prato Justo</title>
+    <link rel="stylesheet" href="paginaUsuario.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> <!-- Para ícones FontAwesome -->
+</head>
+<body>
+<main class="container">
+    <!-- Cabeçalho do usuário -->
+    <header class="user-header" role="banner" aria-label="Informações do usuário">
+        <div class="user-info">
+            <div class="user-avatar" aria-label="Foto do usuário">
+                <img src="https://i.pravatar.cc/80" alt="Avatar do usuário" />
+            </div>
+            <div class="user-details">
+                <h2 id="user-name">Usuário</h2>
+                <p id="user-email">usuario@email.com</p>
+                <div class="user-badges" aria-label="Badges do usuário">
+                    <span class="badge donor-badge" title="Doações realizadas">Doações: <strong id="total-doacoes">0</strong></span>
+                    <span class="badge impact-badge" title="Famílias ajudadas">Famílias: <strong id="familias-ajudadas">0</strong></span>
+                    <span class="badge donor-badge" title="Avaliação média">Avaliação: <strong id="avaliacao-media">0</strong></span>
+                </div>
+                <p>Entrou em: <time id="join-date" datetime="2024-01-01">01/01/2024</time></p>
+            </div>
+        </div>
+        <button id="logout-btn" class="btn-logout" aria-label="Sair da conta">Sair</button>
+    </header>
+
+    <!-- Estatísticas principais -->
+    <section class="dashboard-stats" aria-label="Estatísticas principais">
+        <article class="stat-card" tabindex="0" aria-describedby="desc-doacoes">
+            <div class="stat-icon" aria-hidden="true"><i class="fas fa-hand-holding-heart"></i></div>
+            <div class="stat-info">
+                <h3 id="total-doacoes">0</h3>
+                <p id="desc-doacoes">Total de Doações</p>
+            </div>
+        </article>
+        <article class="stat-card" tabindex="0" aria-describedby="desc-familias">
+            <div class="stat-icon" aria-hidden="true"><i class="fas fa-users"></i></div>
+            <div class="stat-info">
+                <h3 id="familias-ajudadas">0</h3>
+                <p id="desc-familias">Famílias Ajudadas</p>
+            </div>
+        </article>
+        <article class="stat-card" tabindex="0" aria-describedby="desc-avaliacao">
+            <div class="stat-icon" aria-hidden="true"><i class="fas fa-star"></i></div>
+            <div class="stat-info">
+                <h3 id="avaliacao-media">0</h3>
+                <p id="desc-avaliacao">Avaliação Média</p>
+            </div>
+        </article>
+    </section>
+
+    <!-- Doações recentes -->
+    <section aria-label="Doações recentes">
+        <h3>Doações Recentes</h3>
+        <ul class="donations-list" role="list">
+            <li class="donation-item" tabindex="0">
+                <div class="donation-info">
+                    <h4>Doação para Lar dos Idosos</h4>
+                    <p>10 kg de alimentos não perecíveis</p>
+                </div>
+                <time class="donation-date" datetime="2024-05-10">10/05/2024</time>
+                <span class="donation-status delivered" aria-label="Status: Entregue">Entregue</span>
+            </li>
+            <li class="donation-item" tabindex="0">
+                <div class="donation-info">
+                    <h4>Doação para Abrigo Animal</h4>
+                    <p>5 kg de ração para cães</p>
+                </div>
+                <time class="donation-date" datetime="2024-05-15">15/05/2024</time>
+                <span class="donation-status pending" aria-label="Status: Pendente">Pendente</span>
+            </li>
+        </ul>
+    </section>
+
+    <!-- Doações agendadas -->
+    <section aria-label="Doações agendadas">
+        <h3>Doações Agendadas</h3>
+        <ul class="scheduled-list" role="list">
+            <li class="scheduled-item" tabindex="0">
+                <div class="scheduled-date" aria-label="Data da doação">
+                    <span class="date-day">20</span>
+                    <span class="date-month">Mai</span>
+                </div>
+                <div class="scheduled-info">
+                    <h4>Doação para Creche Esperança</h4>
+                    <p>15 kg de alimentos e roupas</p>
+                </div>
+                <button class="btn-sm" aria-label="Ver detalhes da doação agendada">Detalhes</button>
+            </li>
+            <li class="scheduled-item" tabindex="0">
+                <div class="scheduled-date" aria-label="Data da doação">
+                    <span class="date-day">25</span>
+                    <span class="date-month">Mai</span>
+                </div>
+                <div class="scheduled-info">
+                    <h4>Doação para Hospital da Criança</h4>
+                    <p>Medicamentos e brinquedos</p>
+                </div>
+                <button class="btn-sm" aria-label="Ver detalhes da doação agendada">Detalhes</button>
+            </li>
+        </ul>
+    </section>
+
+    <!-- Ações rápidas -->
+    <section class="quick-actions" aria-label="Ações rápidas">
+        <h3>Ações Rápidas</h3>
+        <div class="action-buttons">
+            <button class="action-btn" data-action="Doar Alimentos" aria-label="Doar Alimentos">
+                <i class="fas fa-carrot action-icon" aria-hidden="true"></i>
+                Doar Alimentos
+            </button>
+
+        </div>
+    </section>
+</main>
+
+<script src="paginaUsuario.js"></script>
+</body>
+</html>

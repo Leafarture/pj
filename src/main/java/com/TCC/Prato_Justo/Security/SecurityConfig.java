@@ -18,7 +18,7 @@ public class SecurityConfig {
                     )
                     .formLogin(form -> form
                             .loginPage("/login.html") // Aponta para a página de login estática
-                            .defaultSuccessUrl("/index.html", true)
+                            .defaultSuccessUrl("/home.html", true)
                             .permitAll()
                     )
                     .logout(logout -> logout
