@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Testar Doações</title>
+    <link rel="stylesheet" href="home.css" />
+</head>
+<body>
+    <h1>Testar Doações</h1>
+    <section>
+        <h3>Criar doação</h3>
+        <form id="formCriar">
+            <input placeholder="Título" name="titulo" required />
+            <input placeholder="Tipo alimento" name="tipoAlimento" />
+            <input placeholder="Quantidade" name="quantidade" type="number" step="0.01" />
+            <input placeholder="Cidade" name="cidade" />
+            <input placeholder="Endereço" name="endereco" />
+            <input placeholder="Latitude" name="latitude" type="number" step="0.000001" />
+            <input placeholder="Longitude" name="longitude" type="number" step="0.000001" />
+            <textarea placeholder="Descrição" name="descricao"></textarea>
+            <button>Enviar</button>
+        </form>
+        <pre id="outCriar"></pre>
+    </section>
+
+    <section>
+        <h3>Listar / Filtros</h3>
+        <form id="formListar">
+            <input placeholder="tipo (filtro)" name="tipo" />
+            <input placeholder="cidade (filtro)" name="cidade" />
+            <button>Buscar</button>
+        </form>
+        <ul id="lista"></ul>
+    </section>
+
+    <section>
+        <h3>Próximas (geolocalização)</h3>
+        <form id="formGeo">
+            <input placeholder="lat" name="lat" type="number" step="0.000001" />
+            <input placeholder="lng" name="lng" type="number" step="0.000001" />
+            <input placeholder="raio_km" name="raio_km" type="number" step="0.1" />
+            <button>Buscar</button>
+        </form>
+        <ul id="listaGeo"></ul>
+    </section>
+
+    <script>
+        const base = '';
+        document.getElementById('formCriar').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = Object.fromEntries(new FormData(e.target));
+            data.quantidade = data.quantidade ? parseFloat(data.quantidade) : null;
+            data.latitude = data.latitude ? parseFloat(data.latitude) : null;
+            data.longitude = data.longitude ? parseFloat(data.longitude) : null;
+            const res = await fetch(base + '/doacoes', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+            document.getElementById('outCriar').textContent = await res.text();
+        });
+
+        document.getElementById('formListar').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const params = new URLSearchParams(Object.fromEntries(new FormData(e.target))).toString();
+            const res = await fetch(base + '/doacoes' + (params ? ('?' + params) : ''));
+            const itens = await res.json();
+            const ul = document.getElementById('lista'); ul.innerHTML = '';
+            itens.forEach(i => {
+                const li = document.createElement('li');
+                li.textContent = i.titulo + ' - ' + (i.cidade || '') + ' - ' + (i.tipoAlimento || '');
+                ul.appendChild(li);
+            });
+        });
+
+        document.getElementById('formGeo').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const params = new URLSearchParams(Object.fromEntries(new FormData(e.target))).toString();
+            const res = await fetch(base + '/doacoes/proximas' + (params ? ('?' + params) : ''));
+            const itens = await res.json();
+            const ul = document.getElementById('listaGeo'); ul.innerHTML = '';
+            itens.forEach(i => {
+                const li = document.createElement('li');
+                li.textContent = i.titulo + ' - ' + i.latitude + ',' + i.longitude;
+                ul.appendChild(li);
+            });
+        });
+    </script>
+</body>
+<\/html>
+
+

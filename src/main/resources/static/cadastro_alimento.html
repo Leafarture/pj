@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Alimento - Prato Justo</title>
     <link rel="stylesheet" href="./cadastro_alimento.css">
+    <link rel="stylesheet" href="./search-styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
 </head>
 <body>
 <!-- Seção Cadastrar Alimentos -->
@@ -52,23 +54,52 @@
 
                     <div class="location-section">
                         <h4>Localização</h4>
-                        <div class="location-controls">
-                            <button type="button" id="getLocationBtn" class="btn-location">
-                                <i class="fas fa-map-marker-alt"></i>
-                                Usar Minha Localização
-                            </button>
-                            <span class="location-status" id="locationStatus">Localização não detectada</span>
+                        <div class="location-tabs">
+                            <button type="button" class="location-tab active" data-tab="manual">Manual</button>
+                            <button type="button" class="location-tab" data-tab="cep">Por CEP</button>
+                            <button type="button" class="location-tab" data-tab="gps">GPS</button>
                         </div>
-                        <div class="location-inputs">
-                            <div class="form-group">
-                                <label for="address">Endereço</label>
-                                <input type="text" id="address" name="address" placeholder="Rua, número, bairro..." required>
+                        
+                        <div class="location-content">
+                            <div class="location-tab-content active" id="manual">
+                                <div class="form-group">
+                                    <label for="address">Endereço</label>
+                                    <input type="text" id="address" name="address" placeholder="Rua, número, bairro..." required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="city">Cidade</label>
+                                    <input type="text" id="city" name="city" placeholder="São Paulo" required>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="city">Cidade</label>
-                                <input type="text" id="city" name="city" placeholder="São Paulo" required>
+                            
+                            <div class="location-tab-content" id="cep">
+                                <div class="form-group">
+                                    <label for="cep">CEP</label>
+                                    <input type="text" id="cep" name="cep" placeholder="00000-000" maxlength="9">
+                                </div>
+                                <div class="form-group">
+                                    <label for="addressCep">Endereço (preenchido automaticamente)</label>
+                                    <input type="text" id="addressCep" name="addressCep" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cityCep">Cidade</label>
+                                    <input type="text" id="cityCep" name="cityCep" readonly>
+                                </div>
+                            </div>
+                            
+                            <div class="location-tab-content" id="gps">
+                                <div class="location-controls">
+                                    <button type="button" id="getLocationBtn" class="btn-location">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        Usar Minha Localização
+                                    </button>
+                                    <span class="location-status" id="locationStatus">Localização não detectada</span>
+                                </div>
                             </div>
                         </div>
+                        
+                        <input type="hidden" id="lat" name="lat">
+                        <input type="hidden" id="lng" name="lng">
                     </div>
 
                     <button type="submit" class="btn-primary btn-submit">
@@ -107,16 +138,50 @@
                 </div>
 
                 <div class="map-preview">
-                    <div class="map-placeholder">
-                        <i class="fas fa-map"></i>
-                        <p>Visualização do Mapa</p>
-                        <small>Localização será exibida aqui</small>
-                    </div>
+                    <div id="map" style="height:320px; border-radius:8px; border:1px solid #e5e7eb"></div>
                 </div>
             </div>
         </div>
+
+        <hr/>
+
+        <div class="search-section">
+            <h3>Buscar Doações</h3>
+            <div class="search-bar">
+                <input type="text" id="searchTipo" placeholder="Filtrar por tipo (ex: frutas)">
+                <input type="text" id="searchCidade" placeholder="Filtrar por cidade">
+                <button id="btnBuscar">Buscar</button>
+                <button id="btnPerto">Perto de mim</button>
+            </div>
+            <ul id="listaResultados"></ul>
+        </div>
     </div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
     <script src="./cadastro_alimento.js"></script>
 </section>
+
+<!-- Botão flutuante de ajuda/contato -->
+<button id="helpBtn" style="position:fixed; right:20px; bottom:20px; padding:12px 16px; border-radius:24px; background:#3B82F6; color:#fff; border:none; cursor:pointer; box-shadow:0 10px 20px rgba(0,0,0,.2)">Precisa de ajuda?</button>
+
+<div id="helpModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.4); align-items:center; justify-content:center;">
+  <div style="background:#fff; padding:16px; width:90%; max-width:480px; border-radius:8px">
+    <h3>Fale Conosco</h3>
+    <p>Se tiver dificuldades, você pode:</p>
+    <ul>
+      <li><a href="mailto:contato@pratojusto.org">Enviar e-mail</a></li>
+      <li><a href="https://wa.me/5500000000000" target="_blank" rel="noopener">WhatsApp</a></li>
+    </ul>
+    <hr/>
+    <p>Ou enviar uma mensagem pelo chat:</p>
+    <label>Seu ID (opcional)</label>
+    <input id="helpRemetente" placeholder="ex: 1" style="width:100%; margin-bottom:8px"/>
+    <label>Mensagem</label>
+    <textarea id="helpMensagem" rows="3" style="width:100%;"></textarea>
+    <div style="margin-top:10px; display:flex; gap:8px; justify-content:flex-end">
+      <button id="helpFechar">Fechar</button>
+      <button id="helpEnviar" style="background:#10B981; color:#fff; border:none; padding:8px 12px; border-radius:6px">Enviar</button>
+    </div>
+  </div>
+}</div>
 </body>
 </html>

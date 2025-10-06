@@ -25,10 +25,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const navLinks = document.querySelectorAll('.nav-link, .footer-section a[href^="#"]');
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
-            e.preventDefault();
-
-            const targetId = this.getAttribute('href');
+            const targetId = this.getAttribute('href') || '';
             if (targetId.startsWith('#')) {
+                e.preventDefault();
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
                     const headerHeight = document.querySelector('.header').offsetHeight;
@@ -235,6 +234,92 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     console.log('Prato Justo - Site carregado com sucesso! 🍽️');
+
+    // Tabs de busca na home
+    const searchTabs = document.querySelectorAll('.tab-btn');
+    const searchContents = document.querySelectorAll('.tab-content');
+    
+    searchTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const targetTab = tab.getAttribute('data-tab');
+            
+            // Remove active de todas as tabs
+            searchTabs.forEach(t => t.classList.remove('active'));
+            searchContents.forEach(c => c.classList.remove('active'));
+            
+            // Ativa a tab clicada
+            tab.classList.add('active');
+            document.getElementById(targetTab).classList.add('active');
+        });
+    });
+
+    // Busca de doações na home
+    const homeBtnBuscar = document.getElementById('homeBtnBuscar');
+    const homeBtnPerto = document.getElementById('homeBtnPerto');
+    const homeBtnCep = document.getElementById('homeBtnCep');
+    const homeResultados = document.getElementById('homeResultados');
+    
+    if (homeBtnBuscar) {
+        homeBtnBuscar.addEventListener('click', async () => {
+            const tipo = document.getElementById('homeSearchTipo').value;
+            const cidade = document.getElementById('homeSearchCidade').value;
+            const params = new URLSearchParams({ tipo, cidade });
+            const res = await fetch(window.location.origin + '/doacoes?' + params.toString());
+            const itens = await res.json();
+            renderHomeResultados(itens);
+        });
+    }
+
+    if (homeBtnPerto) {
+        homeBtnPerto.addEventListener('click', () => {
+            if (!navigator.geolocation) return alert('Geolocalização não suportada');
+            navigator.geolocation.getCurrentPosition(async (pos) => {
+                const lat = pos.coords.latitude;
+                const lng = pos.coords.longitude;
+                const res = await fetch(`${window.location.origin}/doacoes/proximas?lat=${lat}&lng=${lng}&raio_km=10`);
+                const itens = await res.json();
+                renderHomeResultados(itens);
+            }, () => alert('Não foi possível obter localização'));
+        });
+    }
+
+    if (homeBtnCep) {
+        homeBtnCep.addEventListener('click', async () => {
+            const cep = document.getElementById('homeSearchCep').value.replace(/\D/g, '');
+            if (cep.length !== 8) return alert('CEP deve ter 8 dígitos');
+            
+            try {
+                const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+                const data = await response.json();
+                
+                if (!data.erro) {
+                    const res = await fetch(`${window.location.origin}/doacoes?cidade=${data.localidade}`);
+                    const itens = await res.json();
+                    renderHomeResultados(itens);
+                } else {
+                    alert('CEP não encontrado');
+                }
+            } catch (error) {
+                alert('Erro ao buscar CEP');
+            }
+        });
+    }
+
+    function renderHomeResultados(itens) {
+        const ul = document.getElementById('homeResultados');
+        if (!ul) return;
+        ul.innerHTML = '';
+        if (!Array.isArray(itens) || itens.length === 0) {
+            ul.innerHTML = '<li>Nenhuma doação encontrada.</li>';
+            return;
+        }
+        itens.forEach(i => {
+            const li = document.createElement('li');
+            li.style.padding = '6px 0';
+            li.textContent = `${i.titulo || 'Doação'} • ${i.tipoAlimento || ''} • ${i.cidade || ''}`;
+            ul.appendChild(li);
+        });
+    }
 });
 
 // Adicionar classe de animação para elementos

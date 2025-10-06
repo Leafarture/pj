@@ -1,0 +1,77 @@
+{
+  "info": {
+    "name": "Prato Justo API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Doacoes - Criar",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": { "raw": "http://localhost:8080/doacoes", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["doacoes"] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"titulo\": \"Cesta de frutas\",\n  \"descricao\": \"Frutas frescas\",\n  \"tipoAlimento\": \"Frutas\",\n  \"quantidade\": 5,\n  \"cidade\": \"São Paulo\",\n  \"endereco\": \"Rua X, 123\",\n  \"latitude\": -23.55,\n  \"longitude\": -46.63\n}"
+        }
+      }
+    },
+    {
+      "name": "Doacoes - Listar",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "http://localhost:8080/doacoes?tipo=fru&cidade=São Paulo", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["doacoes"], "query": [{"key":"tipo","value":"fru"},{"key":"cidade","value":"São Paulo"}] }
+      }
+    },
+    {
+      "name": "Doacoes - Proximas",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "http://localhost:8080/doacoes/proximas?lat=-23.55&lng=-46.63&raio_km=10", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["doacoes","proximas"], "query": [{"key":"lat","value":"-23.55"},{"key":"lng","value":"-46.63"},{"key":"raio_km","value":"10"}] }
+      }
+    },
+    {
+      "name": "Chat - Enviar",
+      "request": {
+        "method": "POST",
+        "header": [ {"key":"Content-Type","value":"application/json"} ],
+        "url": { "raw": "http://localhost:8080/chat/enviar", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["chat","enviar"] },
+        "body": { "mode":"raw", "raw": "{\n  \"remetenteId\": 1,\n  \"destinatarioId\": 2,\n  \"conteudo\": \"Olá! Ainda disponível?\"\n}" }
+      }
+    },
+    {
+      "name": "Chat - Conversa",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "http://localhost:8080/chat/conversa?aId=1&bId=2", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["chat","conversa"], "query": [{"key":"aId","value":"1"},{"key":"bId","value":"2"}] }
+      }
+    },
+    {
+      "name": "Avaliacoes - Avaliar",
+      "request": {
+        "method": "POST",
+        "header": [ {"key":"Content-Type","value":"application/json"} ],
+        "url": { "raw": "http://localhost:8080/avaliacoes", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["avaliacoes"] },
+        "body": { "mode":"raw", "raw": "{\n  \"usuarioId\": 1,\n  \"estabelecimentoId\": 1,\n  \"nota\": 5,\n  \"comentario\": \"Excelente atendimento!\"\n}" }
+      }
+    },
+    {
+      "name": "Avaliacoes - Listar de Estabelecimento",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "http://localhost:8080/avaliacoes/estabelecimento/1", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["avaliacoes","estabelecimento","1"] }
+      }
+    },
+    {
+      "name": "Avaliacoes - Media",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "http://localhost:8080/avaliacoes/estabelecimento/1/media", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["avaliacoes","estabelecimento","1","media"] }
+      }
+    }
+  ]
+}
+
+

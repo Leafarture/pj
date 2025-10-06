@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prato Justo - Conectando Solidariedade</title>
     <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="search-styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -30,6 +31,8 @@
                 <li><a href="#impacto" class="nav-link">Impacto</a></li>
                 <li><a href="#contato" class="nav-link">Contato</a></li>
                 <li class="nav-login"><a href="login.html" class="nav-link">Entrar</a></li>
+				<li><a href="test-doacoes.html" class="nav-link">Testar Doações</a></li>
+				<li><a href="test-chat.html" class="nav-link">Testar Chat</a></li>
 
             </ul>
 
@@ -80,6 +83,45 @@
                     <span class="btn-icon">🤲</span>
                     Preciso de Ajuda
                 </button>
+            </div>
+
+            <div class="donation-search-card">
+                <div class="search-header">
+                    <h3>Encontrar Doações</h3>
+                    <p>Busque alimentos disponíveis para doação</p>
+                </div>
+                
+                <div class="search-tabs">
+                    <button class="tab-btn active" data-tab="filtros">Filtros</button>
+                    <button class="tab-btn" data-tab="cep">Por CEP</button>
+                    <button class="tab-btn" data-tab="proximas">Próximas</button>
+                </div>
+
+                <div class="search-content">
+                    <div class="tab-content active" id="filtros">
+                        <div class="search-row">
+                            <input id="homeSearchTipo" placeholder="Tipo de alimento (ex: frutas, verduras)" class="search-input"/>
+                            <input id="homeSearchCidade" placeholder="Cidade" class="search-input"/>
+                            <button id="homeBtnBuscar" class="btn btn-primary">Buscar</button>
+                        </div>
+                    </div>
+
+                    <div class="tab-content" id="cep">
+                        <div class="search-row">
+                            <input id="homeSearchCep" placeholder="Digite seu CEP" class="search-input"/>
+                            <button id="homeBtnCep" class="btn btn-primary">Buscar por CEP</button>
+                        </div>
+                    </div>
+
+                    <div class="tab-content" id="proximas">
+                        <div class="search-row">
+                            <button id="homeBtnPerto" class="btn btn-primary">📍 Usar Minha Localização</button>
+                            <a href="cadastro_alimento.html" class="btn btn-outline">+ Cadastrar Doação</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="search-results" id="homeResultados"></div>
             </div>
 
             <div class="hero-stats">
