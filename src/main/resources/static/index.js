@@ -1,3 +1,4 @@
+
 // Esperar o DOM carregar completamente
 document.addEventListener('DOMContentLoaded', function() {
     // Remover tela de loading
@@ -95,7 +96,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 stat.textContent = Math.floor(current);
             }, 16);
         });
-
         counted = true;
     }
 
