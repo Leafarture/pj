@@ -33,23 +33,25 @@ public class AutchEstabelecimentoController {
             // Validar se as senhas coincidem
             if (!request.getSenha().equals(request.getConfirmarSenha())) {
                 return ResponseEntity.badRequest()
-                    .body("As senhas não coincidem");
+                        .body("As senhas não coincidem");
             }
-            
+
             // Verificar se já existe usuário com este email
             if (usuarioService.buscarPorEmail(request.getEmail()).isPresent()) {
                 return ResponseEntity.badRequest()
-                    .body("Já existe um usuário cadastrado com este e-mail");
+                        .body("Já existe um usuário cadastrado com este e-mail");
             }
-            
+
             // Criar usuário primeiro
             Usuario usuario = new Usuario();
             usuario.setEmail(request.getEmail());
+            // >>> CORREÇÃO: Adicionando o nome do usuário <<<
+            usuario.setNome(request.getNomeEmpresa()); // <-- ESSA É A LINHA CORRIGIDA
             usuario.setSenhaUsuario(request.getSenha()); // Em produção, criptografar a senha
             usuario.setTipoUsuario(com.TCC.Prato_Justo.Model.TipoUsuario.ESTABELECIMENTO);
-            
+
             Usuario usuarioSalvo = usuarioService.salvar(usuario);
-            
+
             // Criar estabelecimento
             Estabelecimento estabelecimento = new Estabelecimento();
             estabelecimento.setNomeEstabelecimento(request.getNomeEmpresa());
@@ -59,51 +61,52 @@ public class AutchEstabelecimentoController {
             estabelecimento.setEnderecoCompleto(request.getEnderecoCompleto());
             estabelecimento.setSenhaEstabelecimento(request.getSenha()); // Em produção, criptografar
             estabelecimento.setUsuario(usuarioSalvo);
-            
+
             Estabelecimento estabelecimentoSalvo = estabelecimentoService.salvar(estabelecimento);
-            
+
             return ResponseEntity.status(HttpStatus.CREATED).body(estabelecimentoSalvo);
-            
+
         } catch (Exception e) {
+            System.err.println("Erro durante o cadastro de estabelecimento: " + e.getMessage());
+            e.printStackTrace(); // Boa prática: logar o stack trace completo no servidor
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Erro ao criar estabelecimento: " + e.getMessage());
+                    .body("Erro ao criar estabelecimento: " + e.getMessage());
         }
     }
 
-        // Listar todos
-        @GetMapping
-        public ResponseEntity<List<Estabelecimento>> listar() {
-            return ResponseEntity.ok(estabelecimentoService.listarTodos());
-        }
-
-        // Buscar por ID
-        @GetMapping("/{id}")
-        public ResponseEntity<Estabelecimento> buscar(@PathVariable Long id) {
-            return estabelecimentoService.buscarPorId(id)
-                    .map(ResponseEntity::ok)
-                    .orElse(ResponseEntity.notFound().build());
-        }
-
-        // Atualizar
-        @PutMapping("/estabelecimento/{id}")
-        public ResponseEntity<Estabelecimento> atualizar(@PathVariable Long id,
-                                                         @RequestBody Estabelecimento estabelecimento) {
-            return estabelecimentoService.buscarPorId(id)
-                    .map(existente -> {
-                        estabelecimento.setId(id);
-                        return ResponseEntity.ok(estabelecimentoService.salvar(estabelecimento));
-                    })
-                    .orElse(ResponseEntity.notFound().build());
-        }
-
-        // Deletar
-        @DeleteMapping("/{id}")
-        public ResponseEntity<Void> deletar(@PathVariable Long id) {
-            if (estabelecimentoService.buscarPorId(id).isPresent()) {
-                estabelecimentoService.deletar(id);
-                return ResponseEntity.noContent().build();
-            }
-            return ResponseEntity.notFound().build();
-        }
+    // Listar todos
+    @GetMapping
+    public ResponseEntity<List<Estabelecimento>> listar() {
+        return ResponseEntity.ok(estabelecimentoService.listarTodos());
     }
 
+    // Buscar por ID
+    @GetMapping("/{id}")
+    public ResponseEntity<Estabelecimento> buscar(@PathVariable Long id) {
+        return estabelecimentoService.buscarPorId(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // Atualizar
+    @PutMapping("/estabelecimento/{id}")
+    public ResponseEntity<Estabelecimento> atualizar(@PathVariable Long id,
+                                                     @RequestBody Estabelecimento estabelecimento) {
+        return estabelecimentoService.buscarPorId(id)
+                .map(existente -> {
+                    estabelecimento.setId(id);
+                    return ResponseEntity.ok(estabelecimentoService.salvar(estabelecimento));
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // Deletar
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        if (estabelecimentoService.buscarPorId(id).isPresent()) {
+            estabelecimentoService.deletar(id);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+}

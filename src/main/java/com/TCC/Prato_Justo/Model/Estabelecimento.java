@@ -28,11 +28,11 @@ public class Estabelecimento {
     @Column(name = "endereco_completo", columnDefinition = "TEXT", nullable = false)
     private String enderecoCompleto;
 
-    @Column(name = "latitude", columnDefinition = "DECIMAL(10,8)")
-    private Double latitude;
-
-    @Column(name = "longitude", columnDefinition = "DECIMAL(11,8)")
-    private Double longitude;
+//    @Column(name = "latitude", columnDefinition = "DECIMAL(10,8)")
+//    private Double latitude;
+//
+//    @Column(name = "longitude", columnDefinition = "DECIMAL(11,8)")
+//    private Double longitude;
 
     // Relacionamento: cada estabelecimento pertence a um usuário
     @ManyToOne
@@ -66,21 +66,21 @@ public class Estabelecimento {
         this.enderecoCompleto = enderecoCompleto;
     }
 
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
+//    public Double getLatitude() {
+//        return latitude;
+//    }
+//
+//    public void setLatitude(Double latitude) {
+//        this.latitude = latitude;
+//    }
+//
+//    public Double getLongitude() {
+//        return longitude;
+//    }
+//
+//    public void setLongitude(Double longitude) {
+//        this.longitude = longitude;
+//    }
 
 
     public String getEmail() {
