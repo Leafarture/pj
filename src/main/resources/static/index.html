@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" xmlns:https="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prato Justo - Conectando Solidariedade</title>
-    <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="search-styles.css">
+    <link rel="stylesheet" href=" ./index.css">
+    <link rel="stylesheet" href="./BuscarDoacao.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-
 <!-- Loading Screen -->
 <div class="loading-screen">
     <div class="loading-spinner"></div>
@@ -31,9 +30,6 @@
                 <li><a href="#impacto" class="nav-link">Impacto</a></li>
                 <li><a href="#contato" class="nav-link">Contato</a></li>
                 <li class="nav-login"><a href="login.html" class="nav-link">Entrar</a></li>
-				<li><a href="test-doacoes.html" class="nav-link">Testar Doações</a></li>
-				<li><a href="test-chat.html" class="nav-link">Testar Chat</a></li>
-
             </ul>
 
             <div class="header-actions">
@@ -74,23 +70,40 @@
                 é um passo contra a fome e desperdício.
             </p>
 
-            <div class="hero-buttons">
-                <button class="btn btn-primary">
-                    <span class="btn-icon">📦</span>
-                    Quero Doar
-                </button>
-                <button class="btn btn-secondary">
-                    <span class="btn-icon">🤲</span>
-                    Preciso de Ajuda
-                </button>
+            </style>
+            </head>
+            <!-- Modal principal -->
+            <div id="meuModal" class="modal">
+                <div class="modal-content">
+                    <div class="hero-buttons">
+                        <button class="btn btn-primary">
+                            <span class="btn-icon">📦</span>
+                            Quero Doar
+                        </button>
+
+                    </div>
+
+                </div>
             </div>
+
+            <!-- Script para controle -->
+            <script>
+                function fecharModal() {
+                    document.getElementById('meuModal').style.display = 'none';
+                }
+
+                function abrirChat() {
+                    const chatDiv = document.getElementById('chatBotDiv');
+                    chatDiv.style.display = chatDiv.style.display === 'none' ? 'block' : 'none';
+                }
+            </script>
 
             <div class="donation-search-card">
                 <div class="search-header">
                     <h3>Encontrar Doações</h3>
                     <p>Busque alimentos disponíveis para doação</p>
                 </div>
-                
+
                 <div class="search-tabs">
                     <button class="tab-btn active" data-tab="filtros">Filtros</button>
                     <button class="tab-btn" data-tab="cep">Por CEP</button>
@@ -143,13 +156,13 @@
         <div class="hero-visual">
             <div class="floating-cards">
                 <div class="card card-1">
-                    <img src="/img/frutas.jpg" alt="Legumes e frutas frescas coloridas em cesta de doação com iluminação natural" loading="lazy">
+                    <img src="./img/frutas.jpg" alt="Legumes e frutas frescas coloridas em cesta de doação com iluminação natural" loading="lazy">
                 </div>
                 <div class="card card-2">
-                    <img src="/img/doando.jpg" alt="Voluntários felizes empacotando caixas de alimentos com sorrisos em cozinha comunitária" loading="lazy">
+                    <img src="./img/doando.jpg" alt="Voluntários felizes empacotando caixas de alimentos com sorrisos em cozinha comunitária" loading="lazy">
                 </div>
                 <div class="card card-3">
-                    <img src="/img/familia%20feliz.jpg" alt="Família recebendo doação de alimentos com expressões gratas e atmosfera calorosa" loading="lazy">
+                    <img src="./img/familia%20feliz.jpg" alt="Família recebendo doação de alimentos com expressões gratas e atmosfera calorosa" loading="lazy">
                 </div>
             </div>
         </div>
@@ -202,7 +215,7 @@
 
             <div class="about-visual">
                 <div class="visual-card">
-                    <img src="/img/parceiros.jpg" alt="Banco de alimentos comunitário moderno com prateleiras organizadas e voluntários amigáveis" loading="lazy">
+                    <img src="./img/parceiros.jpg" alt="Banco de alimentos comunitário moderno com prateleiras organizadas e voluntários amigáveis" loading="lazy">
                 </div>
             </div>
         </div>
@@ -273,7 +286,7 @@
                     <p>Mais de 2.000 famílias recebem alimentos regularmente através da nossa plataforma</p>
                 </div>
                 <div class="card-visual">
-                    <img src="/img/familia%20feliz.jpg" alt="Família multigeracional feliz desfrutando refeição juntos com gratidão" loading="lazy">
+                    <img src="./img/familia%20feliz.jpg" alt="Família multigeracional feliz desfrutando refeição juntos com gratidão" loading="lazy">
                 </div>
             </div>
 
@@ -284,7 +297,7 @@
                     <p>50+ empresas combatendo o desperdício alimentar e apoiando comunidades</p>
                 </div>
                 <div class="card-visual">
-                    <img src="/img/logistica.jpg" alt="Cozinha moderna de restaurante doando alimentos excedentes para comunidade local" loading="lazy">
+                    <img src="./img/logistica.jpg" alt="Cozinha moderna de restaurante doando alimentos excedentes para comunidade local" loading="lazy">
                 </div>
             </div>
 
@@ -295,37 +308,14 @@
                     <p>Redução significativa no desperdício alimentar e promoção da sustentabilidade</p>
                 </div>
                 <div class="card-visual">
-                    <img src="/img/impactoambiental.jpg" alt="Rede sustentável de distribuição de alimentos com embalagens ecológicas" loading="lazy">
+                    <img src="./img/impactoambiental.jpg" alt="Rede sustentável de distribuição de alimentos com embalagens ecológicas" loading="lazy">
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- CTA Section -->
-<section class="cta">
-    <div class="cta-background">
-        <div class="gradient-overlay"></div>
-    </div>
 
-    <div class="container">
-        <div class="cta-content">
-            <h2>Pronto para Fazer a Diferença?</h2>
-            <p>Junte-se a milhares de pessoas que estão transformando vidas através da doação de alimentos</p>
-
-            <div class="cta-buttons">
-                <button class="btn btn-large btn-primary">
-                    <span class="btn-icon">🎁</span>
-                    Começar a Doar
-                </button>
-                <button class="btn btn-large btn-outline">
-                    <span class="btn-icon">📞</span>
-                    Falar com Equipe
-                </button>
-            </div>
-        </div>
-    </div>
-</section>
 
 <!-- Footer -->
 <footer class="footer">
@@ -348,7 +338,7 @@
             <div class="footer-section">
                 <h4>Links Rápidos</h4>
                 <ul>
-                    <li><a href="#home">Início</a></li>
+                    <li><a href="./index.html">Início</a></li>
                     <li><a href="#sobre">Sobre Nós</a></li>
                     <li><a href="#como-doar">Como Doar</a></li>
                     <li><a href="#impacto">Nosso Impacto</a></li>
@@ -388,5 +378,13 @@
 
 <script src="headerUser.js"></script>
 <script src="index.js"></script>
+
+<script
+        src="https://bots.easy-peasy.ai/chat.min.js"
+        data-chat-url="https://bots.easy-peasy.ai/bot/8cf235fd-b937-4407-9c03-e95ad2e5a459"
+        data-btn-position="bottom-right"
+        data-widget-btn-color="#6366f1"
+        defer>
+</script>
 </body>
 </html>

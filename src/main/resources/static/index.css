@@ -63,6 +63,7 @@ body {
     color: var(--gray-800);
     background: var(--white);
     overflow-x: hidden;
+    scroll;
 }
 
 .container {

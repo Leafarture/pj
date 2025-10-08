@@ -238,15 +238,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // Tabs de busca na home
     const searchTabs = document.querySelectorAll('.tab-btn');
     const searchContents = document.querySelectorAll('.tab-content');
-    
+
     searchTabs.forEach(tab => {
         tab.addEventListener('click', () => {
             const targetTab = tab.getAttribute('data-tab');
-            
+
             // Remove active de todas as tabs
             searchTabs.forEach(t => t.classList.remove('active'));
             searchContents.forEach(c => c.classList.remove('active'));
-            
+
             // Ativa a tab clicada
             tab.classList.add('active');
             document.getElementById(targetTab).classList.add('active');
@@ -258,7 +258,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const homeBtnPerto = document.getElementById('homeBtnPerto');
     const homeBtnCep = document.getElementById('homeBtnCep');
     const homeResultados = document.getElementById('homeResultados');
-    
+
     if (homeBtnBuscar) {
         homeBtnBuscar.addEventListener('click', async () => {
             const tipo = document.getElementById('homeSearchTipo').value;
@@ -287,11 +287,11 @@ document.addEventListener('DOMContentLoaded', function() {
         homeBtnCep.addEventListener('click', async () => {
             const cep = document.getElementById('homeSearchCep').value.replace(/\D/g, '');
             if (cep.length !== 8) return alert('CEP deve ter 8 dígitos');
-            
+
             try {
                 const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
                 const data = await response.json();
-                
+
                 if (!data.erro) {
                     const res = await fetch(`${window.location.origin}/doacoes?cidade=${data.localidade}`);
                     const itens = await res.json();
