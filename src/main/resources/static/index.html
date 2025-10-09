@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:https="http://www.w3.org/1999/xhtml">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prato Justo - Conectando Solidariedade</title>
-    <link rel="stylesheet" href=" ./index.css">
-    <link rel="stylesheet" href="./BuscarDoacao.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./index.css">
 </head>
 <body>
 <!-- Loading Screen -->
@@ -19,84 +18,60 @@
     <nav class="nav">
         <div class="nav-container">
             <div class="logo">
-                <div class="logo-icon">🍽️</div>
+                <div class="logo-icon">
+                    <i class="fas fa-utensils"></i>
+                </div>
                 <h1>Prato Justo</h1>
             </div>
 
             <ul class="nav-menu">
                 <li><a href="#home" class="nav-link">Início</a></li>
-                <li><a href="#sobre" class="nav-link">Sobre</a></li>
+                <li><a href="./Sobre.html" class="nav-link">Sobre</a></li>
                 <li><a href="#como-doar" class="nav-link">Como Doar</a></li>
                 <li><a href="#impacto" class="nav-link">Impacto</a></li>
                 <li><a href="#contato" class="nav-link">Contato</a></li>
-                <li class="nav-login"><a href="login.html" class="nav-link">Entrar</a></li>
             </ul>
 
             <div class="header-actions">
                 <a href="login.html" class="btn btn-login">Entrar</a>
                 <button class="donate-btn">
-                    <span class="btn-icon">❤️</span>
+                    <span class="btn-icon"><i class="fas fa-heart"></i></span>
                     Doar Agora
                 </button>
             </div>
-
-            <button class="mobile-menu-btn">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
         </div>
     </nav>
 </header>
 
 <!-- Hero Section -->
 <section id="home" class="hero">
-    <div class="hero-background">
-        <div class="gradient-overlay"></div>
-    </div>
-
     <div class="hero-content">
         <div class="hero-text">
             <div class="badge">
-                <span>⭐</span>
+                <span><i class="fas fa-star"></i></span>
                 Plataforma de Doação de Alimentos
             </div>
+
             <h2 class="hero-title">
                 Transforme <span class="highlight">Excesso</span> em
                 <span class="highlight">Esperança</span>
             </h2>
+
             <p class="hero-description">
                 Conectamos doadores com comunidades carentes. Cada alimento doado
                 é um passo contra a fome e desperdício.
             </p>
 
-            </style>
-            </head>
-            <!-- Modal principal -->
-            <div id="meuModal" class="modal">
-                <div class="modal-content">
-                    <div class="hero-buttons">
-                        <button class="btn btn-primary">
-                            <span class="btn-icon">📦</span>
-                            Quero Doar
-                        </button>
-
-                    </div>
-
-                </div>
+            <div class="hero-buttons">
+                <button class="btn btn-primary">
+                    <span class="btn-icon"><i class="fas fa-box"></i></span>
+                    Quero Doar
+                </button>
+                <button class="btn btn-secondary">
+                    <span class="btn-icon"><i class="fas fa-hands-helping"></i></span>
+                    Receber Doação
+                </button>
             </div>
-
-            <!-- Script para controle -->
-            <script>
-                function fecharModal() {
-                    document.getElementById('meuModal').style.display = 'none';
-                }
-
-                function abrirChat() {
-                    const chatDiv = document.getElementById('chatBotDiv');
-                    chatDiv.style.display = chatDiv.style.display === 'none' ? 'block' : 'none';
-                }
-            </script>
 
             <div class="donation-search-card">
                 <div class="search-header">
@@ -128,26 +103,24 @@
 
                     <div class="tab-content" id="proximas">
                         <div class="search-row">
-                            <button id="homeBtnPerto" class="btn btn-primary">📍 Usar Minha Localização</button>
-                            <a href="cadastro_alimento.html" class="btn btn-outline">+ Cadastrar Doação</a>
+                            <button id="homeBtnPerto" class="btn btn-primary"><i class="fas fa-map-marker-alt"></i> Usar Minha Localização</button>
+                            <a href="cadastro_alimento.html" class="btn btn-outline"><i class="fas fa-plus"></i> Cadastrar Doação</a>
                         </div>
                     </div>
                 </div>
-
-                <div class="search-results" id="homeResultados"></div>
             </div>
 
             <div class="hero-stats">
                 <div class="stat">
-                    <div class="stat-number" data-count="5000">0</div>
+                    <div class="stat-number" data-count="5000">5.000</div>
                     <div class="stat-label">Kg Doados</div>
                 </div>
                 <div class="stat">
-                    <div class="stat-number" data-count="2000">0</div>
+                    <div class="stat-number" data-count="2000">2.000</div>
                     <div class="stat-label">Famílias</div>
                 </div>
                 <div class="stat">
-                    <div class="stat-number" data-count="50">0</div>
+                    <div class="stat-number" data-count="50">50</div>
                     <div class="stat-label">Parceiros</div>
                 </div>
             </div>
@@ -156,166 +129,30 @@
         <div class="hero-visual">
             <div class="floating-cards">
                 <div class="card card-1">
-                    <img src="./img/frutas.jpg" alt="Legumes e frutas frescas coloridas em cesta de doação com iluminação natural" loading="lazy">
+                    <div class="card-content">
+                        <div class="card-icon"><i class="fas fa-apple-alt"></i></div>
+                        <h3>Alimentos Frescos</h3>
+                        <p>Frutas, verduras e legumes de qualidade</p>
+                    </div>
                 </div>
                 <div class="card card-2">
-                    <img src="./img/doando.jpg" alt="Voluntários felizes empacotando caixas de alimentos com sorrisos em cozinha comunitária" loading="lazy">
+                    <div class="card-content">
+                        <div class="card-icon"><i class="fas fa-truck"></i></div>
+                        <h3>Logística Eficiente</h3>
+                        <p>Entrega rápida e segura</p>
+                    </div>
                 </div>
                 <div class="card card-3">
-                    <img src="./img/familia%20feliz.jpg" alt="Família recebendo doação de alimentos com expressões gratas e atmosfera calorosa" loading="lazy">
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- About Section -->
-<section id="sobre" class="about">
-    <div class="container">
-        <div class="section-header">
-            <h2 class="section-title">Sobre o Prato Justo</h2>
-            <p class="section-subtitle">Conectando corações através da alimentação</p>
-        </div>
-
-        <div class="about-grid">
-            <div class="about-content">
-                <div class="about-text">
-                    <p>
-                        O <strong>Prato Justo</strong> é mais que uma plataforma - é um movimento
-                        que une pessoas e empresas na luta contra a fome e o desperdício
-                        alimentar. Através de tecnologia e solidariedade, criamos pontes
-                        entre quem pode doar e quem precisa receber.
-                    </p>
-
-                    <div class="features">
-                        <div class="feature">
-                            <div class="feature-icon">🚚</div>
-                            <div class="feature-content">
-                                <h4>Logística Eficiente</h4>
-                                <p>Coleta e distribuição otimizadas</p>
-                            </div>
-                        </div>
-                        <div class="feature">
-                            <div class="feature-icon">🌱</div>
-                            <div class="feature-content">
-                                <h4>Sustentabilidade</h4>
-                                <p>Redução do desperdício alimentar</p>
-                            </div>
-                        </div>
-                        <div class="feature">
-                            <div class="feature-icon">🤝</div>
-                            <div class="feature-content">
-                                <h4>Comunidade</h4>
-                                <p>Fortalecimento de laços sociais</p>
-                            </div>
-                        </div>
+                    <div class="card-content">
+                        <div class="card-icon"><i class="fas fa-users"></i></div>
+                        <h3>Comunidade Ativa</h3>
+                        <p>Milhares de pessoas conectadas</p>
                     </div>
                 </div>
             </div>
-
-            <div class="about-visual">
-                <div class="visual-card">
-                    <img src="./img/parceiros.jpg" alt="Banco de alimentos comunitário moderno com prateleiras organizadas e voluntários amigáveis" loading="lazy">
-                </div>
-            </div>
         </div>
     </div>
 </section>
-
-<!-- Process Section -->
-<section id="como-doar" class="process">
-    <div class="container">
-        <div class="section-header">
-            <h2 class="section-title">Como Doar</h2>
-            <p class="section-subtitle">4 passos simples para fazer a diferença</p>
-        </div>
-
-        <div class="process-steps">
-            <div class="step">
-                <div class="step-number">01</div>
-                <div class="step-content">
-                    <h3>Cadastre-se</h3>
-                    <p>Crie sua conta como doador ou receptor</p>
-                </div>
-                <div class="step-icon">📝</div>
-            </div>
-
-            <div class="step">
-                <div class="step-number">02</div>
-                <div class="step-content">
-                    <h3>Anuncie</h3>
-                    <p>Informe os alimentos disponíveis para doação</p>
-                </div>
-                <div class="step-icon">📢</div>
-            </div>
-
-            <div class="step">
-                <div class="step-number">03</div>
-                <div class="step-content">
-                    <h3>Conecte</h3>
-                    <p>Encontre receptores próximos automaticamente</p>
-                </div>
-                <div class="step-icon">🔗</div>
-            </div>
-
-            <div class="step">
-                <div class="step-number">04</div>
-                <div class="step-content">
-                    <h3>Entregue</h3>
-                    <p>Combine a entrega de forma prática e segura</p>
-                </div>
-                <div class="step-icon">📦</div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Impact Section -->
-<section id="impacto" class="impact">
-    <div class="container">
-        <div class="section-header">
-            <h2 class="section-title">Nosso Impacto</h2>
-            <p class="section-subtitle">Transformando vidas através da solidariedade</p>
-        </div>
-
-        <div class="impact-grid">
-            <div class="impact-card">
-                <div class="card-content">
-                    <div class="card-icon">👨‍👩‍👧‍👦</div>
-                    <h3>Famílias Beneficiadas</h3>
-                    <p>Mais de 2.000 famílias recebem alimentos regularmente através da nossa plataforma</p>
-                </div>
-                <div class="card-visual">
-                    <img src="./img/familia%20feliz.jpg" alt="Família multigeracional feliz desfrutando refeição juntos com gratidão" loading="lazy">
-                </div>
-            </div>
-
-            <div class="impact-card">
-                <div class="card-content">
-                    <div class="card-icon">🏢</div>
-                    <h3>Empresas Parceiras</h3>
-                    <p>50+ empresas combatendo o desperdício alimentar e apoiando comunidades</p>
-                </div>
-                <div class="card-visual">
-                    <img src="./img/logistica.jpg" alt="Cozinha moderna de restaurante doando alimentos excedentes para comunidade local" loading="lazy">
-                </div>
-            </div>
-
-            <div class="impact-card">
-                <div class="card-content">
-                    <div class="card-icon">🌍</div>
-                    <h3>Impacto Ambiental</h3>
-                    <p>Redução significativa no desperdício alimentar e promoção da sustentabilidade</p>
-                </div>
-                <div class="card-visual">
-                    <img src="./img/impactoambiental.jpg" alt="Rede sustentável de distribuição de alimentos com embalagens ecológicas" loading="lazy">
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-
 
 <!-- Footer -->
 <footer class="footer">
@@ -323,15 +160,15 @@
         <div class="footer-content">
             <div class="footer-section">
                 <div class="footer-logo">
-                    <div class="logo-icon">🍽️</div>
+                    <div class="logo-icon"><i class="fas fa-utensils"></i></div>
                     <h3>Prato Justo</h3>
                 </div>
                 <p>Conectando solidariedade através da alimentação</p>
                 <div class="social-links">
-                    <a href="#" class="social-link">📘</a>
-                    <a href="#" class="social-link">📸</a>
-                    <a href="#" class="social-link">🐦</a>
-                    <a href="#" class="social-link">📧</a>
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
 
@@ -339,7 +176,7 @@
                 <h4>Links Rápidos</h4>
                 <ul>
                     <li><a href="./index.html">Início</a></li>
-                    <li><a href="#sobre">Sobre Nós</a></li>
+                    <li><a href="./Sobre.html">Sobre Nós</a></li>
                     <li><a href="#como-doar">Como Doar</a></li>
                     <li><a href="#impacto">Nosso Impacto</a></li>
                 </ul>
@@ -358,9 +195,9 @@
             <div class="footer-section">
                 <h4>Contato</h4>
                 <div class="contact-info">
-                    <p>📧 contato@pratojusto.org</p>
-                    <p>📞 (11) 9999-9999</p>
-                    <p>📍 São Paulo, Brasil</p>
+                    <p><i class="fas fa-envelope"></i> contato@pratojusto.org</p>
+                    <p><i class="fas fa-phone"></i> (11) 9999-9999</p>
+                    <p><i class="fas fa-map-marker-alt"></i> São Paulo, Brasil</p>
                 </div>
             </div>
         </div>
@@ -376,15 +213,5 @@
     </div>
 </footer>
 
-<script src="headerUser.js"></script>
-<script src="index.js"></script>
-
-<script
-        src="https://bots.easy-peasy.ai/chat.min.js"
-        data-chat-url="https://bots.easy-peasy.ai/bot/8cf235fd-b937-4407-9c03-e95ad2e5a459"
-        data-btn-position="bottom-right"
-        data-widget-btn-color="#6366f1"
-        defer>
-</script>
 </body>
 </html>
