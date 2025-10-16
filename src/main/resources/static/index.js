@@ -857,25 +857,56 @@ function updateHeaderActions() {
     
     if (window.authManager.isAuthenticated()) {
         const user = window.authManager.getCurrentUser();
+        
+        // Inicial do nome para avatar
+        const userInitial = user.nome ? user.nome.charAt(0).toUpperCase() : 'U';
+        
         headerActions.innerHTML = `
-            <div class="user-greeting">
-                <span>Olá, ${user.nome}!</span>
+            <div class="profile-dropdown">
+                <button class="avatar-btn" id="avatar-btn">
+                    ${user.fotoPerfil ? 
+                        `<img src="${user.fotoPerfil}" alt="${user.nome}">` : 
+                        `<span id="user-avatar-placeholder">${userInitial}</span>`
+                    }
+                </button>
+                <div class="dropdown-content" id="profile-dropdown-menu">
+                    <div class="dropdown-header">
+                        <strong>${user.nome}</strong>
+                    </div>
+                    <a href="paginaUsuario.html" id="profile-link">
+                        <i class="fas fa-user"></i> Perfil
+                    </a>
+                    <a href="#" id="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Sair
+                    </a>
+                </div>
             </div>
-            <a href="minhas-doacoes.html" class="btn btn-outline">
-                <i class="fas fa-heart"></i> Minhas Doações
-            </a>
-            <a href="cadastro_alimento.html" class="btn btn-primary">
-                <i class="fas fa-plus"></i> Nova Doação
-            </a>
-            <button id="logout-btn" class="btn btn-logout">
-                <i class="fas fa-sign-out-alt"></i> Sair
-            </button>
         `;
         
-        // Configurar evento de logout
+        // Configurar eventos
+        const avatarBtn = document.getElementById('avatar-btn');
+        const dropdownMenu = document.getElementById('profile-dropdown-menu');
         const logoutBtn = document.getElementById('logout-btn');
+        
+        // Toggle dropdown ao clicar no avatar
+        if (avatarBtn) {
+            avatarBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                dropdownMenu.classList.toggle('show');
+            });
+        }
+        
+        // Fechar dropdown ao clicar fora
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.profile-dropdown')) {
+                dropdownMenu.classList.remove('show');
+            }
+        });
+        
+        // Evento de logout
         if (logoutBtn) {
-            logoutBtn.addEventListener('click', () => {
+            logoutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
                 window.authManager.logout();
             });
         }
