@@ -3,6 +3,11 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🚀 Prato Justo - Inicializando...');
 
+    // Sistema de autenticação - usar a função do index.js
+    if (typeof updateHeaderActions === 'function') {
+        updateHeaderActions();
+    }
+
     // ===== LOADING SCREEN =====
     const loadingScreen = document.querySelector('.loading-screen');
     if (loadingScreen) {

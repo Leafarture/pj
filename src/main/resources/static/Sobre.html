@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sobre Nós - Prato Justo</title>
-    <link rel="stylesheet" href="sobre.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./index.css">
+    <link rel="stylesheet" href="sobre.css">
 </head>
 <body>
 <!-- Loading Screen 
@@ -34,15 +35,8 @@
                 <li><a href="contato.html" class="nav-link">Contato</a></li>
             </ul>
 
-            <div class="header-actions">
-                <a href="login.html" class="btn btn-login">
-                    <i class="fas fa-sign-in-alt"></i>
-                    Entrar
-                </a>
-                <a href="cadastro_perfil.html" class="donate-btn">
-                    <span class="btn-icon"><i class="fas fa-heart"></i></span>
-                    Doar Agora
-                </a>
+            <div class="header-actions" id="header-actions">
+                <!-- Será preenchido pelo sistema de autenticação -->
             </div>
 
             <button class="mobile-menu-btn">
@@ -431,6 +425,8 @@
     </div>
 </footer>
 
+<script src="auth.js"></script>
+<script src="index.js"></script>
 <script src="./Sobre.js"></script>
 </body>
 </html>

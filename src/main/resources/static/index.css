@@ -69,13 +69,13 @@
             backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--gray-200);
             z-index: 1000;
-            padding: var(--space-md) 0;
+            transition: all 0.3s ease; 
         }
 
         .nav-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 var(--space-lg);
+            padding: var(--space-md) var(--space-lg); /* Adicione padding vertical aqui */
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -114,16 +114,24 @@
             list-style: none;
             gap: var(--space-xl);
         }
-
+        
         .nav-link {
             text-decoration: none;
             color: var(--gray-700);
             font-weight: 600;
-            transition: color 0.3s;
+            transition: all 0.3s ease; /* Mude de "color 0.3s" para "all 0.3s ease" */
+            padding: var(--space-sm) var(--space-md); /* Adicione esta linha */
         }
 
-        .nav-link:hover {
+        .nav-link:hover,
+        .nav-link.active {
             color: var(--primary-blue);
+            background: rgba(37, 99, 235, 0.05); /* Adicione esta linha */
+        }
+
+        .header.scrolled {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: var(--shadow-lg);
         }
 
         .header-actions {
