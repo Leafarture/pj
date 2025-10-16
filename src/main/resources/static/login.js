@@ -1,3 +1,6 @@
+// Atualizar o ano no footer
+document.getElementById('ano').textContent = new Date().getFullYear();
+
 document.getElementById('loginForm').addEventListener('submit', async function(e){
     e.preventDefault();
 
@@ -19,9 +22,26 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         });
 
         if (response.ok) {
-            window.location.href = "./HomeUsuario.html";
+            const data = await response.json();
+            
+            // Usar o sistema global de autenticação
+            if (window.authManager && data.token) {
+                await window.authManager.handleLoginSuccess(data);
+            } else {
+                // Fallback para o sistema antigo
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('user', JSON.stringify(data.user));
+                
+                // Redirecionar baseado no tipo de usuário
+                if (data.user && data.user.tipoUsuario === 'ESTABELECIMENTO') {
+                    window.location.href = "./HomeEmpresas.html";
+                } else {
+                    window.location.href = "./HomeUsuario.html";
+                }
+            }
         } else if (response.status === 401) {
-            alert('Email ou senha inválidos.');
+            const errorData = await response.json();
+            alert(errorData.error || 'Email ou senha inválidos.');
         } else {
             alert('Erro ao realizar login.');
         }

@@ -3,6 +3,11 @@
 // Esperar o DOM carregar completamente
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🚀 Prato Justo - Inicializando versão melhorada...');
+    
+    // Aguardar o sistema de autenticação carregar
+    setTimeout(() => {
+        initializeAuthIntegration();
+    }, 100);
 
     // ===== LOADING SCREEN MELHORADA =====
     const loadingScreen = document.querySelector('.loading-screen');
@@ -227,9 +232,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 ripple.remove();
             }, 600);
             
-            // Redirecionar após animação
+            // Redirecionar baseado na autenticação
             setTimeout(() => {
-                window.location.href = 'cadastro_perfil.html';
+                if (window.authManager && window.authManager.isAuthenticated()) {
+                    window.location.href = 'cadastro_alimento.html';
+                } else {
+                    window.location.href = 'login.html';
+                }
             }, 300);
         });
     });
@@ -821,6 +830,144 @@ const dynamicStyles = `
 const styleSheet = document.createElement('style');
 styleSheet.textContent = dynamicStyles;
 document.head.appendChild(styleSheet);
+
+// ===== INTEGRAÇÃO COM SISTEMA DE AUTENTICAÇÃO =====
+function initializeAuthIntegration() {
+    if (!window.authManager) {
+        console.warn('AuthManager não encontrado, tentando novamente...');
+        setTimeout(initializeAuthIntegration, 500);
+        return;
+    }
+
+    console.log('🔐 Integrando sistema de autenticação...');
+    
+    // Atualizar header actions baseado no estado de autenticação
+    updateHeaderActions();
+    
+    // Configurar botões que requerem autenticação
+    setupAuthRequiredButtons();
+    
+    // Atualizar interface baseada no login
+    updateInterfaceBasedOnAuth();
+}
+
+function updateHeaderActions() {
+    const headerActions = document.getElementById('header-actions');
+    if (!headerActions) return;
+    
+    if (window.authManager.isAuthenticated()) {
+        const user = window.authManager.getCurrentUser();
+        headerActions.innerHTML = `
+            <div class="user-greeting">
+                <span>Olá, ${user.nome}!</span>
+            </div>
+            <a href="minhas-doacoes.html" class="btn btn-outline">
+                <i class="fas fa-heart"></i> Minhas Doações
+            </a>
+            <a href="cadastro_alimento.html" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Nova Doação
+            </a>
+            <button id="logout-btn" class="btn btn-logout">
+                <i class="fas fa-sign-out-alt"></i> Sair
+            </button>
+        `;
+        
+        // Configurar evento de logout
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', () => {
+                window.authManager.logout();
+            });
+        }
+    } else {
+        headerActions.innerHTML = `
+            <a href="login.html" class="btn btn-login">Entrar</a>
+            <a href="cadastro_perfil.html" class="donate-btn">
+                <span class="btn-icon"><i class="fas fa-heart"></i></span>
+                Doar Agora
+            </a>
+        `;
+    }
+}
+
+function setupAuthRequiredButtons() {
+    // Botões que requerem autenticação
+    const authRequiredButtons = document.querySelectorAll('.require-auth');
+    
+    authRequiredButtons.forEach(btn => {
+        if (!window.authManager.isAuthenticated()) {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (confirm('Você precisa estar logado para fazer uma doação.\n\nDeseja fazer login agora?')) {
+                    window.location.href = 'login.html';
+                }
+            });
+        }
+    });
+}
+
+function updateInterfaceBasedOnAuth() {
+    // Atualizar mensagens baseadas no estado de autenticação
+    const heroButtons = document.querySelector('.hero-buttons');
+    if (heroButtons && window.authManager.isAuthenticated()) {
+        const user = window.authManager.getCurrentUser();
+        const welcomeMsg = document.querySelector('.hero-description');
+        if (welcomeMsg) {
+            welcomeMsg.innerHTML = `
+                Olá, <strong>${user.nome}</strong>! 👋<br>
+                Conectamos doadores com comunidades carentes. Cada alimento doado
+                é um passo contra a fome e desperdício.
+            `;
+        }
+    }
+    
+    // Atualizar estatísticas se usuário logado
+    if (window.authManager.isAuthenticated()) {
+        updateUserStats();
+    }
+}
+
+function updateUserStats() {
+    // Buscar estatísticas do usuário logado
+    const token = window.authManager.getToken();
+    if (!token) return;
+    
+    fetch('/doacoes/minhas', {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+    .then(response => response.json())
+    .then(donations => {
+        if (Array.isArray(donations)) {
+            const totalDonations = donations.length;
+            const activeDonations = donations.filter(d => d.ativo).length;
+            const totalQuantity = donations.reduce((sum, d) => sum + (d.quantidade || 0), 0);
+            
+            // Atualizar estatísticas na página se houver elementos específicos
+            const userStatsContainer = document.querySelector('.user-stats');
+            if (userStatsContainer) {
+                userStatsContainer.innerHTML = `
+                    <div class="user-stat">
+                        <div class="stat-number">${totalDonations}</div>
+                        <div class="stat-label">Suas Doações</div>
+                    </div>
+                    <div class="user-stat">
+                        <div class="stat-number">${activeDonations}</div>
+                        <div class="stat-label">Ativas</div>
+                    </div>
+                    <div class="user-stat">
+                        <div class="stat-number">${totalQuantity.toFixed(1)}</div>
+                        <div class="stat-label">Kg Doados</div>
+                    </div>
+                `;
+            }
+        }
+    })
+    .catch(error => {
+        console.log('Erro ao carregar estatísticas do usuário:', error);
+    });
+}
 
 // Adicionar atributos de animação para elementos específicos
 document.querySelectorAll('.feature, .step, .impact-card').forEach((el, index) => {

@@ -1,34 +1,45 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Prato Justo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Login - Prato Justo">
+    <title>Login | Prato Justo</title>
     <link rel="stylesheet" href="./login.css">
 </head>
 <body>
-<div class="container">
-    <div class="form-box">
-        <div class="logo">
-            <span>🍽️</span>
-            <h1>Prato <span>Justo</span></h1>
-        </div>
-        <h2>Login</h2>
+<main class="page">
+    <header class="brand">
+        <div class="brand__logo" aria-hidden="true">🍽️</div>
+        <h1 class="brand__title">Prato Justo</h1>
+    </header>
+
+    <section class="card" aria-labelledby="login-title">
+        <h2 id="login-title" class="card__title">Login</h2>
+        
         <form id="loginForm">
-            <div class="input-group">
+            <div class="field">
                 <label for="email">E-mail</label>
                 <input type="email" id="email" placeholder="voce@exemplo.com" required>
             </div>
-            <div class="input-group">
+            
+            <div class="field">
                 <label for="password">Senha</label>
                 <input type="password" id="password" placeholder="Sua senha" required>
             </div>
-            <button type="submit" class="btn">Entrar</button>
+            
+            <button type="submit" class="btn btn--primary">Entrar</button>
         </form>
-        <p>Não tem conta? <a href="./cadastro_perfil.html">Cadastre-se</a></p>
-    </div>
-</div>
+        
+        <p class="hint">Não tem conta? <a href="./cadastro_perfil.html" class="link">Cadastre-se</a></p>
+    </section>
 
+    <footer class="footer">
+        <small>© <span id="ano"></span> Prato Justo. Todos os direitos reservados.</small>
+    </footer>
+</main>
+
+<script src="auth.js"></script>
 <script src="./login.js"></script>
 </body>
 </html>

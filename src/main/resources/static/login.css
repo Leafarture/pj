@@ -1,118 +1,201 @@
-/* Reset básico */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
+:root {
+  --azul-escuro: #0f172a;
+  --azul: #1e40af;
+  --azul-claro: #3b82f6;
+  --vermelho: #dc2626;
+  --vermelho-escuro: #b91c1c;
+  --fundo: #0b1220;
+  --card-bg: #0f1a2f;
+  --borda: rgba(255, 255, 255, 0.08);
+  --texto: #e5e7eb;
+  --texto-suave: #cbd5e1;
+  --erro: #fca5a5;
+  --sucesso: #86efac;
+  --focus-ring: 0 0 0 4px rgba(59, 130, 246, 0.35);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
 }
 
 body {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #0a0f2c;
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  color: var(--texto);
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(59, 130, 246, 0.25), transparent 60%),
+    radial-gradient(1000px 500px at 110% 10%, rgba(220, 38, 38, 0.25), transparent 60%),
+    linear-gradient(180deg, #060b16 0%, var(--fundo) 100%);
 }
 
-.container {
-    width: 100%;
-    max-width: 400px;
+.page {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  place-items: center;
+  padding: 24px;
+  gap: 24px;
 }
 
-.form-box {
-    background: linear-gradient(180deg, #3a4da3, #b83737);
-    padding: 30px;
-    border-radius: 15px;
-    color: #fff;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  user-select: none;
 }
 
-.logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
+.brand__logo {
+  font-size: 28px;
 }
 
-.logo h1 {
-    font-size: 1.8em;
+.brand__title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  background: linear-gradient(90deg, var(--azul-claro), var(--vermelho));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
-.logo h1 span {
-    color: #ff4b5c;
+.card {
+  width: 100%;
+  max-width: 580px;
+  background: linear-gradient(180deg, rgba(59, 130, 246, 0.08), rgba(220, 38, 38, 0.08)) padding-box,
+              linear-gradient(180deg, rgba(59, 130, 246, 0.45), rgba(220, 38, 38, 0.45)) border-box,
+              var(--card-bg);
+  border: 1px solid transparent;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35), 0 1px 0 rgba(255,255,255,0.03) inset;
 }
 
-h2 {
-    text-align: center;
-    margin-bottom: 20px;
+.card__title {
+  margin: 0 0 12px 0;
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+  flex: 1;
 }
 
-.input-group {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 15px;
+.field { margin-top: 14px; }
+
+.field label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: var(--texto-suave);
 }
 
-.input-group label {
-    margin-bottom: 5px;
-    font-weight: bold;
+.field input[type="text"],
+.field input[type="email"],
+.field input[type="password"],
+.field input[type="tel"],
+.field select,
+.field textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--borda);
+  background: rgba(255,255,255,0.02);
+  color: var(--texto);
+  outline: none;
+  transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+  font-family: inherit;
+  resize: vertical;
 }
 
-.input-group input {
-    padding: 10px;
-    border-radius: 8px;
-    border: none;
-    outline: none;
-    font-size: 1em;
+.field input::placeholder,
+.field textarea::placeholder { color: #9aa4b2; }
+
+.field input:hover,
+.field select:hover,
+.field textarea:hover { background: rgba(255,255,255,0.04); }
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: var(--azul-claro);
+  box-shadow: var(--focus-ring);
 }
 
 .btn {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    font-size: 1em;
-    font-weight: bold;
-    background: linear-gradient(90deg, #3a4da3, #b83737);
-    color: #fff;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.btn:hover {
-    opacity: 0.9;
-}
-
-p {
-    text-align: center;
-    margin-top: 15px;
-}
-
-p a {
-    color: #fff;
-    text-decoration: underline;
-}
-
-//ajusta a senha
-.password-wrapper {
-  position: relative;
-  display: inline-block;
-  width: 100%; /* ajusta ao tamanho do seu input */
-}
-
-.password-wrapper input {
+  margin-top: 16px;
   width: 100%;
-  padding-right: 2.5rem; /* espaço para o ícone */
-  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 180ms ease, background 180ms ease;
 }
 
-.toggle-pwd {
-  position: absolute;
-  top: 50%;
-  right: 0.5rem; /* distância da borda direita */
-  transform: translateY(-50%);
-  cursor: pointer;
-  user-select: none;
-  font-size: 1.1rem;
+.btn--primary {
+  background: linear-gradient(90deg, var(--azul-claro), var(--vermelho));
+  color: white;
+  box-shadow: 0 8px 20px rgba(59,130,246,0.25), 0 8px 20px rgba(220,38,38,0.2);
+}
+
+.btn--primary:hover { filter: brightness(1.06); }
+
+.btn--primary:active { transform: translateY(1px); }
+
+.link {
+  color: var(--azul-claro);
+  text-decoration: none;
+}
+
+.link:hover { text-decoration: underline; }
+
+.hint {
+  margin: 16px 0 0 0;
+  font-size: 14px;
+  color: var(--texto-suave);
+  text-align: center;
+}
+
+.footer {
+  opacity: 0.9;
+  font-size: 12px;
+}
+
+/* Estilos específicos para validação */
+.field input:invalid:not(:focus):not(:placeholder-shown),
+.field select:invalid:not(:focus) {
+  border-color: var(--erro);
+}
+
+.field input:valid:not(:focus):not(:placeholder-shown),
+.field select:valid:not(:focus) {
+  border-color: var(--sucesso);
+}
+
+/* Animações */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.field--error input,
+.field--error select {
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Responsividade melhorada */
+@media (max-width: 480px) {
+  .page {
+    padding: 16px;
+  }
+  
+  .card {
+    padding: 20px;
+  }
 }

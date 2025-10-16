@@ -76,6 +76,12 @@ public class DoacaoService {
                 .collect(Collectors.toList());
     }
 
+    public List<Doacao> listarPorDoador(Long doadorId) {
+        return doacaoRepository.findByDoadorId(doadorId).stream()
+                .sorted(Comparator.comparing(Doacao::getCriadoEm).reversed())
+                .collect(Collectors.toList());
+    }
+
     private double distanciaKm(double lat1, double lon1, double lat2, double lon2) {
         double R = 6371.0; // raio da Terra em km
         double dLat = Math.toRadians(lat2 - lat1);

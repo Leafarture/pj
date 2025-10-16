@@ -1,3 +1,8 @@
+// Função para navegação
+function goTo(url) {
+    window.location.href = url;
+}
+
 // =====================
 // Utilitários de validação
 // =====================
@@ -205,11 +210,18 @@ async function enviarDadosParaBackend(dados, form) {
         });
 
         if (response.ok) {
-            alert('Cadastro realizado com sucesso!');
+            // Mostra popup de sucesso
+            showNotification("Estabelecimento cadastrado com sucesso! Você pode fazer login agora.", "success", 2000);
+            
+            // Redireciona para login após 2 segundos
+            setTimeout(() => {
+                window.location.href = "./login.html";
+            }, 2000);
+            
             form.reset();
         } else {
             const erro = await response.text();
-            alert('Erro no cadastro: ' + erro);
+            showNotification("Erro no cadastro: " + erro, "error", 5000);
         }
     } catch (error) {
         alert('Erro ao conectar com o servidor. Tente novamente.');

@@ -18,6 +18,8 @@ public interface DoacaoRepository extends JpaRepository<Doacao, Long> {
 
     @Query("SELECT d FROM Doacao d WHERE d.ativo = true AND d.latitude IS NOT NULL AND d.longitude IS NOT NULL")
     List<Doacao> findAllComCoordenadas();
+
+    List<Doacao> findByDoadorId(Long doadorId);
 }
 
 

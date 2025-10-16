@@ -202,12 +202,18 @@ document.addEventListener("DOMContentLoaded", () => {
             if (response.ok) {
                 const user = await response.json(); // Recebe os dados do usuário criado
                 console.log("Usuário criado:", user);
-                alert("Cadastro realizado com sucesso para " + user.nome + "!");
-                window.location.href = "./index.html"; // Redireciona para a página Home
+                
+                // Mostra popup de sucesso
+                showNotification("Usuário cadastrado com sucesso! Você pode fazer login agora.", "success", 2000);
+                
+                // Redireciona para login após 2 segundos
+                setTimeout(() => {
+                    window.location.href = "./login.html";
+                }, 2000);
             } else {
                 const msg = await response.text();
                 console.error("Erro do servidor:", msg);
-                alert("Erro ao cadastrar: " + msg);
+                showNotification("Erro ao cadastrar: " + msg, "error", 5000);
             }
 
         } catch (error) {

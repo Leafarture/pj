@@ -1,32 +1,51 @@
 package com.TCC.Prato_Justo.Security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
 
-        @Bean
-        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-            http
-                    .csrf(csrf -> csrf.disable()) // desabilita CSRF para testes
-                    .authorizeHttpRequests(requests -> requests
-                            .requestMatchers("/auth/**").permitAll() // Permite acesso aos endpoints de autenticação
-                            .requestMatchers("/**").permitAll() // Permite acesso a todas as URLs
-                            .anyRequest().authenticated()
-                    )
-                    .formLogin(form -> form
-                            .loginPage("/login.html") // Aponta para a página de login estática
-                            .defaultSuccessUrl("/index.html", true)
-                            .permitAll()
-                    )
-                    .logout(logout -> logout
-                        .logoutSuccessUrl("/login.html")
-                        .permitAll());
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
 
-            return http.build();
-        }
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(requests -> requests
+                        .requestMatchers("/auth/login", "/auth/registro", "/auth/cadastros").permitAll()
+                        .requestMatchers("/login.html", "/cadastro_perfil.html", "/Estabelecimento.html", "/Usuario.html", "/index.html", "/").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/img/**", "/static/**").permitAll()
+                        .requestMatchers("/doacoes/**").authenticated()
+                        .requestMatchers("/api/user/me").authenticated()
+                        .requestMatchers("/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
     }
 
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
 
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+}

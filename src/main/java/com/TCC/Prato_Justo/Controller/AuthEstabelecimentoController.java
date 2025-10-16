@@ -14,13 +14,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin(origins = "*")
-public class AutchEstabelecimentoController {
+public class AuthEstabelecimentoController {
 
 
     private final EstabelecimentoService estabelecimentoService;
     private final UsuarioService usuarioService;
 
-    public AutchEstabelecimentoController(EstabelecimentoService estabelecimentoService, UsuarioService usuarioService) {
+    public AuthEstabelecimentoController(EstabelecimentoService estabelecimentoService, UsuarioService usuarioService) {
         this.estabelecimentoService = estabelecimentoService;
         this.usuarioService = usuarioService;
     }

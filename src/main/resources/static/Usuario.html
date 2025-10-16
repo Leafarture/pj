@@ -6,6 +6,7 @@
     <meta name="description" content="Página de cadastro - Prato Justo">
     <title>Cadastro | Prato Justo</title>
     <link rel="stylesheet" href="Usuario.css">
+    <link rel="stylesheet" href="notification.css">
 </head>
 <body>
 <main class="page">
@@ -43,6 +44,12 @@
                 <p class="error" id="erro-telefone" role="alert" aria-live="polite"></p>
             </div>
 
+            <div class="field">
+                <label for="cep">CEP</label>
+                <input id="cep" name="cep" type="text" placeholder="00000-000" required>
+                <p class="error" id="erro-cep" role="alert" aria-live="polite"></p>
+            </div>
+            
             <div class="field">
                 <label for="rua">Rua</label>
                 <input id="rua" name="rua" type="text" placeholder="Nome da rua" required>
@@ -104,11 +111,7 @@
                 </div>
             </div>
 
-            <div class="field">
-                <label for="cep">CEP</label>
-                <input id="cep" name="cep" type="text" placeholder="00000-000" required>
-                <p class="error" id="erro-cep" role="alert" aria-live="polite"></p>
-            </div>
+            
 
             <div class="field field--split">
                 <div class="field">
@@ -144,6 +147,7 @@
     </footer>
 </main>
 
+<script src="notification.js"></script>
 <script src="Usuario.js" defer></script>
 </body>
 </html>

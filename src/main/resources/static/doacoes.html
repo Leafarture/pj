@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doações | Prato Justo</title>
+    <link rel="stylesheet" href="doacoes.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1><i class="fas fa-heart"></i> Doações Disponíveis</h1>
+            <div class="user-info" id="user-info" style="display: none;">
+                <span id="user-name"></span>
+                <button id="logout-btn" class="btn-logout">Sair</button>
+                <a href="minhas-doacoes.html" class="btn-my-donations">Minhas Doações</a>
+            </div>
+            <div class="login-prompt" id="login-prompt">
+                <a href="login.html" class="btn-login">Fazer Login</a>
+            </div>
+        </div>
+    </header>
+    
+    <div class="filters">
+        <div class="filter-group">
+            <input type="text" id="filter-city" placeholder="Filtrar por cidade...">
+            <input type="text" id="filter-type" placeholder="Filtrar por tipo de alimento...">
+            <button id="filter-btn" class="btn-filter">Filtrar</button>
+            <button id="clear-filters" class="btn-clear">Limpar</button>
+        </div>
+    </div>
+
+    <main class="main-content">
+        <div id="loading" class="loading">
+            <i class="fas fa-spinner fa-spin"></i> Carregando doações...
+        </div>
+        <div id="doacoes-container" class="doacoes-grid">
+        </div>
+        <div id="no-donations" class="no-donations" style="display: none;">
+            <i class="fas fa-search"></i>
+            <h3>Nenhuma doação encontrada</h3>
+            <p>Tente ajustar os filtros ou volte mais tarde.</p>
+        </div>
+    </main>
+
+    <div class="floating-btn">
+        <a href="cadastro_alimento.html" class="btn-add-donation">
+            <i class="fas fa-plus"></i>
+            <span>Fazer Doação</span>
+        </a>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="doacoes.js"></script>
+</body>
+</html>

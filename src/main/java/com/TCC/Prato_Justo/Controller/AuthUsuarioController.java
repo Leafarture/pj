@@ -1,7 +1,9 @@
 package com.TCC.Prato_Justo.Controller;
 
 import com.TCC.Prato_Justo.Model.Usuario;
+import com.TCC.Prato_Justo.Service.AuthService;
 import com.TCC.Prato_Justo.Service.UsuarioService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,12 +11,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
-public class AutchUsuarioController {
+public class AuthUsuarioController {
 
    private final UsuarioService usuarioService;
+   private final AuthService authService;
 
-    public AutchUsuarioController(UsuarioService usuarioService) {
+    public AuthUsuarioController(UsuarioService usuarioService, AuthService authService) {
         this.usuarioService = usuarioService;
+        this.authService = authService;
     }
 
     @PostMapping("/registro")
@@ -38,12 +42,17 @@ public class AutchUsuarioController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestBody LoginRequest request) {
-        boolean valido = usuarioService.validarLogin(request.getEmail(), request.getPassword());
-        if (valido) {
-            return ResponseEntity.ok().build();
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+        try {
+            var result = authService.authenticate(request.getEmail(), request.getPassword());
+            if (result.containsKey("error")) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
+            }
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Erro na autenticação: " + e.getMessage());
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     public static class LoginRequest {

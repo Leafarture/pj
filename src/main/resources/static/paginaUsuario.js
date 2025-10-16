@@ -2,20 +2,60 @@ document.addEventListener('DOMContentLoaded', () => {
   /**
    * Carrega os dados do usuário do localStorage e atualiza a interface.
    */
-  function loadUser Data() {
-    const userName = localStorage.getItem('userName') || 'Usuário';
-    const userEmail = localStorage.getItem('userEmail') || 'usuario@email.com';
-    const joinDate = localStorage.getItem('joinDate') || '01/01/2024';
-    const totalDoacoes = localStorage.getItem('totalDoacoes') || '0';
-    const familiasAjudadas = localStorage.getItem('familiasAjudadas') || '0';
-    const avaliacaoMedia = localStorage.getItem('avaliacaoMedia') || '0';
+  function loadUserData() {
+    let userName = 'Usuário';
+    let userEmail = 'usuario@email.com';
+    let joinDate = '01/01/2024';
+    let totalDoacoes = '0';
+    let familiasAjudadas = '0';
+    let avaliacaoMedia = '0';
+    let userAvatar = null;
 
+    // Tentar carregar dados do sistema de autenticação primeiro
+    if (window.authManager && window.authManager.isAuthenticated()) {
+      const user = window.authManager.getCurrentUser();
+      if (user) {
+        userName = user.nome || user.name || user.userName || 'Usuário';
+        userEmail = user.email || 'usuario@email.com';
+        userAvatar = user.avatarUrl || user.avatarDataUrl;
+      }
+    } else {
+      // Fallback: carregar do localStorage
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        try {
+          const user = JSON.parse(storedUser);
+          userName = user.nome || user.name || user.userName || 'Usuário';
+          userEmail = user.email || 'usuario@email.com';
+          userAvatar = user.avatarUrl || user.avatarDataUrl;
+        } catch (error) {
+          console.error('Erro ao parsear dados do usuário:', error);
+        }
+      }
+    }
+
+    // Carregar dados específicos da página
+    userName = localStorage.getItem('userName') || userName;
+    userEmail = localStorage.getItem('userEmail') || userEmail;
+    joinDate = localStorage.getItem('joinDate') || '01/01/2024';
+    totalDoacoes = localStorage.getItem('totalDoacoes') || '0';
+    familiasAjudadas = localStorage.getItem('familiasAjudadas') || '0';
+    avaliacaoMedia = localStorage.getItem('avaliacaoMedia') || '0';
+    userAvatar = localStorage.getItem('userAvatar') || userAvatar;
+
+    // Atualizar interface
     document.getElementById('user-name').textContent = userName;
     document.getElementById('user-email').textContent = userEmail;
     document.getElementById('join-date').textContent = joinDate;
     document.getElementById('total-doacoes').textContent = totalDoacoes;
     document.getElementById('familias-ajudadas').textContent = familiasAjudadas;
     document.getElementById('avaliacao-media').textContent = avaliacaoMedia;
+
+    // Atualizar avatar se disponível
+    const avatarImg = document.querySelector('.user-avatar img');
+    if (avatarImg && userAvatar) {
+      avatarImg.src = userAvatar;
+    }
   }
 
   /**
@@ -25,9 +65,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const confirmed = confirm('Tem certeza que deseja sair?');
     if (!confirmed) return;
 
-    localStorage.clear();
-    alert('Logout realizado com sucesso! Até logo.');
-    window.location.href = 'index.html';
+    // Usar o sistema de autenticação se disponível
+    if (window.authManager) {
+      window.authManager.logout();
+    } else {
+      // Fallback: limpar localStorage manualmente
+      localStorage.clear();
+      alert('Logout realizado com sucesso! Até logo.');
+      window.location.href = 'index.html';
+    }
   }
 
   /**
@@ -102,8 +148,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Escutar mudanças no estado de autenticação
+  document.addEventListener('authStateChanged', () => {
+    loadUserData();
+  });
+
   // Execução inicial
-  loadUser Data();
+  loadUserData();
   initLogoutButtons();
   initMobileMenu();
   initQuickActions();

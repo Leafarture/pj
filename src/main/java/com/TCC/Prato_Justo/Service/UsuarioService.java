@@ -1,7 +1,7 @@
 package com.TCC.Prato_Justo.Service;
 
 
-import com.TCC.Prato_Justo.Controller.AutchUsuarioController.CadastroRequest;
+import com.TCC.Prato_Justo.Controller.AuthUsuarioController.CadastroRequest;
 import com.TCC.Prato_Justo.Interface.AnthUsuarioRepository;
 import com.TCC.Prato_Justo.Model.Usuario;
 import com.TCC.Prato_Justo.Model.TipoUsuario;
@@ -97,5 +97,9 @@ public class UsuarioService {
 
     public void deletar(Long id) {
         autchCadastroRepository.deleteById(id);
+    }
+
+    public Usuario findByEmail(String email) {
+        return autchCadastroRepository.findByEmail(email).orElse(null);
     }
 }

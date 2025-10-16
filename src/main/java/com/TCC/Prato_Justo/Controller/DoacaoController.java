@@ -2,8 +2,12 @@ package com.TCC.Prato_Justo.Controller;
 
 import com.TCC.Prato_Justo.Model.Doacao;
 import com.TCC.Prato_Justo.Model.Usuario;
+import com.TCC.Prato_Justo.Service.AuthService;
 import com.TCC.Prato_Justo.Service.DoacaoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +19,9 @@ import java.util.Optional;
 public class DoacaoController {
 
     private final DoacaoService doacaoService;
+    
+    @Autowired
+    private AuthService authService;
 
     public DoacaoController(DoacaoService doacaoService) {
         this.doacaoService = doacaoService;
@@ -34,7 +41,8 @@ public class DoacaoController {
     }
 
     @PostMapping
-    public ResponseEntity<?> criar(@RequestBody Doacao dto) {
+    public ResponseEntity<?> criar(@RequestBody Doacao dto, 
+                                   @RequestHeader(value = "Authorization", required = false) String authHeader) {
         try {
             System.out.println("=== RECEBENDO DOAÇÃO ===");
             System.out.println("Título: " + dto.getTitulo());
@@ -55,7 +63,16 @@ public class DoacaoController {
                 return ResponseEntity.badRequest().body("Endereço é obrigatório");
             }
             
-            Doacao criada = doacaoService.criar(dto, null);
+            // Obter usuário logado se token fornecido
+            Usuario doador = null;
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                String token = authHeader.substring(7);
+                if (authService.isTokenValid(token)) {
+                    doador = authService.getCurrentUser(token);
+                }
+            }
+            
+            Doacao criada = doacaoService.criar(dto, doador);
             System.out.println("Doação criada com ID: " + criada.getId());
             return ResponseEntity.ok(criada);
         } catch (Exception ex) {
@@ -93,6 +110,30 @@ public class DoacaoController {
                                                  @RequestParam(required = false) Double lng,
                                                  @RequestParam(required = false, name = "raio_km") Double raioKm) {
         return ResponseEntity.ok(doacaoService.proximas(lat, lng, raioKm));
+    }
+
+    @GetMapping("/minhas")
+    public ResponseEntity<?> minhasDoacoes(@RequestHeader(value = "Authorization", required = false) String authHeader) {
+        try {
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                return ResponseEntity.status(401).body("Token não fornecido");
+            }
+
+            String token = authHeader.substring(7);
+            if (!authService.isTokenValid(token)) {
+                return ResponseEntity.status(401).body("Token inválido");
+            }
+
+            Usuario usuario = authService.getCurrentUser(token);
+            if (usuario == null) {
+                return ResponseEntity.status(404).body("Usuário não encontrado");
+            }
+
+            List<Doacao> doacoes = doacaoService.listarPorDoador(usuario.getId());
+            return ResponseEntity.ok(doacoes);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Erro interno: " + e.getMessage());
+        }
     }
 }
 

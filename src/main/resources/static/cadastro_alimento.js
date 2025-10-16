@@ -1,9 +1,33 @@
-// Seleciona o formulário
-const foodForm = document.getElementById('foodRegistrationForm');
+// Aguardar o sistema de autenticação carregar
+document.addEventListener('DOMContentLoaded', function() {
+    // Verificar autenticação antes de permitir cadastro
+    setTimeout(() => {
+        checkAuthentication();
+    }, 100);
+});
 
-// Evento de envio do formulário
-foodForm.addEventListener('submit', function(e) {
-    e.preventDefault(); // Evita o reload da página
+function checkAuthentication() {
+    if (!window.authManager || !window.authManager.isAuthenticated()) {
+        // Usuário não logado - redirecionar para login
+        if (confirm('Você precisa estar logado para fazer uma doação.\n\nDeseja fazer login agora?')) {
+            window.location.href = 'login.html';
+        } else {
+            window.location.href = 'index.html';
+        }
+        return;
+    }
+    
+    // Usuário logado - inicializar formulário
+    initializeForm();
+}
+
+function initializeForm() {
+    // Seleciona o formulário
+    const foodForm = document.getElementById('foodRegistrationForm');
+
+    // Evento de envio do formulário
+    foodForm.addEventListener('submit', function(e) {
+        e.preventDefault(); // Evita o reload da página
 
     const foodData = {
         titulo: document.getElementById('foodName').value,
@@ -21,11 +45,20 @@ foodForm.addEventListener('submit', function(e) {
 
     // Enviar para o backend (doações)
     const apiBase = window.location.origin;
+    const token = localStorage.getItem('token');
+    
+    const headers = {
+        'Content-Type': 'application/json',
+    };
+    
+    // Adicionar token de autenticação se disponível
+    if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+    }
+    
     fetch(apiBase + '/doacoes', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
+        headers: headers,
         body: JSON.stringify(foodData),
     })
     .then(async (response) => {
@@ -39,6 +72,11 @@ foodForm.addEventListener('submit', function(e) {
         console.log('Sucesso:', data);
         alert('Doação cadastrada com sucesso!');
         foodForm.reset();
+        
+        // Redirecionar para a página de doações após cadastro
+        setTimeout(() => {
+            window.location.href = 'minhas-doacoes.html';
+        }, 1500);
     })
     .catch((error) => {
         console.error('Erro:', error);
@@ -226,4 +264,7 @@ if (helpMensagem) {
             helpMensagem.setAttribute('placeholder', 'Sugestão: ' + sugestoes[0]);
         }
     });
+}
+
+// Fechar a função initializeForm
 }
