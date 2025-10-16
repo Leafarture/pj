@@ -908,6 +908,7 @@ function updateHeaderActions() {
             logoutBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 window.authManager.logout();
+                window.location.reload(); // Recarrega a página automaticamente
             });
         }
     } else {
