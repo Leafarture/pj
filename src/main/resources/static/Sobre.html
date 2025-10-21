@@ -1,49 +1,36 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sobre Nós - Prato Justo</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="./index.css">
-    <link rel="stylesheet" href="sobre.css">
+    <link rel="stylesheet" href="Sobre.css">
 </head>
 <body>
-<!-- Loading Screen 
-<div class="loading-screen">
-    <div class="loading-content">
-        <div class="loading-spinner"></div>
-        <p>Carregando Prato Justo...</p>
-    </div>
-</div>-->
-
 <!-- Header -->
 <header class="header">
     <nav class="nav">
         <div class="nav-container">
-            <a href="index.html" class="logo">
-                <div class="logo-icon">🍽️</div>
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-utensils"></i>
+                </div>
                 <h1>Prato Justo</h1>
-            </a>
+            </div>
 
             <ul class="nav-menu">
                 <li><a href="index.html" class="nav-link">Início</a></li>
-                <li><a href="sobre.html" class="nav-link active">Sobre Nós</a></li>
-                <li><a href="como-doar.html" class="nav-link">Como Doar</a></li>
-                <li><a href="impacto.html" class="nav-link">Impacto</a></li>
-                <li><a href="contato.html" class="nav-link">Contato</a></li>
+                <li><a href="Sobre.html" class="nav-link active">Sobre</a></li>
+                <li><a href="#como-doar" class="nav-link">Como Doar</a></li>
+                <li><a href="#impacto" class="nav-link">Impacto</a></li>
+                <li><a href="#contato" class="nav-link">Contato</a></li>
             </ul>
 
             <div class="header-actions" id="header-actions">
                 <!-- Será preenchido pelo sistema de autenticação -->
             </div>
-
-            <button class="mobile-menu-btn">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
         </div>
     </nav>
 </header>
@@ -109,7 +96,10 @@
                     </div>
                 </div>
                 <div class="main-visual">
-                    <img src="./img/equipe-prato-justo.jpg" alt="Equipe Prato Justo - pessoas unidas pela causa contra a fome" loading="eager">
+                    <div class="placeholder-image">
+                        <i class="fas fa-users"></i>
+                        <p>Nossa Equipe</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -304,7 +294,9 @@
         <div class="equipe-grid">
             <div class="membro-card" data-animate>
                 <div class="membro-foto">
-                    <img src="./img/membro-1.jpg" alt="Ana Silva - Fundadora" loading="lazy">
+                    <div class="membro-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
                     <div class="membro-social">
                         <a href="#"><i class="fab fa-linkedin"></i></a>
                         <a href="#"><i class="fab fa-instagram"></i></a>
@@ -319,7 +311,9 @@
 
             <div class="membro-card" data-animate>
                 <div class="membro-foto">
-                    <img src="./img/membro-2.jpg" alt="Carlos Santos - CTO" loading="lazy">
+                    <div class="membro-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
                     <div class="membro-social">
                         <a href="#"><i class="fab fa-linkedin"></i></a>
                         <a href="#"><i class="fab fa-github"></i></a>
@@ -334,7 +328,9 @@
 
             <div class="membro-card" data-animate>
                 <div class="membro-foto">
-                    <img src="./img/membro-3.jpg" alt="Marina Oliveira - COO" loading="lazy">
+                    <div class="membro-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
                     <div class="membro-social">
                         <a href="#"><i class="fab fa-linkedin"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
@@ -382,25 +378,35 @@
         <div class="footer-content">
             <div class="footer-section">
                 <div class="footer-logo">
-                    <div class="logo-icon">🍽️</div>
+                    <div class="logo-icon"><i class="fas fa-utensils"></i></div>
                     <h3>Prato Justo</h3>
                 </div>
                 <p>Conectando solidariedade através da alimentação</p>
                 <div class="social-links">
-                    <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
                     <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
                     <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
 
             <div class="footer-section">
                 <h4>Links Rápidos</h4>
                 <ul>
-                    <li><a href="index.html">Início</a></li>
-                    <li><a href="sobre.html">Sobre Nós</a></li>
-                    <li><a href="como-doar.html">Como Doar</a></li>
-                    <li><a href="impacto.html">Nosso Impacto</a></li>
+                    <li><a href="./index.html">Início</a></li>
+                    <li><a href="./Sobre.html">Sobre Nós</a></li>
+                    <li><a href="#como-doar">Como Doar</a></li>
+                    <li><a href="#impacto">Nosso Impacto</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Recursos</h4>
+                <ul>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Histórias</a></li>
+                    <li><a href="#">Parceiros</a></li>
+                    <li><a href="#">FAQ</a></li>
                 </ul>
             </div>
 
@@ -425,8 +431,10 @@
     </div>
 </footer>
 
+<!-- Scripts -->
 <script src="auth.js"></script>
 <script src="index.js"></script>
-<script src="./Sobre.js"></script>
+<script src="Sobre.js"></script>
+
 </body>
 </html>

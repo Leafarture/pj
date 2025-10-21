@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Observar seção de estatísticas
-    const statsSection = document.querySelector('.hero');
+    const statsSection = document.querySelector('.hero-sobre');
     if (statsSection) {
         const statsObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
