@@ -73,60 +73,79 @@
         }
 
         .nav-container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: var(--space-md) var(--space-lg); /* Adicione padding vertical aqui */
+            padding: 1rem 2rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 2rem;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: var(--space-sm);
+            gap: 0.75rem;
+            flex-shrink: 0;
         }
 
         .logo-icon {
-            font-size: 1.75rem;
+            font-size: 1.5rem;
             background: var(--gradient-primary);
-            padding: var(--space-sm);
-            border-radius: var(--radius-lg);
+            padding: 0.5rem;
+            border-radius: var(--radius-md);
             color: var(--white);
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
         }
 
         .logo h1 {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 800;
             background: var(--gradient-primary);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            white-space: nowrap;
         }
 
         .nav-menu {
             display: flex;
             list-style: none;
-            gap: var(--space-xl);
+            gap: 0.5rem;
+            align-items: center;
+            flex: 1;
+            justify-content: center;
+        }
+        
+        .nav-menu li {
+            display: flex;
+            align-items: center;
         }
         
         .nav-link {
             text-decoration: none;
             color: var(--gray-700);
-            font-weight: 600;
-            transition: all 0.3s ease; /* Mude de "color 0.3s" para "all 0.3s ease" */
-            padding: var(--space-sm) var(--space-md); /* Adicione esta linha */
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            white-space: nowrap;
         }
 
-        .nav-link:hover,
-        .nav-link.active {
+        .nav-link:hover {
             color: var(--primary-blue);
-            background: rgba(37, 99, 235, 0.05); /* Adicione esta linha */
+            background: rgba(37, 99, 235, 0.08);
+        }
+
+        .nav-link.active {
+            color: var(--white);
+            background: var(--gradient-primary);
+            font-weight: 600;
         }
 
         .header.scrolled {
@@ -138,6 +157,48 @@
             display: flex;
             align-items: center;
             gap: var(--space-md);
+            flex-shrink: 0;
+        }
+
+        /* Responsividade */
+        @media (max-width: 1200px) {
+            .nav-menu {
+                gap: 0.25rem;
+            }
+            
+            .nav-link {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 968px) {
+            .nav-container {
+                padding: 1rem;
+            }
+            
+            .logo h1 {
+                font-size: 1.1rem;
+            }
+            
+            .nav-menu {
+                gap: 0.25rem;
+            }
+            
+            .nav-link {
+                padding: 0.5rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .nav-container {
+                justify-content: space-between;
+            }
         }
 
         /* Header User Section Styles */

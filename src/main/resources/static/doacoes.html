@@ -3,24 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doações | Prato Justo</title>
+    <title>Alimentos Disponíveis | Prato Justo</title>
     <link rel="stylesheet" href="doacoes.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./index.css">
+    <style>
+        body {
+            padding-top: 80px;
+        }
+        
+        .filters {
+            margin-top: 2rem;
+        }
+    </style>
 </head>
 <body>
-    <header class="header">
-        <div class="header-content">
-            <h1><i class="fas fa-heart"></i> Doações Disponíveis</h1>
-            <div class="user-info" id="user-info" style="display: none;">
-                <span id="user-name"></span>
-                <button id="logout-btn" class="btn-logout">Sair</button>
-                <a href="minhas-doacoes.html" class="btn-my-donations">Minhas Doações</a>
+<!-- Header -->
+<header class="header">
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <h1>Prato Justo</h1>
             </div>
-            <div class="login-prompt" id="login-prompt">
-                <a href="login.html" class="btn-login">Fazer Login</a>
+
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Início</a></li>
+                <li><a href="doacoes.html" class="nav-link active">Alimentos</a></li>
+                <li><a href="cadastro_alimento.html" class="nav-link">Cadastrar</a></li>
+                <li><a href="minhas-doacoes.html" class="nav-link">Minhas Doações</a></li>
+                <li><a href="solicitacoes.html" class="nav-link">Solicitações</a></li>
+                <li><a href="./Sobre.html" class="nav-link">Sobre</a></li>
+            </ul>
+
+            <div class="header-actions" id="header-actions">
+                <!-- Será preenchido pelo sistema de autenticação -->
             </div>
         </div>
-    </header>
+    </nav>
+</header>
     
     <div class="filters">
         <div class="filter-group">
