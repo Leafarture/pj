@@ -383,3 +383,71 @@ body {
     font-size: 2rem;
     margin-bottom: 1rem;
 }
+
+/* Estilos para novos cards de doação */
+.doacao-card.new-donation {
+    border: 2px solid #10b981;
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.doacao-card.new-donation::before {
+    content: 'NOVO';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    z-index: 10;
+    animation: pulse 2s infinite;
+}
+
+.doacao-card.highlight-new {
+    animation: highlightPulse 3s ease-in-out;
+    border-color: #8b5cf6;
+    box-shadow: 0 0 30px rgba(139, 92, 246, 0.4);
+}
+
+@keyframes highlightPulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 30px rgba(139, 92, 246, 0.4);
+    }
+    25% {
+        transform: scale(1.02);
+        box-shadow: 0 0 40px rgba(139, 92, 246, 0.6);
+    }
+    50% {
+        transform: scale(1.01);
+        box-shadow: 0 0 35px rgba(139, 92, 246, 0.5);
+    }
+    75% {
+        transform: scale(1.02);
+        box-shadow: 0 0 40px rgba(139, 92, 246, 0.6);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 30px rgba(139, 92, 246, 0.4);
+    }
+}
+
+/* Efeito de entrada para novos cards */
+.doacao-card.new-donation {
+    animation: slideInFromTop 0.6s ease-out;
+}
+
+@keyframes slideInFromTop {
+    0% {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

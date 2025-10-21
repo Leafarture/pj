@@ -29,7 +29,8 @@ public class SecurityConfig {
                         .requestMatchers("/auth/login", "/auth/registro", "/auth/cadastros").permitAll()
                         .requestMatchers("/login.html", "/cadastro_perfil.html", "/Estabelecimento.html", "/Usuario.html", "/index.html", "/").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/img/**", "/static/**").permitAll()
-                        .requestMatchers("/doacoes/**").authenticated()
+                        .requestMatchers("/doacoes").permitAll()  // Permitir acesso público para listar doações
+                        .requestMatchers("/doacoes/**").authenticated()  // Outras operações requerem autenticação
                         .requestMatchers("/api/user/me").authenticated()
                         .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated()

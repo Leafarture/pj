@@ -1,5 +1,5 @@
 // API Base URL
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = 'http://localhost:8080';
 
 // Elementos da página
 const doacoesContainer = document.getElementById('doacoes-container');
@@ -39,7 +39,85 @@ document.addEventListener('DOMContentLoaded', function() {
             if (e.key === 'Enter') applyFilters();
         });
     }
+    
+    // Escutar evento de nova doação criada
+    window.addEventListener('newDonationCreated', function(event) {
+        handleNewDonation(event.detail);
+    });
+    
+    // Registrar listener no sistema de tempo real
+    if (typeof realtimeManager !== 'undefined') {
+        realtimeManager.on('newDonation', handleNewDonation);
+    }
 });
+
+// Função para lidar com nova doação criada
+function handleNewDonation(donationData) {
+    const { doacao, timestamp } = donationData;
+    
+    // Adicionar nova doação ao início da lista (mais recente primeiro)
+    allDoacoes.unshift(doacao);
+    filteredDoacoes.unshift(doacao);
+    
+    // Mostrar notificação de atualização
+    showRealtimeNotification('Nova doação disponível!', doacao);
+    
+    // Atualizar a interface com destaque para o novo card
+    displayDoacoesWithHighlight(filteredDoacoes, doacao);
+    
+    // Scroll suave para o topo para mostrar o novo card
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
+// Função para mostrar notificação de atualização em tempo real
+function showRealtimeNotification(message, doacao) {
+    // Criar notificação personalizada para atualização em tempo real
+    const notification = document.createElement('div');
+    notification.className = 'realtime-notification';
+    notification.innerHTML = `
+        <div class="realtime-notification-content">
+            <div class="realtime-notification-icon">
+                <i class="fas fa-bell"></i>
+            </div>
+            <div class="realtime-notification-text">
+                <div class="realtime-notification-title">Feed Atualizado!</div>
+                <div class="realtime-notification-message">${message}</div>
+                <div class="realtime-notification-item">${doacao.titulo || doacao.nome}</div>
+            </div>
+            <button class="realtime-notification-close" onclick="this.parentElement.parentElement.remove()">×</button>
+        </div>
+    `;
+    
+    // Adicionar ao container de notificações
+    let container = document.querySelector('.notification-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.className = 'notification-container';
+        document.body.appendChild(container);
+    }
+    
+    container.appendChild(notification);
+    
+    // Trigger animation
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 100);
+    
+    // Auto remove após 5 segundos
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.classList.add('hide');
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 400);
+        }
+    }, 5000);
+}
 
 // Função para carregar todas as doações
 async function loadDoacoes() {
@@ -88,10 +166,38 @@ function displayDoacoes(doacoes) {
     });
 }
 
+// Função para exibir doações com destaque para nova doação
+function displayDoacoesWithHighlight(doacoes, newDoacao) {
+    doacoesContainer.innerHTML = '';
+    
+    if (doacoes.length === 0) {
+        showNoDonations();
+        return;
+    }
+    
+    hideNoDonations();
+    
+    doacoes.forEach((doacao, index) => {
+        const isNew = doacao.id === newDoacao.id;
+        const doacaoCard = createDoacaoCard(doacao, isNew);
+        doacoesContainer.appendChild(doacaoCard);
+        
+        // Adicionar efeito de destaque para o novo card
+        if (isNew) {
+            setTimeout(() => {
+                doacaoCard.classList.add('highlight-new');
+                setTimeout(() => {
+                    doacaoCard.classList.remove('highlight-new');
+                }, 3000);
+            }, 100);
+        }
+    });
+}
+
 // Função para criar card de doação
-function createDoacaoCard(doacao) {
+function createDoacaoCard(doacao, isNew = false) {
     const card = document.createElement('div');
-    card.className = 'doacao-card';
+    card.className = isNew ? 'doacao-card new-donation' : 'doacao-card';
     
     // Formatar data
     const dataValidade = new Date(doacao.dataValidade);

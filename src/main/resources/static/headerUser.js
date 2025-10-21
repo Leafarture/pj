@@ -35,14 +35,6 @@ class HeaderUserManager {
         userSection.className = 'header-user-section';
         userSection.innerHTML = `
             <div class="user-logged-in" id="user-logged-in" style="display: none;">
-                <a href="minhas-doacoes.html" class="user-action-btn">
-                    <i class="fas fa-heart"></i>
-                    <span>Minhas Doações</span>
-                </a>
-                <a href="cadastro_alimento.html" class="user-action-btn primary">
-                    <i class="fas fa-plus"></i>
-                    <span>Nova Doação</span>
-                </a>
                 <div class="profile-dropdown">
                     <button class="avatar-btn" id="avatar-btn" aria-label="Abrir menu de perfil">
                         <img id="user-avatar-img" src="" alt="Avatar" style="display: none;">
@@ -53,6 +45,8 @@ class HeaderUserManager {
                             <span class="user-greeting">Olá, <span id="user-name">Usuário</span>!</span>
                         </div>
                         <a href="paginaUsuario.html"><i class="fas fa-user-circle"></i> Perfil</a>
+                        <a href="minhas-doacoes.html"><i class="fas fa-heart"></i> Minhas Doações</a>
+                        <a href="cadastro_alimento.html"><i class="fas fa-plus"></i> Nova Doação</a>
                         <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
                     </div>
                 </div>

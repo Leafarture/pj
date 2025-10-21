@@ -1,270 +1,356 @@
-// Aguardar o sistema de autenticação carregar
-document.addEventListener('DOMContentLoaded', function() {
-    // Verificar autenticação antes de permitir cadastro
-    setTimeout(() => {
-        checkAuthentication();
-    }, 100);
-});
+// Dependência: O 'showNotification' é esperado do arquivo notification.js (existente no projeto)
 
-function checkAuthentication() {
-    if (!window.authManager || !window.authManager.isAuthenticated()) {
-        // Usuário não logado - redirecionar para login
-        if (confirm('Você precisa estar logado para fazer uma doação.\n\nDeseja fazer login agora?')) {
-            window.location.href = 'login.html';
-        } else {
-            window.location.href = 'index.html';
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('donationForm');
+    const btnSubmit = document.getElementById('btnSubmit');
+    const photoInput = document.getElementById('foodPhoto');
+    const photoPreview = document.getElementById('photoPreview');
+    const toggleBtn = document.getElementById('toggleOptional');
+    const optionalContent = document.getElementById('optionalContent');
+    const getLocationBtn = document.getElementById('getLocationBtn');
+    const locationStatus = document.getElementById('locationStatus');
+    const cepInput = document.getElementById('cep');
+    const searchCepBtn = document.getElementById('searchCepBtn');
+    const streetInput = document.getElementById('street');
+    const numberInput = document.getElementById('number');
+    const cityInput = document.getElementById('city');
+    const stateInput = document.getElementById('state');
+    const complementInput = document.getElementById('complement');
+    const addressInput = document.getElementById('address');
+
+    // Mapeamento de campos para validação
+    const fields = [
+        'foodName', 'foodType', 'description', 'quantity', 'unit',
+        'expiryDate', 'collectionDate', 'cep', 'street', 'number', 'city', 'state', 'address', 'conservation', 'foodPhoto', 'terms'
+    ];
+
+    // --- Lógica de CEP e ViaCEP ---
+    
+    // Formatação automática do CEP
+    cepInput.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length > 5) {
+            value = value.substring(0, 5) + '-' + value.substring(5, 8);
         }
-        return;
-    }
-    
-    // Usuário logado - inicializar formulário
-    initializeForm();
-}
+        e.target.value = value;
+    });
 
-function initializeForm() {
-    // Seleciona o formulário
-    const foodForm = document.getElementById('foodRegistrationForm');
-
-    // Evento de envio do formulário
-    foodForm.addEventListener('submit', function(e) {
-        e.preventDefault(); // Evita o reload da página
-
-    const foodData = {
-        titulo: document.getElementById('foodName').value,
-        tipoAlimento: document.getElementById('foodType').value,
-        quantidade: parseFloat(document.getElementById('quantity').value) || null,
-        validade: document.getElementById('expiryDate').value,
-        descricao: document.getElementById('description').value,
-        endereco: document.getElementById('address').value,
-        cidade: document.getElementById('city').value,
-        latitude: document.getElementById('lat').value ? parseFloat(document.getElementById('lat').value) : null,
-        longitude: document.getElementById('lng').value ? parseFloat(document.getElementById('lng').value) : null
-    };
-
-    console.log('Alimento cadastrado:', foodData);
-
-    // Enviar para o backend (doações)
-    const apiBase = window.location.origin;
-    const token = localStorage.getItem('token');
-    
-    const headers = {
-        'Content-Type': 'application/json',
-    };
-    
-    // Adicionar token de autenticação se disponível
-    if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-    }
-    
-    fetch(apiBase + '/doacoes', {
-        method: 'POST',
-        headers: headers,
-        body: JSON.stringify(foodData),
-    })
-    .then(async (response) => {
-        const text = await response.text();
-        if (!response.ok) {
-            throw new Error(text || 'Erro ao cadastrar doação');
+    // Busca endereço pelo CEP
+    async function searchAddressByCep(cep) {
+        const cleanCep = cep.replace(/\D/g, '');
+        
+        if (cleanCep.length !== 8) {
+            showNotification('CEP deve ter 8 dígitos.', 'error');
+            return;
         }
-        try { return JSON.parse(text); } catch(_) { return text; }
-    })
-    .then(data => {
-        console.log('Sucesso:', data);
-        alert('Doação cadastrada com sucesso!');
-        foodForm.reset();
-        
-        // Redirecionar para a página de doações após cadastro
-        setTimeout(() => {
-            window.location.href = 'minhas-doacoes.html';
-        }, 1500);
-    })
-    .catch((error) => {
-        console.error('Erro:', error);
-        alert('Falha ao cadastrar doação: ' + error.message);
-    });
-});
 
-// Tabs de localização
-const locationTabs = document.querySelectorAll('.location-tab');
-const locationContents = document.querySelectorAll('.location-tab-content');
-
-locationTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-        const targetTab = tab.getAttribute('data-tab');
-        
-        // Remove active de todas as tabs
-        locationTabs.forEach(t => t.classList.remove('active'));
-        locationContents.forEach(c => c.classList.remove('active'));
-        
-        // Ativa a tab clicada
-        tab.classList.add('active');
-        document.getElementById(targetTab).classList.add('active');
-    });
-});
-
-// Botão de geolocalização
-const getLocationBtn = document.getElementById('getLocationBtn');
-const locationStatus = document.getElementById('locationStatus');
-let map, userMarker;
-initMap();
-
-getLocationBtn.addEventListener('click', () => {
-    if (navigator.geolocation) {
-        locationStatus.textContent = 'Localizando...';
-        navigator.geolocation.getCurrentPosition((position) => {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-            locationStatus.textContent = `Lat: ${lat.toFixed(5)}, Lon: ${lon.toFixed(5)}`;
-            document.getElementById('lat').value = lat;
-            document.getElementById('lng').value = lon;
-            setUserLocationOnMap(lat, lon);
-            loadNearbyDonations(lat, lon);
-        }, (err) => {
-            locationStatus.textContent = 'Não foi possível obter localização';
-        });
-    } else {
-        locationStatus.textContent = 'Geolocalização não suportada';
-    }
-});
-
-// Busca por CEP
-const cepInput = document.getElementById('cep');
-const addressCepInput = document.getElementById('addressCep');
-const cityCepInput = document.getElementById('cityCep');
-
-cepInput.addEventListener('input', (e) => {
-    let value = e.target.value.replace(/\D/g, '');
-    if (value.length > 5) {
-        value = value.substring(0, 5) + '-' + value.substring(5, 8);
-    }
-    e.target.value = value;
-});
-
-cepInput.addEventListener('blur', async () => {
-    const cep = cepInput.value.replace(/\D/g, '');
-    if (cep.length === 8) {
         try {
-            const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-            const data = await response.json();
+            searchCepBtn.disabled = true;
+            searchCepBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             
-            if (!data.erro) {
-                addressCepInput.value = `${data.logradouro}, ${data.bairro}`;
-                cityCepInput.value = data.localidade;
+            const response = await fetch(`https://viacep.com.br/ws/${cleanCep}/json/`);
+            const data = await response.json();
+
+            if (data.erro) {
+                showNotification('CEP não encontrado.', 'error');
+                return;
+            }
+
+            // Preenche os campos automaticamente
+            streetInput.value = data.logradouro || '';
+            cityInput.value = data.localidade || '';
+            stateInput.value = data.uf || '';
+            
+            // Gera o endereço completo
+            generateFullAddress();
+            
+            showNotification('Endereço encontrado com sucesso!', 'success');
+            
+        } catch (error) {
+            console.error('Erro ao buscar CEP:', error);
+            showNotification('Erro ao buscar CEP. Tente novamente.', 'error');
+        } finally {
+            searchCepBtn.disabled = false;
+            searchCepBtn.innerHTML = '<i class="fas fa-search"></i>';
+        }
+    }
+
+    // Gera endereço completo automaticamente
+    function generateFullAddress() {
+        const street = streetInput.value.trim();
+        const number = numberInput.value.trim();
+        const city = cityInput.value.trim();
+        const state = stateInput.value.trim();
+        const complement = complementInput.value.trim();
+        
+        if (street && number && city && state) {
+            let fullAddress = `${street}, ${number}`;
+            if (complement) {
+                fullAddress += `, ${complement}`;
+            }
+            fullAddress += `, ${city} - ${state}`;
+            
+            addressInput.value = fullAddress;
+        }
+    }
+
+    // Event listeners para busca de CEP
+    searchCepBtn.addEventListener('click', () => {
+        const cep = cepInput.value.trim();
+        if (cep) {
+            searchAddressByCep(cep);
+        } else {
+            showNotification('Digite um CEP válido.', 'error');
+        }
+    });
+
+    // Busca automática quando CEP estiver completo
+    cepInput.addEventListener('blur', () => {
+        const cep = cepInput.value.trim();
+        if (cep && cep.length === 9) { // 00000-000
+            searchAddressByCep(cep);
+        }
+    });
+
+    // Atualiza endereço completo quando outros campos mudam
+    [streetInput, numberInput, cityInput, stateInput, complementInput].forEach(input => {
+        input.addEventListener('input', generateFullAddress);
+    });
+
+    // --- Lógica de Imagem e Pré-visualização ---
+    photoInput.addEventListener('change', function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                photoPreview.src = e.target.result;
+                photoPreview.style.display = 'block';
+                const icon = photoPreview.previousElementSibling;
+                if (icon) icon.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        } else {
+            photoPreview.style.display = 'none';
+            const icon = photoPreview.previousElementSibling;
+            if (icon) icon.style.display = 'block';
+        }
+    });
+
+    // --- Lógica de Seção Opcional Expansível ---
+    toggleBtn.addEventListener('click', () => {
+        const isHidden = optionalContent.classList.toggle('hidden');
+        optionalContent.classList.toggle('visible', !isHidden);
+        
+        // Atualizar ícone e texto
+        const icon = toggleBtn.querySelector('i');
+        toggleBtn.innerHTML = '';
+        if (isHidden) {
+            icon.className = 'fas fa-chevron-down';
+            toggleBtn.appendChild(icon);
+            toggleBtn.appendChild(document.createTextNode(' Mostrar Mais Detalhes (Opcional)'));
+        } else {
+            icon.className = 'fas fa-chevron-up';
+            toggleBtn.appendChild(icon);
+            toggleBtn.appendChild(document.createTextNode(' Ocultar Detalhes'));
+        }
+    });
+    
+    // --- Lógica de Geolocalização ---
+    getLocationBtn.addEventListener('click', () => {
+        if (!navigator.geolocation) {
+            locationStatus.textContent = 'Geolocalização não suportada pelo seu navegador.';
+            showNotification('Seu navegador não suporta a API de Geolocalização.', 'warning');
+            return;
+        }
+
+        locationStatus.textContent = 'Localizando...';
+
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+
+            document.getElementById('lat').value = lat;
+            document.getElementById('lng').value = lng;
+            locationStatus.textContent = `Lat: ${lat.toFixed(5)}, Lon: ${lng.toFixed(5)} (Localização obtida)`;
+            
+            // Tenta obter o endereço reverso (API externa - ViaCEP é mais confiável para o BR)
+            // Simulação de endereço reverso para manter o código self-contained
+            const mockAddress = `Endereço Automático, Próximo a Lat ${lat.toFixed(2)}`;
+            document.getElementById('address').value = mockAddress;
+
+            showNotification('Localização obtida com sucesso!', 'success');
+        }, (error) => {
+            locationStatus.textContent = 'Não foi possível obter sua localização. Preencha manualmente.';
+            showNotification('Erro: ' + error.message, 'error');
+            document.getElementById('lat').value = '';
+            document.getElementById('lng').value = '';
+        }, {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0
+        });
+    });
+
+
+    // --- Lógica de Validação ---
+    function validateForm() {
+        let isValid = true;
+        
+        fields.forEach(fieldName => {
+            const field = document.getElementById(fieldName);
+            const errorElement = document.getElementById(`error-${fieldName}`);
+            const parent = field.closest('.form-group') || field.closest('.terms-group');
+            
+            errorElement.textContent = '';
+            parent.classList.remove('has-error');
+            
+            if (field.required && (!field.value.trim() && field.type !== 'file' && field.type !== 'checkbox' || (field.type === 'checkbox' && !field.checked))) {
+                errorElement.textContent = `Este campo é obrigatório.`;
+                parent.classList.add('has-error');
+                isValid = false;
+            } 
+            
+            if (fieldName === 'quantity' && parseFloat(field.value) <= 0) {
+                 errorElement.textContent = `A quantidade deve ser maior que zero.`;
+                 parent.classList.add('has-error');
+                 isValid = false;
+            }
+
+            // Validação específica para CEP
+            if (fieldName === 'cep') {
+                const cepValue = field.value.replace(/\D/g, '');
+                if (cepValue.length !== 8) {
+                    errorElement.textContent = `CEP deve ter 8 dígitos.`;
+                    parent.classList.add('has-error');
+                    isValid = false;
+                }
+            }
+
+            // Validação específica para Estado (UF)
+            if (fieldName === 'state') {
+                const stateValue = field.value.trim().toUpperCase();
+                if (stateValue.length !== 2) {
+                    errorElement.textContent = `Estado deve ter 2 caracteres (UF).`;
+                    parent.classList.add('has-error');
+                    isValid = false;
+                }
+            }
+
+            if (fieldName === 'foodPhoto' && field.required && (!field.files || field.files.length === 0)) {
+                errorElement.textContent = `Uma foto é obrigatória.`;
+                parent.classList.add('has-error');
+                isValid = false;
+            }
+        });
+
+        return isValid;
+    }
+
+    // --- Lógica de Submissão ---
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        if (!validateForm()) {
+            showNotification('Corrija os erros destacados no formulário.', 'error', 4000);
+            return;
+        }
+
+        const formData = new FormData(form);
+        const data = {};
+        
+        // Coleta todos os dados do formulário
+        for (let [key, value] of formData.entries()) {
+            // Converte quantidade para número
+            if (key === 'quantity') {
+                data[key] = parseFloat(value);
+            } else if (key !== 'foodPhoto') { // Ignora a foto por enquanto
+                data[key] = value;
+            }
+        }
+
+        // Adiciona campos de termos (booleano) e geolocalização
+        data.termsAccepted = formData.get('terms') === 'on';
+        data.latitude = formData.get('lat') ? parseFloat(formData.get('lat')) : null;
+        data.longitude = formData.get('lng') ? parseFloat(formData.get('lng')) : null;
+        
+        // Prepara dados simulados para envio ao backend (que usa o modelo Doacao)
+        const payload = {
+            titulo: data.foodName,
+            descricao: `Tipo: ${data.foodType}. Detalhes: ${data.description}. Conservação: ${data.conservation}. Restrições: ${data.restrictions || 'Nenhuma'}. Medida Caseira: ${data.homeMeasure || 'N/A'}`,
+            tipoAlimento: data.foodType,
+            quantidade: data.quantity,
+            cidade: data.city,
+            endereco: data.address,
+            latitude: data.latitude,
+            longitude: data.longitude,
+            // Campos extras que o backend não espera, mas o frontend coleta:
+            dataValidade: data.expiryDate,
+            dataColeta: data.collectionDate,
+            destino: data.donationTarget,
+            unidade: data.unit,
+            // Novos campos de endereço detalhado:
+            cep: data.cep,
+            rua: data.street,
+            numero: data.number,
+            estado: data.state,
+            complemento: data.complement || ''
+        };
+
+        // Envio real para o backend
+        btnSubmit.textContent = 'Enviando...';
+        btnSubmit.disabled = true;
+
+        try {
+            const token = localStorage.getItem('token');
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+            
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+
+            const response = await fetch('/doacoes', {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                showNotification('Alimento cadastrado com sucesso! Redirecionando para suas doações.', 'success', 3000);
                 
-                // Preenche os campos principais
-                document.getElementById('address').value = addressCepInput.value;
-                document.getElementById('city').value = cityCepInput.value;
+                // Notificar sistema de tempo real sobre nova doação
+                if (typeof notifyNewDonation === 'function') {
+                    notifyNewDonation(result);
+                } else {
+                    // Fallback para evento personalizado
+                    const newDonationEvent = new CustomEvent('newDonationCreated', {
+                        detail: {
+                            doacao: result,
+                            timestamp: new Date().toISOString()
+                        }
+                    });
+                    window.dispatchEvent(newDonationEvent);
+                }
+                
+                // Reseta o formulário
+                form.reset();
+                
+                // Redirecionar para minhas doações após sucesso
+                setTimeout(() => {
+                    window.location.href = 'minhas-doacoes.html';
+                }, 2000);
             } else {
-                alert('CEP não encontrado');
+                const errorText = await response.text();
+                showNotification(`Erro ao cadastrar alimento: ${errorText}`, 'error', 5000);
             }
         } catch (error) {
-            alert('Erro ao buscar CEP');
-        }
-    }
-});
-
-// Busca com filtros
-const btnBuscar = document.getElementById('btnBuscar');
-if (btnBuscar) btnBuscar.addEventListener('click', async () => {
-    const tipo = document.getElementById('searchTipo').value;
-    const cidade = document.getElementById('searchCidade').value;
-    const params = new URLSearchParams({ tipo, cidade });
-    const res = await fetch(window.location.origin + '/doacoes?' + params.toString());
-    const itens = await res.json();
-    renderResultados(itens);
-});
-
-// Próximas por geolocalização
-const btnPerto = document.getElementById('btnPerto');
-if (btnPerto) btnPerto.addEventListener('click', async () => {
-    if (!navigator.geolocation) return alert('Geolocalização não suportada');
-    navigator.geolocation.getCurrentPosition(async (pos) => {
-        const lat = pos.coords.latitude;
-        const lng = pos.coords.longitude;
-        const res = await fetch(`${window.location.origin}/doacoes/proximas?lat=${lat}&lng=${lng}&raio_km=10`);
-        const itens = await res.json();
-        renderResultados(itens);
-        setUserLocationOnMap(lat, lng);
-        renderMarkers(itens);
-    }, () => alert('Não foi possível obter localização'));
-});
-
-function renderResultados(itens) {
-    const ul = document.getElementById('listaResultados');
-    ul.innerHTML = '';
-    itens.forEach(i => {
-        const li = document.createElement('li');
-        li.textContent = `${i.titulo} - ${i.tipoAlimento || ''} - ${i.cidade || ''}`;
-        ul.appendChild(li);
-    });
-}
-
-function initMap() {
-    const el = document.getElementById('map');
-    if (!el || typeof L === 'undefined') return;
-    map = L.map('map').setView([-23.55, -46.63], 12);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '© OpenStreetMap'
-    }).addTo(map);
-}
-
-function setUserLocationOnMap(lat, lng) {
-    if (!map) return;
-    if (userMarker) map.removeLayer(userMarker);
-    userMarker = L.marker([lat, lng]).addTo(map).bindPopup('Você está aqui');
-    map.setView([lat, lng], 14);
-}
-
-function renderMarkers(items) {
-    if (!map) return;
-    items.filter(i => i.latitude && i.longitude).forEach(i => {
-        L.marker([i.latitude, i.longitude]).addTo(map).bindPopup(`<b>${i.titulo || 'Doação'}</b><br/>${i.tipoAlimento || ''} - ${i.cidade || ''}`);
-    });
-}
-
-async function loadNearbyDonations(lat, lng) {
-    try {
-        const res = await fetch(`${window.location.origin}/doacoes/proximas?lat=${lat}&lng=${lng}&raio_km=10`);
-        const itens = await res.json();
-        renderResultados(itens);
-        renderMarkers(itens);
-    } catch (e) {
-        console.error(e);
-    }
-}
-
-// Chat de ajuda (contato)
-const helpBtn = document.getElementById('helpBtn');
-const helpModal = document.getElementById('helpModal');
-document.getElementById('helpFechar').addEventListener('click', () => helpModal.style.display = 'none');
-helpBtn.addEventListener('click', () => helpModal.style.display = 'flex');
-document.getElementById('helpEnviar').addEventListener('click', async () => {
-    const remetente = document.getElementById('helpRemetente').value || '0';
-    const conteudo = document.getElementById('helpMensagem').value;
-    if (!conteudo) return alert('Digite sua mensagem');
-    const payload = { remetenteId: parseInt(remetente, 10), destinatarioId: 1, conteudo };
-    await fetch('/chat/enviar', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-    alert('Mensagem enviada! Nossa equipe responderá em breve.');
-    helpModal.style.display = 'none';
-    document.getElementById('helpMensagem').value = '';
-});
-
-// Chat-bot simples: sugestões automáticas
-const helpMensagem = document.getElementById('helpMensagem');
-if (helpMensagem) {
-    helpMensagem.addEventListener('input', () => {
-        const txt = helpMensagem.value.toLowerCase();
-        const sugestoes = [];
-        if (txt.includes('localiza') || txt.includes('gps')) sugestoes.push('Dica: clique em "Usar Minha Localização" e autorize o navegador.');
-        if (txt.includes('erro') || txt.includes('cadast')) sugestoes.push('Verifique os campos obrigatórios e tente novamente.');
-        if (txt.includes('mapa')) sugestoes.push('O mapa usa OpenStreetMap. Necessita internet ativa.');
-        if (sugestoes.length) {
-            // Exibir como placeholder de resposta do bot
-            helpMensagem.setAttribute('placeholder', 'Sugestão: ' + sugestoes[0]);
+            console.error('Erro na requisição:', error);
+            showNotification('Erro de conexão. Verifique sua internet e tente novamente.', 'error', 5000);
+        } finally {
+            btnSubmit.textContent = 'Cadastrar Alimento para Doação';
+            btnSubmit.disabled = false;
         }
     });
-}
-
-// Fechar a função initializeForm
-}
+});
