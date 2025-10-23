@@ -627,10 +627,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ===== INICIALIZAÇÃO FINAL =====
     console.log('✅ Prato Justo - Site totalmente carregado e otimizado!');
     
-    // Mostrar notificação de boas-vindas
-    setTimeout(() => {
-        showNotification('Bem-vindo ao Prato Justo! 🍽️', 'success', 3000);
-    }, 2000);
+    // Notificação de boas-vindas removida
 });
 
 // ===== ESTILOS DINÂMICOS PARA AS NOVAS FUNCIONALIDADES =====
@@ -912,12 +909,16 @@ function updateHeaderActions() {
             });
         }
     } else {
+        // Usuário não logado - mostrar botões de login e cadastro
         headerActions.innerHTML = `
-            <a href="login.html" class="btn btn-login">Entrar</a>
-            <a href="cadastro_perfil.html" class="donate-btn">
-                <span class="btn-icon"><i class="fas fa-heart"></i></span>
-                Doar Agora
-            </a>
+            <div class="login-section">
+                <a href="login.html" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i> Entrar
+                </a>
+                <a href="cadastro_perfil.html" class="register-btn">
+                    <i class="fas fa-user-plus"></i> Cadastrar
+                </a>
+            </div>
         `;
     }
 }

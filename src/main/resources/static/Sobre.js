@@ -3,10 +3,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🚀 Prato Justo - Inicializando...');
 
-    // Sistema de autenticação - usar a função do index.js
-    if (typeof updateHeaderActions === 'function') {
-        updateHeaderActions();
-    }
+    // Sistema de autenticação - o headerUser.js já cuida disso
+    // Não precisamos chamar updateHeaderActions aqui
 
     // ===== LOADING SCREEN =====
     const loadingScreen = document.querySelector('.loading-screen');
@@ -228,7 +226,7 @@ document.addEventListener('DOMContentLoaded', function() {
             info: 'ℹ️'
         };
 
-        notification.innerHTML = `
+               notification.innerHTML = `
             <div class="notification-content">
                 <span class="notification-icon">${icons[type]}</span>
                 <span class="notification-message">${message}</span>
@@ -280,10 +278,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ===== INICIALIZAÇÃO FINAL =====
     console.log('✅ Prato Justo - Site totalmente carregado!');
 
-    // Mostrar notificação de boas-vindas
-    setTimeout(() => {
-        showNotification('Bem-vindo ao Prato Justo! 🍽️', 'success', 3000);
-    }, 2000);
+    // Notificação de boas-vindas removida
 });
 
 // ===== ESTILOS DINÂMICOS =====

@@ -250,19 +250,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (cnpjInput) {
         cnpjInput.addEventListener('input', e => {
-            e.target.value = formatarCNPJ(e.target.value);
+            // Remove caracteres não numéricos e limita a 14 dígitos
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 14) {
+                value = value.substring(0, 14);
+            }
+            e.target.value = formatarCNPJ(value);
         });
     }
 
     if (telefoneInput) {
         telefoneInput.addEventListener('input', e => {
-            e.target.value = formatarTelefone(e.target.value);
+            // Remove caracteres não numéricos e limita a 11 dígitos
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 11) {
+                value = value.substring(0, 11);
+            }
+            e.target.value = formatarTelefone(value);
         });
     }
 
     if (cepInput) {
         cepInput.addEventListener('input', e => {
-            e.target.value = formatarCEP(e.target.value);
+            // Remove caracteres não numéricos e limita a 8 dígitos
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 8) {
+                value = value.substring(0, 8);
+            }
+            e.target.value = formatarCEP(value);
         });
 
         cepInput.addEventListener('blur', e => {

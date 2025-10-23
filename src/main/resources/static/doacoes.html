@@ -8,15 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="./index.css">
-    <style>
-        body {
-            padding-top: 80px;
-        }
-        
-        .filters {
-            margin-top: 2rem;
-        }
-    </style>
+    <link rel="stylesheet" href="./header-styles.css">
 </head>
 <body>
 <!-- Header -->
@@ -46,14 +38,53 @@
     </nav>
 </header>
     
-    <div class="filters">
-        <div class="filter-group">
-            <input type="text" id="filter-city" placeholder="Filtrar por cidade...">
-            <input type="text" id="filter-type" placeholder="Filtrar por tipo de alimento...">
-            <button id="filter-btn" class="btn-filter">Filtrar</button>
-            <button id="clear-filters" class="btn-clear">Limpar</button>
+    <!-- Hero Section com Filtros -->
+    <section class="hero-filters">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">Alimentos <span class="highlight">Disponíveis</span></h1>
+                    <p class="hero-description">Encontre doações de alimentos frescos na sua região</p>
+                </div>
+                
+                <div class="filters-card">
+                    <div class="filters-header">
+                        <h3><i class="fas fa-filter"></i> Filtros de Busca</h3>
+                        <p>Encontre exatamente o que você precisa</p>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <div class="filter-field">
+                            <label for="filter-city">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Cidade
+                            </label>
+                            <input type="text" id="filter-city" placeholder="Digite sua cidade...">
+                        </div>
+                        
+                        <div class="filter-field">
+                            <label for="filter-type">
+                                <i class="fas fa-apple-alt"></i>
+                                Tipo de Alimento
+                            </label>
+                            <input type="text" id="filter-type" placeholder="Ex: frutas, verduras...">
+                        </div>
+                        
+                        <div class="filter-actions">
+                            <button id="filter-btn" class="btn btn-primary">
+                                <i class="fas fa-search"></i>
+                                Filtrar
+                            </button>
+                            <button id="clear-filters" class="btn btn-secondary">
+                                <i class="fas fa-times"></i>
+                                Limpar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
 
     <main class="main-content">
         <div id="loading" class="loading">

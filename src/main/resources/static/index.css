@@ -115,10 +115,8 @@
         .nav-menu {
             display: flex;
             list-style: none;
-            gap: 0.5rem;
+            gap: var(--space-xl);  
             align-items: center;
-            flex: 1;
-            justify-content: center;
         }
         
         .nav-menu li {
@@ -201,12 +199,7 @@
             }
         }
 
-        /* Header User Section Styles */
-        .header-user-section {
-            display: flex;
-            align-items: center;
-            gap: var(--space-md);
-        }
+        /* Header User Section Styles - Movido para header-styles.css */
 
         .user-profile {
             display: flex;
@@ -301,47 +294,7 @@
             color: var(--primary-red);
         }
 
-        .login-section {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-        }
-
-        .login-btn, .register-btn {
-            display: flex;
-            align-items: center;
-            gap: var(--space-xs);
-            padding: var(--space-sm) var(--space-md);
-            border-radius: var(--radius-lg);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .login-btn {
-            background: transparent;
-            color: var(--primary-blue);
-            border: 2px solid var(--primary-blue);
-        }
-
-        .login-btn:hover {
-            background: var(--primary-blue);
-            color: var(--white);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .register-btn {
-            background: var(--gradient-primary);
-            color: var(--white);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .register-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
+        /* Login Section Styles - Movido para header-styles.css */
 
         .btn {
             display: inline-flex;
@@ -787,11 +740,7 @@
                 margin-top: var(--space-sm);
             }
 
-            .header-user-section {
-                flex-direction: column;
-                gap: var(--space-sm);
-                width: 100%;
-            }
+            /* Header User Section - Movido para header-styles.css */
 
             .user-profile {
                 flex-direction: column;
@@ -816,17 +765,7 @@
                 justify-content: center;
             }
 
-            .login-section {
-                flex-direction: column;
-                width: 100%;
-                gap: var(--space-sm);
-            }
-
-            .login-btn, .register-btn {
-                width: 100%;
-                justify-content: center;
-                padding: var(--space-md);
-            }
+            /* Login Section - Movido para header-styles.css */
         }
 
         @media (max-width: 480px) {
@@ -863,16 +802,7 @@
         /* NOVOS ESTILOS PARA O MENU DE PERFIL */
         /* ================================== */
 
-        .header-user-section {
-            display: flex;
-            align-items: center;
-        }
-
-        .user-logged-in {
-            display: flex;
-            align-items: center;
-            gap: var(--space-md);
-        }
+        /* Header User Section - Movido para header-styles.css */
 
         .user-action-btn {
             display: flex;
@@ -905,107 +835,4 @@
             box-shadow: var(--shadow-md);
         }
 
-        /* Dropdown de Perfil */
-        .profile-dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .avatar-btn {
-            background: var(--gradient-primary);
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            border: 2px solid var(--white);
-            cursor: pointer;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: var(--shadow-sm);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .avatar-btn:hover {
-            transform: scale(1.05);
-            box-shadow: var(--shadow-md);
-        }
-
-        .avatar-btn img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-        }
-
-        #user-avatar-placeholder {
-            font-size: 1.2rem;
-            color: var(--white);
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: calc(100% + 10px);
-            background-color: var(--white);
-            min-width: 200px;
-            box-shadow: var(--shadow-lg);
-            border-radius: var(--radius-lg);
-            z-index: 1001;
-            overflow: hidden;
-            animation: fadeIn 0.2s ease-out;
-        }
-
-        .dropdown-content.show {
-            display: block;
-        }
-
-        .dropdown-header {
-            padding: var(--space-md);
-            border-bottom: 1px solid var(--gray-200);
-            background: var(--gray-50);
-        }
-
-        .dropdown-content a {
-            color: var(--gray-700);
-            padding: var(--space-md);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: background-color 0.2s ease, color 0.2s ease;
-        }
-
-        .dropdown-content a i {
-            width: 20px;
-            text-align: center;
-            color: var(--gray-500);
-        }
-
-        .dropdown-content a:hover {
-            background-color: var(--gray-100);
-            color: var(--primary-blue);
-        }
-
-        #logout-btn {
-            color: var(--primary-red);
-        }
-
-        #logout-btn:hover {
-            background-color: #fee2e2;
-            color: var(--dark-red);
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+        /* Dropdown de Perfil - Movido para header-styles.css */

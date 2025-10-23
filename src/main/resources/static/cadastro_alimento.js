@@ -29,6 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Formatação automática do CEP
     cepInput.addEventListener('input', function(e) {
         let value = e.target.value.replace(/\D/g, '');
+        // Limita a 8 dígitos
+        if (value.length > 8) {
+            value = value.substring(0, 8);
+        }
         if (value.length > 5) {
             value = value.substring(0, 5) + '-' + value.substring(5, 8);
         }

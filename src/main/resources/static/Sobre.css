@@ -116,7 +116,7 @@ body {
     left: 0;
     width: 100%;
     background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(10px);  
     border-bottom: 1px solid var(--gray-200);
     z-index: 1000;
     transition: all 0.3s ease;
@@ -128,28 +128,33 @@ body {
 }
 
 .nav-container {
-    max-width: 1200px;
+    max-width: 1400px;  
     margin: 0 auto;
-    padding: var(--space-md) var(--space-lg);
+    padding: 1rem 2rem;  
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 2rem;  
 }
 
 .logo {
     display: flex;
     align-items: center;
-    gap: var(--space-sm);
-    text-decoration: none;
-    color: inherit;
+    gap: 0.75rem;
+    flex-shrink: 0;
 }
 
 .logo-icon {
-    font-size: 1.75rem;
+    font-size: 1.5rem; 
     background: var(--gradient-primary);
-    padding: var(--space-sm);
-    border-radius: 12px;
+    padding: 0.5rem; 
+    border-radius: var(--radius-md);  
     color: var(--white);
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+    width: 45px;  
+    height: 45px;
 }
 
 .logo h1 {

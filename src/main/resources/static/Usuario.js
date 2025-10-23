@@ -234,6 +234,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (cepInput) {
         cepInput.addEventListener('input', function(e) {
             let value = e.target.value.replace(/\D/g, '');
+            // Limita a 8 dígitos
+            if (value.length > 8) {
+                value = value.substring(0, 8);
+            }
             if (value.length <= 8) {
                 value = value.replace(/^(\d{5})(\d{3})$/, '$1-$2');
                 e.target.value = value;
@@ -279,6 +283,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (telefoneInput) {
         telefoneInput.addEventListener('input', function(e) {
             let value = e.target.value.replace(/\D/g, '');
+            // Limita a 11 dígitos
+            if (value.length > 11) {
+                value = value.substring(0, 11);
+            }
             if (value.length <= 11) {
                 if (value.length <= 10) {
                     value = value.replace(/^(\d{2})(\d{4})(\d{4})$/, '($1) $2-$3');

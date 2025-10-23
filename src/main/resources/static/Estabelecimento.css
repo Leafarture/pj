@@ -1,17 +1,66 @@
 :root {
-  --azul-escuro: #0f172a;
-  --azul: #1e40af;
-  --azul-claro: #3b82f6;
-  --vermelho: #dc2626;
-  --vermelho-escuro: #b91c1c;
-  --fundo: #0b1220;
-  --card-bg: #0f1a2f;
+  /* Usando a paleta unificada do sistema */
+  --primary-blue: #2563eb;
+  --primary-red: #dc2626;
+  --secondary-blue: #3b82f6;
+  --secondary-red: #ef4444;
+  --dark-blue: #1e40af;
+  --dark-red: #b91c1c;
+  --light-blue: #dbeafe;
+  --light-red: #fee2e2;
+  
+  /* Cores neutras */
+  --white: #ffffff;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+
+  /* Gradientes */
+  --gradient-primary: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-red) 100%);
+  --gradient-secondary: linear-gradient(135deg, var(--secondary-blue) 0%, var(--secondary-red) 100%);
+  --gradient-light: linear-gradient(135deg, var(--light-blue) 0%, var(--light-red) 100%);
+
+  /* Sombras */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 8px 16px -2px rgba(0, 0, 0, 0.1), 0 4px 8px -2px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+  /* Espaçamentos */
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+
+  /* Bordas */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  /* Cores específicas para cadastro de estabelecimento */
+  --azul-escuro: var(--gray-900);
+  --azul: var(--primary-blue);
+  --azul-claro: var(--secondary-blue);
+  --vermelho: var(--primary-red);
+  --vermelho-escuro: var(--dark-red);
+  --fundo: var(--gray-900);
+  --card-bg: var(--gray-800);
   --borda: rgba(255, 255, 255, 0.08);
-  --texto: #e5e7eb;
-  --texto-suave: #cbd5e1;
-  --erro: #fca5a5;
+  --texto: var(--gray-200);
+  --texto-suave: var(--gray-400);
+  --erro: var(--light-red);
   --sucesso: #86efac;
-  --focus-ring: 0 0 0 4px rgba(59, 130, 246, 0.35);
+  --focus-ring: 0 0 0 4px rgba(37, 99, 235, 0.35);
 }
 
 * { box-sizing: border-box; }
@@ -25,9 +74,9 @@ body {
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";
   color: var(--texto);
   background:
-    radial-gradient(1200px 600px at 10% -10%, rgba(59, 130, 246, 0.25), transparent 60%),
+    radial-gradient(1200px 600px at 10% -10%, rgba(37, 99, 235, 0.25), transparent 60%),
     radial-gradient(1000px 500px at 110% 10%, rgba(220, 38, 38, 0.25), transparent 60%),
-    linear-gradient(180deg, #060b16 0%, var(--fundo) 100%);
+    linear-gradient(180deg, var(--gray-900) 0%, var(--fundo) 100%);
 }
 
 .page {
@@ -55,7 +104,7 @@ body {
   font-size: 22px;
   font-weight: 700;
   letter-spacing: 0.2px;
-  background: linear-gradient(90deg, var(--azul-claro), var(--vermelho));
+  background: var(--gradient-primary);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -64,8 +113,8 @@ body {
 .card {
   width: 100%;
   max-width: 580px;
-  background: linear-gradient(180deg, rgba(59, 130, 246, 0.08), rgba(220, 38, 38, 0.08)) padding-box,
-              linear-gradient(180deg, rgba(59, 130, 246, 0.45), rgba(220, 38, 38, 0.45)) border-box,
+  background: linear-gradient(180deg, rgba(37, 99, 235, 0.08), rgba(220, 38, 38, 0.08)) padding-box,
+              linear-gradient(180deg, rgba(37, 99, 235, 0.45), rgba(220, 38, 38, 0.45)) border-box,
               var(--card-bg);
   border: 1px solid transparent;
   border-radius: 16px;
@@ -204,7 +253,7 @@ body {
 }
 
 .btn--primary {
-  background: linear-gradient(90deg, var(--azul-claro), var(--vermelho));
+  background: var(--gradient-primary);
   color: white;
   box-shadow: 0 8px 20px rgba(59,130,246,0.25), 0 8px 20px rgba(220,38,38,0.2);
 }

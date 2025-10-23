@@ -7,6 +7,7 @@
     <title>Cadastro de Estabelecimento | Prato Justo</title>
     <link rel="stylesheet" href="./Estabelecimento.css">
     <link rel="stylesheet" href="./notification.css">
+    <link rel="stylesheet" href="./header-styles.css">
 </head>
 <body>
 <main class="page">
@@ -39,19 +40,19 @@
 
             <div class="field">
                 <label for="cnpj">CNPJ</label>
-                <input id="cnpj" name="cnpj" type="text" placeholder="00.000.000/0000-00" required>
+                <input id="cnpj" name="cnpj" type="text" placeholder="00.000.000/0000-00" maxlength="18" required>
                 <p class="error" id="erro-cnpj" role="alert" aria-live="polite"></p>
             </div>
 
             <div class="field">
                 <label for="telefone">Telefone</label>
-                <input id="telefone" name="telefone" type="tel" autocomplete="tel" placeholder="(11) 99999-9999" required>
+                <input id="telefone" name="telefone" type="tel" autocomplete="tel" placeholder="(11) 99999-9999" maxlength="15" required>
                 <p class="error" id="erro-telefone" role="alert" aria-live="polite"></p>
             </div>
 
             <div class="field">
                 <label for="cep">CEP</label>
-                <input id="cep" name="cep" type="text" placeholder="00000-000" required>
+                <input id="cep" name="cep" type="text" placeholder="00000-000" maxlength="9" required>
                 <p class="error" id="erro-cep" role="alert" aria-live="polite"></p>
             </div>
             
