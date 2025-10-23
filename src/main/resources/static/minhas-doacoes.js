@@ -46,7 +46,7 @@ class MinhasDoacoesApp {
         document.getElementById('authenticated-content').style.display = 'block';
         
         const userName = document.getElementById('user-name');
-        userName.textContent = `Olá, ${this.currentUser.nome}`;
+        userName.textContent = this.currentUser.nome;
     }
 
     showAuthRequired() {

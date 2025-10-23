@@ -242,10 +242,11 @@
     border-bottom: 1px solid var(--gray-200);
     background: var(--gray-50);
     font-weight: 600;
-    color: var(--gray-800);
+    color: var(--white);
 }
 
 .user-greeting {
+    color: var(--white);
     font-size: 0.9rem;
 }
 

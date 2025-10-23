@@ -198,7 +198,7 @@ class HeaderUserManager {
             window.authManager.logout();
         } else {
             localStorage.clear();
-            window.location.reload();
+            window.location.href = 'index.html';
         }
     }
 

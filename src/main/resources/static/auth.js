@@ -444,10 +444,10 @@ class AuthManager {
         // Mostrar mensagem
         this.showNotification('Logout realizado com sucesso!', 'info');
         
-        // Redirecionar para home se estiver em página protegida
-        if (this.isProtectedPage()) {
+        // Sempre redirecionar para index após logout
+        setTimeout(() => {
             window.location.href = 'index.html';
-        }
+        }, 1000);
     }
 
     isProtectedPage() {

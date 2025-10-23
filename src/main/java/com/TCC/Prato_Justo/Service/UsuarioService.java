@@ -102,4 +102,26 @@ public class UsuarioService {
     public Usuario findByEmail(String email) {
         return autchCadastroRepository.findByEmail(email).orElse(null);
     }
+
+    public Usuario save(Usuario usuario) {
+        return autchCadastroRepository.save(usuario);
+    }
+
+    public int getTotalDonations(Long userId) {
+        // Implementar busca de doações do usuário
+        // Por enquanto, retornar valor simulado
+        return 0;
+    }
+
+    public int getFamiliesHelped(Long userId) {
+        // Implementar cálculo de famílias ajudadas
+        // Por enquanto, retornar valor simulado
+        return 0;
+    }
+
+    public double getAverageRating(Long userId) {
+        // Implementar busca de avaliações do usuário
+        // Por enquanto, retornar valor simulado
+        return 0.0;
+    }
 }

@@ -58,4 +58,23 @@ public class AuthService {
     public boolean isTokenValid(String token) {
         return jwtUtil.validateToken(token);
     }
+
+    public Usuario updateUser(Usuario usuario) {
+        return usuarioService.save(usuario);
+    }
+
+    public Map<String, Object> getUserStats(Long userId) {
+        Map<String, Object> stats = new HashMap<>();
+        
+        // Buscar estatísticas do usuário
+        int totalDonations = usuarioService.getTotalDonations(userId);
+        int familiesHelped = usuarioService.getFamiliesHelped(userId);
+        double averageRating = usuarioService.getAverageRating(userId);
+        
+        stats.put("totalDonations", totalDonations);
+        stats.put("familiesHelped", familiesHelped);
+        stats.put("averageRating", averageRating);
+        
+        return stats;
+    }
 }
