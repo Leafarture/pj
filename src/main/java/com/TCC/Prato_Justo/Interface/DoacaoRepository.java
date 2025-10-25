@@ -20,6 +20,14 @@ public interface DoacaoRepository extends JpaRepository<Doacao, Long> {
     List<Doacao> findAllComCoordenadas();
 
     List<Doacao> findByDoadorId(Long doadorId);
+    
+    // Contar doações por usuário
+    @Query("SELECT COUNT(d) FROM Doacao d WHERE d.doador.id = :usuarioId")
+    int countByDoadorId(@Param("usuarioId") Long usuarioId);
+    
+    // Contar doações ativas por usuário
+    @Query("SELECT COUNT(d) FROM Doacao d WHERE d.doador.id = :usuarioId AND d.ativo = true")
+    int countActiveByDoadorId(@Param("usuarioId") Long usuarioId);
 }
 
 

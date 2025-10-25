@@ -311,46 +311,111 @@
 
     <!-- Modal de Edição de Perfil -->
     <div id="edit-profile-modal" class="modal" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
-        <div class="modal-overlay">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 id="modal-title" class="modal-title">Editar Perfil</h2>
-                    <button class="btn-close-modal" aria-label="Fechar modal">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="edit-profile-form" class="edit-form">
-                        <div class="form-group">
-                            <label for="edit-name">Nome Completo</label>
-                            <input type="text" id="edit-name" name="name" required>
+        <div class="modal-overlay" id="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title" class="modal-title">
+                    <i class="fas fa-user-edit"></i>
+                    Editar Perfil
+                </h2>
+                <button class="btn-close-modal" aria-label="Fechar modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-profile-form" class="edit-form">
+                    <!-- Seção de Foto de Perfil -->
+                    <div class="form-group-avatar">
+                        <label class="avatar-label">Foto de Perfil</label>
+                        <div class="avatar-upload-section">
+                            <div class="avatar-preview-container">
+                                <img id="edit-avatar-preview" src="" alt="Preview do avatar" class="avatar-preview" style="display: none;" />
+                                <div id="edit-avatar-placeholder" class="avatar-preview-placeholder">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="avatar-upload-overlay">
+                                    <i class="fas fa-camera"></i>
+                                    <span>Alterar Foto</span>
+                                </div>
+                            </div>
+                            <input type="file" id="avatar-upload" name="avatar" accept="image/*" style="display: none;">
+                            <button type="button" class="btn-upload-avatar">
+                                <i class="fas fa-upload"></i>
+                                Escolher Foto
+                            </button>
+                            <p class="avatar-hint">JPG, PNG ou GIF (máx. 5MB)</p>
                         </div>
-                        <div class="form-group">
-                            <label for="edit-email">Email</label>
-                            <input type="email" id="edit-email" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="edit-phone">Telefone</label>
-                            <input type="tel" id="edit-phone" name="phone">
-                        </div>
-                        <div class="form-group">
-                            <label for="edit-description">Descrição</label>
-                            <textarea id="edit-description" name="description" rows="3"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="edit-address">Endereço</label>
-                            <input type="text" id="edit-address" name="address">
-                        </div>
-                        <div class="form-group">
-                            <label for="edit-city">Cidade</label>
-                            <input type="text" id="edit-city" name="city">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn-cancel">Cancelar</button>
-                    <button type="submit" form="edit-profile-form" class="btn-save">Salvar Alterações</button>
-                </div>
+                    </div>
+
+                    <div class="form-divider"></div>
+
+                    <!-- Informações Pessoais -->
+                    <div class="form-group">
+                        <label for="edit-name">
+                            <i class="fas fa-user"></i>
+                            Nome Completo
+                        </label>
+                        <input type="text" id="edit-name" name="name" required placeholder="Digite seu nome completo">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-email">
+                            <i class="fas fa-envelope"></i>
+                            Email
+                        </label>
+                        <input type="email" id="edit-email" name="email" required placeholder="seu@email.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-phone">
+                            <i class="fas fa-phone"></i>
+                            Telefone
+                        </label>
+                        <input type="tel" id="edit-phone" name="phone" placeholder="(00) 00000-0000">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-description">
+                            <i class="fas fa-align-left"></i>
+                            Descrição
+                        </label>
+                        <textarea id="edit-description" name="description" rows="3" placeholder="Conte um pouco sobre você..."></textarea>
+                    </div>
+
+                    <div class="form-divider"></div>
+
+                    <!-- Endereço -->
+                    <div class="form-section-title">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Endereço
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-address">
+                            <i class="fas fa-road"></i>
+                            Rua
+                        </label>
+                        <input type="text" id="edit-address" name="address" placeholder="Rua, Número, Complemento">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-city">
+                            <i class="fas fa-city"></i>
+                            Cidade
+                        </label>
+                        <input type="text" id="edit-city" name="city" placeholder="Sua cidade">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-cancel">
+                    <i class="fas fa-times"></i>
+                    Cancelar
+                </button>
+                <button type="submit" form="edit-profile-form" class="btn-save">
+                    <i class="fas fa-check"></i>
+                    Salvar Alterações
+                </button>
             </div>
         </div>
     </div>

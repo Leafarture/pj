@@ -3,8 +3,11 @@ package com.TCC.Prato_Justo.Service;
 
 import com.TCC.Prato_Justo.Controller.AuthUsuarioController.CadastroRequest;
 import com.TCC.Prato_Justo.Interface.AnthUsuarioRepository;
+import com.TCC.Prato_Justo.Interface.DoacaoRepository;
+import com.TCC.Prato_Justo.Interface.AvaliacaoRepository;
 import com.TCC.Prato_Justo.Model.Usuario;
 import com.TCC.Prato_Justo.Model.TipoUsuario;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -17,6 +20,12 @@ public class UsuarioService {
 
     private final AnthUsuarioRepository autchCadastroRepository;
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    
+    @Autowired
+    private DoacaoRepository doacaoRepository;
+    
+    @Autowired
+    private AvaliacaoRepository avaliacaoRepository;
 
     public UsuarioService(AnthUsuarioRepository autchCadastroRepository) {
         this.autchCadastroRepository = autchCadastroRepository;
@@ -47,6 +56,14 @@ public class UsuarioService {
         cadastro.setEmail(request.getEmail());
         cadastro.setPassword(request.getPassword());
         cadastro.setTelefone(request.getTelefone());
+
+        // Salvar dados de endereço
+        cadastro.setRua(request.getRua());
+        cadastro.setNumero(request.getNumero());
+        cadastro.setComplemento(request.getComplemento());
+        cadastro.setCidade(request.getCidade());
+        cadastro.setEstado(request.getEstado());
+        cadastro.setCep(request.getCep());
 
         // Mapear perfil do frontend para enum
         if (request.getPerfil() != null) {
@@ -107,21 +124,39 @@ public class UsuarioService {
         return autchCadastroRepository.save(usuario);
     }
 
+    public Usuario updateProfile(Usuario usuario) {
+        // Método específico para atualizar perfil sem tocar na senha
+        // A senha já está criptografada no banco, não deve ser alterada
+        return autchCadastroRepository.save(usuario);
+    }
+
     public int getTotalDonations(Long userId) {
-        // Implementar busca de doações do usuário
-        // Por enquanto, retornar valor simulado
-        return 0;
+        try {
+            return doacaoRepository.countByDoadorId(userId);
+        } catch (Exception e) {
+            System.err.println("Erro ao contar doações: " + e.getMessage());
+            return 0;
+        }
     }
 
     public int getFamiliesHelped(Long userId) {
-        // Implementar cálculo de famílias ajudadas
-        // Por enquanto, retornar valor simulado
-        return 0;
+        // Podemos usar o número de doações ativas como proxy para famílias ajudadas
+        // Ou implementar uma lógica mais complexa no futuro
+        try {
+            return doacaoRepository.countActiveByDoadorId(userId);
+        } catch (Exception e) {
+            System.err.println("Erro ao contar famílias ajudadas: " + e.getMessage());
+            return 0;
+        }
     }
 
     public double getAverageRating(Long userId) {
-        // Implementar busca de avaliações do usuário
-        // Por enquanto, retornar valor simulado
-        return 0.0;
+        try {
+            Double average = avaliacaoRepository.getAverageRatingByUserId(userId);
+            return average != null ? average : 0.0;
+        } catch (Exception e) {
+            System.err.println("Erro ao calcular média de avaliações: " + e.getMessage());
+            return 0.0;
+        }
     }
 }

@@ -63,6 +63,11 @@ public class AuthService {
         return usuarioService.save(usuario);
     }
 
+    public Usuario updateUserProfile(Usuario usuario) {
+        // Usar o método do repository diretamente para evitar criptografar senha novamente
+        return usuarioService.updateProfile(usuario);
+    }
+
     public Map<String, Object> getUserStats(Long userId) {
         Map<String, Object> stats = new HashMap<>();
         

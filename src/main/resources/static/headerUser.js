@@ -267,7 +267,10 @@ class HeaderUserManager {
         const avatarUrl = user.avatarUrl || localStorage.getItem('userAvatar');
         
         if (avatarUrl && userAvatarImg && userAvatarPlaceholder) {
-            userAvatarImg.src = avatarUrl;
+            // Cache busting para garantir atualização imediata da imagem
+            const cacheBust = localStorage.getItem('avatarUpdatedAt') || Date.now();
+            const urlWithVersion = avatarUrl + (avatarUrl.includes('?') ? '&' : '?') + 'v=' + cacheBust;
+            userAvatarImg.src = urlWithVersion;
             userAvatarImg.style.display = 'block';
             userAvatarPlaceholder.style.display = 'none';
         } else if (userAvatarImg && userAvatarPlaceholder) {

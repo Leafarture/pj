@@ -14,6 +14,14 @@ public interface AvaliacaoRepository extends JpaRepository<Avaliacao, Long> {
 
     @Query("SELECT AVG(a.nota) FROM Avaliacao a WHERE a.estabelecimento.id = :id")
     Double mediaPorEstabelecimento(@Param("id") Long estabelecimentoId);
+    
+    // Buscar avaliações de doações de um usuário específico
+    @Query("SELECT AVG(a.nota) FROM Avaliacao a JOIN a.estabelecimento e JOIN e.usuario u WHERE u.id = :usuarioId")
+    Double getAverageRatingByUserId(@Param("usuarioId") Long usuarioId);
+    
+    // Contar avaliações recebidas por um usuário
+    @Query("SELECT COUNT(a) FROM Avaliacao a JOIN a.estabelecimento e JOIN e.usuario u WHERE u.id = :usuarioId")
+    int countByUserId(@Param("usuarioId") Long usuarioId);
 }
 
 
