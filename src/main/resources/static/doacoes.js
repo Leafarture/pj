@@ -261,25 +261,31 @@ function createDoacaoCard(doacao, isNew = false) {
     card.className = isNew ? 'doacao-card new-donation' : 'doacao-card';
     
     // ===== FORMATAÇÃO DE DATAS =====
-    const dataValidade = doacao.dataValidade ? new Date(doacao.dataValidade) : new Date();
-    const dataFormatada = dataValidade.toLocaleDateString('pt-BR');
-    
-    // ===== CÁLCULO DE STATUS DE VALIDADE =====
-    const hoje = new Date();
-    hoje.setHours(0, 0, 0, 0);
-    const dataVal = new Date(doacao.dataValidade || new Date());
-    dataVal.setHours(0, 0, 0, 0);
-    
-    const diasRestantes = Math.ceil((dataVal - hoje) / (1000 * 60 * 60 * 24));
+    let dataFormatada = 'Não informado';
+    let diasRestantes = null;
     let statusClass = 'status-available';
     let statusText = 'Disponível';
     
-    if (diasRestantes < 0) {
-        statusClass = 'status-expired';
-        statusText = 'Vencido';
-    } else if (diasRestantes <= 3) {
-        statusClass = 'status-urgent';
-        statusText = 'Urgente';
+    if (doacao.dataValidade) {
+        // Criar data a partir da string ISO (YYYY-MM-DD)
+        const dataValidade = new Date(doacao.dataValidade + 'T00:00:00');
+        dataFormatada = dataValidade.toLocaleDateString('pt-BR');
+        
+        // ===== CÁLCULO DE STATUS DE VALIDADE =====
+        const hoje = new Date();
+        hoje.setHours(0, 0, 0, 0);
+        const dataVal = new Date(doacao.dataValidade + 'T00:00:00');
+        dataVal.setHours(0, 0, 0, 0);
+        
+        diasRestantes = Math.ceil((dataVal - hoje) / (1000 * 60 * 60 * 24));
+        
+        if (diasRestantes < 0) {
+            statusClass = 'status-expired';
+            statusText = 'Vencido';
+        } else if (diasRestantes <= 3) {
+            statusClass = 'status-urgent';
+            statusText = 'Urgente';
+        }
     }
     
     // ===== MAPEAMENTO DE TIPOS DE ALIMENTO =====
@@ -327,7 +333,7 @@ function createDoacaoCard(doacao, isNew = false) {
             <div class="doacao-details">
                 <div class="detail-item">
                     <i class="fas fa-balance-scale"></i>
-                    <span><strong>Quantidade:</strong> ${doacao.quantidade || 'N/A'} ${doacao.unidade || ''}</span>
+                    <span><strong>Quantidade:</strong> ${doacao.quantidade || 'N/A'}${doacao.unidade ? ' ' + doacao.unidade : ''}</span>
                 </div>
                 <div class="detail-item">
                     <i class="fas fa-calendar-alt"></i>
@@ -335,7 +341,7 @@ function createDoacaoCard(doacao, isNew = false) {
                 </div>
                 <div class="detail-item">
                     <i class="fas fa-clock"></i>
-                    <span><strong>Restam:</strong> ${diasRestantes >= 0 ? diasRestantes + ' dias' : 'Vencido'}</span>
+                    <span><strong>Restam:</strong> ${diasRestantes !== null ? (diasRestantes >= 0 ? diasRestantes + ' dias' : 'Vencido') : 'Não informado'}</span>
                 </div>
                 <div class="detail-item">
                     <i class="fas fa-map-marker-alt"></i>

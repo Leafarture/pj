@@ -17,6 +17,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const stateInput = document.getElementById('state');
     const complementInput = document.getElementById('complement');
     const addressInput = document.getElementById('address');
+    const expiryDateInput = document.getElementById('expiryDate');
+    const collectionDateInput = document.getElementById('collectionDate');
+
+    // --- Configurar datas mínimas ---
+    // Data de hoje no formato YYYY-MM-DD
+    const hoje = new Date();
+    const amanha = new Date(hoje);
+    amanha.setDate(amanha.getDate() + 1);
+    
+    const hojeStr = hoje.toISOString().split('T')[0];
+    const amanhaStr = amanha.toISOString().split('T')[0];
+    
+    // Data de coleta: mínimo hoje
+    collectionDateInput.setAttribute('min', hojeStr);
+    
+    // Data de validade: mínimo amanhã (deve ser depois de hoje)
+    expiryDateInput.setAttribute('min', amanhaStr);
 
     // Mapeamento de campos para validação
     const fields = [
@@ -245,7 +262,50 @@ document.addEventListener('DOMContentLoaded', () => {
                 parent.classList.add('has-error');
                 isValid = false;
             }
+
+            // Validação específica para Data de Validade
+            if (fieldName === 'expiryDate' && field.value) {
+                const expiryDate = new Date(field.value + 'T00:00:00');
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                
+                if (expiryDate <= today) {
+                    errorElement.textContent = `A data de validade deve ser posterior a hoje.`;
+                    parent.classList.add('has-error');
+                    isValid = false;
+                }
+            }
+
+            // Validação específica para Data de Coleta
+            if (fieldName === 'collectionDate' && field.value) {
+                const collectionDate = new Date(field.value + 'T00:00:00');
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                
+                if (collectionDate < today) {
+                    errorElement.textContent = `A data de coleta não pode ser anterior a hoje.`;
+                    parent.classList.add('has-error');
+                    isValid = false;
+                }
+            }
         });
+
+        // Validação adicional: data de validade deve ser posterior à data de coleta
+        const expiryDate = document.getElementById('expiryDate').value;
+        const collectionDate = document.getElementById('collectionDate').value;
+        
+        if (expiryDate && collectionDate) {
+            const expiry = new Date(expiryDate + 'T00:00:00');
+            const collection = new Date(collectionDate + 'T00:00:00');
+            
+            if (expiry <= collection) {
+                const errorElement = document.getElementById('error-expiryDate');
+                const parent = document.getElementById('expiryDate').closest('.form-group');
+                errorElement.textContent = `A data de validade deve ser posterior à data de coleta.`;
+                parent.classList.add('has-error');
+                isValid = false;
+            }
+        }
 
         return isValid;
     }
@@ -259,52 +319,82 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const formData = new FormData(form);
-        const data = {};
-        
-        // Coleta todos os dados do formulário
-        for (let [key, value] of formData.entries()) {
-            // Converte quantidade para número
-            if (key === 'quantity') {
-                data[key] = parseFloat(value);
-            } else if (key !== 'foodPhoto') { // Ignora a foto por enquanto
-                data[key] = value;
-            }
-        }
-
-        // Adiciona campos de termos (booleano) e geolocalização
-        data.termsAccepted = formData.get('terms') === 'on';
-        data.latitude = formData.get('lat') ? parseFloat(formData.get('lat')) : null;
-        data.longitude = formData.get('lng') ? parseFloat(formData.get('lng')) : null;
-        
-        // Prepara dados simulados para envio ao backend (que usa o modelo Doacao)
-        const payload = {
-            titulo: data.foodName,
-            descricao: `Tipo: ${data.foodType}. Detalhes: ${data.description}. Conservação: ${data.conservation}. Restrições: ${data.restrictions || 'Nenhuma'}. Medida Caseira: ${data.homeMeasure || 'N/A'}`,
-            tipoAlimento: data.foodType,
-            quantidade: data.quantity,
-            cidade: data.city,
-            endereco: data.address,
-            latitude: data.latitude,
-            longitude: data.longitude,
-            // Campos extras que o backend não espera, mas o frontend coleta:
-            dataValidade: data.expiryDate,
-            dataColeta: data.collectionDate,
-            destino: data.donationTarget,
-            unidade: data.unit,
-            // Novos campos de endereço detalhado:
-            cep: data.cep,
-            rua: data.street,
-            numero: data.number,
-            estado: data.state,
-            complemento: data.complement || ''
-        };
-
-        // Envio real para o backend
         btnSubmit.textContent = 'Enviando...';
         btnSubmit.disabled = true;
 
         try {
+            // 1. Fazer upload da imagem primeiro
+            let imageUrl = null;
+            const photoFile = photoInput.files[0];
+            
+            if (photoFile) {
+                showNotification('Enviando imagem...', 'info', 2000);
+                
+                const imageFormData = new FormData();
+                imageFormData.append('image', photoFile);
+                
+                const token = localStorage.getItem('token');
+                const imageHeaders = {};
+                if (token) {
+                    imageHeaders['Authorization'] = `Bearer ${token}`;
+                }
+                
+                const imageResponse = await fetch('/doacoes/upload-image', {
+                    method: 'POST',
+                    headers: imageHeaders,
+                    body: imageFormData
+                });
+                
+                if (!imageResponse.ok) {
+                    throw new Error('Erro ao fazer upload da imagem');
+                }
+                
+                const imageResult = await imageResponse.json();
+                imageUrl = imageResult.imageUrl;
+                
+                console.log('✅ Imagem enviada:', imageUrl);
+            }
+
+            // 2. Coletar dados do formulário
+            const formData = new FormData(form);
+            const data = {};
+            
+            for (let [key, value] of formData.entries()) {
+                if (key === 'quantity') {
+                    data[key] = parseFloat(value);
+                } else if (key !== 'foodPhoto') {
+                    data[key] = value;
+                }
+            }
+
+            data.termsAccepted = formData.get('terms') === 'on';
+            data.latitude = formData.get('lat') ? parseFloat(formData.get('lat')) : null;
+            data.longitude = formData.get('lng') ? parseFloat(formData.get('lng')) : null;
+            
+            // 3. Preparar dados para envio
+            const payload = {
+                titulo: data.foodName,
+                descricao: `Tipo: ${data.foodType}. Detalhes: ${data.description}. Conservação: ${data.conservation}. Restrições: ${data.restrictions || 'Nenhuma'}. Medida Caseira: ${data.homeMeasure || 'N/A'}`,
+                tipoAlimento: data.foodType,
+                quantidade: data.quantity,
+                cidade: data.city,
+                endereco: data.address,
+                latitude: data.latitude,
+                longitude: data.longitude,
+                dataValidade: data.expiryDate,
+                dataColeta: data.collectionDate,
+                destino: data.donationTarget,
+                unidade: data.unit,
+                cep: data.cep,
+                rua: data.street,
+                numero: data.number,
+                estado: data.state,
+                complemento: data.complement || '',
+                imagem: imageUrl  // ✅ URL da imagem
+            };
+
+            // 4. Enviar doação
+            showNotification('Salvando doação...', 'info', 2000);
             const token = localStorage.getItem('token');
             const headers = {
                 'Content-Type': 'application/json'
@@ -322,13 +412,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (response.ok) {
                 const result = await response.json();
-                showNotification('Alimento cadastrado com sucesso! Redirecionando para suas doações.', 'success', 3000);
+                showNotification('Alimento cadastrado com sucesso! Redirecionando...', 'success', 3000);
                 
-                // Notificar sistema de tempo real sobre nova doação
+                // Notificar sistema de tempo real
                 if (typeof notifyNewDonation === 'function') {
                     notifyNewDonation(result);
                 } else {
-                    // Fallback para evento personalizado
                     const newDonationEvent = new CustomEvent('newDonationCreated', {
                         detail: {
                             doacao: result,
@@ -338,10 +427,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.dispatchEvent(newDonationEvent);
                 }
                 
-                // Reseta o formulário
                 form.reset();
                 
-                // Redirecionar para minhas doações após sucesso
                 setTimeout(() => {
                     window.location.href = 'minhas-doacoes.html';
                 }, 2000);

@@ -185,6 +185,9 @@ class ProfileManager {
         const avatarContainer = avatarImg ? avatarImg.closest('.avatar-container') : null;
         
         if (this.currentUser.avatarUrl) {
+            // Salvar avatar no localStorage para compatibilidade com index.js e headerUser.js
+            localStorage.setItem('userAvatar', this.currentUser.avatarUrl);
+            
             // Adicionar cache-busting para garantir que a imagem atualize
             const updatedAt = localStorage.getItem('avatarUpdatedAt');
             const urlWithVersion = this.currentUser.avatarUrl + (this.currentUser.avatarUrl.includes('?') ? '&' : '?') + 'v=' + (updatedAt || Date.now());
@@ -705,6 +708,14 @@ class ProfileManager {
                     // Atualizar dados locais
                     Object.assign(this.currentUser, data);
                     
+                    // Atualizar localStorage com os dados mais recentes
+                    localStorage.setItem('user', JSON.stringify(this.currentUser));
+                    
+                    // Se o usuário tem avatar, salvar também separadamente para compatibilidade
+                    if (this.currentUser.avatarUrl) {
+                        localStorage.setItem('userAvatar', this.currentUser.avatarUrl);
+                    }
+                    
                     this.closeEditModal();
                     this.showNotification('Perfil atualizado com sucesso!', 'success');
                     
@@ -726,6 +737,12 @@ class ProfileManager {
                 }
                 Object.assign(this.currentUser, updatedData);
                 localStorage.setItem('user', JSON.stringify(this.currentUser));
+                
+                // Se o usuário tem avatar, salvar também separadamente para compatibilidade
+                if (this.currentUser.avatarUrl) {
+                    localStorage.setItem('userAvatar', this.currentUser.avatarUrl);
+                }
+                
                 this.updateProfileDisplay();
                 this.closeEditModal();
                 this.showNotification('Perfil atualizado com sucesso!', 'success');
@@ -763,6 +780,9 @@ class ProfileManager {
                     const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
                     const mergedUser = { ...storedUser, ...this.currentUser, avatarUrl: data.avatarUrl };
                     localStorage.setItem('user', JSON.stringify(mergedUser));
+                    
+                    // Salvar também o avatarUrl separadamente para compatibilidade com index.js e headerUser.js
+                    localStorage.setItem('userAvatar', data.avatarUrl);
 
                     // Avisar o header para atualizar a imagem (com cache-busting)
                     localStorage.setItem('avatarUpdatedAt', Date.now().toString());

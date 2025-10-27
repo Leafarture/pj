@@ -858,12 +858,17 @@ function updateHeaderActions() {
         // Inicial do nome para avatar
         const userInitial = user.nome ? user.nome.charAt(0).toUpperCase() : 'U';
         
+        // Buscar avatar com cache busting (mesma lógica do headerUser.js)
+        const avatarUrl = user.avatarUrl || localStorage.getItem('userAvatar');
+        const cacheBust = localStorage.getItem('avatarUpdatedAt') || Date.now();
+        const urlWithVersion = avatarUrl ? (avatarUrl + (avatarUrl.includes('?') ? '&' : '?') + 'v=' + cacheBust) : null;
+        
         headerActions.innerHTML = `
             <div class="profile-dropdown">
                 <button class="avatar-btn" id="avatar-btn">
-                    ${user.fotoPerfil ? 
-                        `<img src="${user.fotoPerfil}" alt="${user.nome}">` : 
-                        `<span id="user-avatar-placeholder">${userInitial}</span>`
+                    ${urlWithVersion ? 
+                        `<img src="${urlWithVersion}" alt="${user.nome}" style="display: block;">` : 
+                        `<span id="user-avatar-placeholder" style="display: flex;">${userInitial}</span>`
                     }
                 </button>
                 <div class="dropdown-content" id="profile-dropdown-menu">

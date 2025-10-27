@@ -21,11 +21,21 @@ public class FileUploadConfig implements WebMvcConfigurer {
             System.out.println("✅ Diretório de uploads criado: " + uploadDirFile.getAbsolutePath());
         }
 
-        // Mapear URL /uploads/** para a pasta de uploads
-        registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:" + uploadDirFile.getAbsolutePath() + "/");
+        // Obter o diretório raiz de uploads (pai do uploadDir)
+        File rootUploadDir = uploadDirFile.getParentFile();
+        if (rootUploadDir == null) {
+            rootUploadDir = new File("./uploads");
+        }
         
-        System.out.println("📁 Uploads configurados em: " + uploadDirFile.getAbsolutePath());
+        if (!rootUploadDir.exists()) {
+            rootUploadDir.mkdirs();
+        }
+
+        // Mapear URL /uploads/** para a pasta raiz de uploads
+        registry.addResourceHandler("/uploads/**")
+                .addResourceLocations("file:" + rootUploadDir.getAbsolutePath() + "/");
+        
+        System.out.println("📁 Uploads configurados em: " + rootUploadDir.getAbsolutePath());
     }
 }
 
